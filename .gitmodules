@@ -2,3 +2,7 @@
 	path = Chassis/HW-Components
 	url = git@github.com:ZJU-HelloWorld/HW-Components.git
 	branch = cpp25-dev-module_feat
+[submodule "Gimbal/HW-Components"]
+	path = Gimbal/HW-Components
+	url = git@github.com:ZJU-HelloWorld/HW-Components.git
+	branch = cpp25-dev-module_feat
