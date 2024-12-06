@@ -1,0 +1,2 @@
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\remote_control\libhwcomponents_devices_remote_control.a CMakeFiles/hwcomponents_devices_remote_control.dir/src/DT7.cpp.obj CMakeFiles/hwcomponents_devices_remote_control.dir/src/ET08A.cpp.obj CMakeFiles/hwcomponents_devices_remote_control.dir/src/sbus.cpp.obj
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\remote_control\libhwcomponents_devices_remote_control.a

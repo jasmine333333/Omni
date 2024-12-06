@@ -1,0 +1,2 @@
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\algorithms\ahrs\libhwcomponents_algorithms_ahrs.a CMakeFiles/hwcomponents_algorithms_ahrs.dir/src/ahrs_base.cpp.obj CMakeFiles/hwcomponents_algorithms_ahrs.dir/src/mahony.cpp.obj
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\algorithms\ahrs\libhwcomponents_algorithms_ahrs.a

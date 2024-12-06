@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "HW-Components/algorithms/ik_solver/chassis",
+		"source" : "HW-Components/algorithms/ik_solver/chassis"
+	}
+}

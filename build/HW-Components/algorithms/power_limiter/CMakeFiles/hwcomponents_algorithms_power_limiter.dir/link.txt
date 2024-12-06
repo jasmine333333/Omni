@@ -1,0 +1,2 @@
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\algorithms\power_limiter\libhwcomponents_algorithms_power_limiter.a CMakeFiles/hwcomponents_algorithms_power_limiter.dir/src/power_limiter.cpp.obj
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\algorithms\power_limiter\libhwcomponents_algorithms_power_limiter.a

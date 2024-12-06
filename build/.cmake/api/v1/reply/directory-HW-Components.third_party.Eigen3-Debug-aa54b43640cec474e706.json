@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "HW-Components/third_party/Eigen3",
+		"source" : "HW-Components/third_party/Eigen3"
+	}
+}

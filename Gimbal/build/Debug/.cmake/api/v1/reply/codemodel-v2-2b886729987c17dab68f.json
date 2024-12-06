@@ -1,0 +1,1155 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						24
+					]
+				},
+				{
+					"build" : "cmake/stm32cubemx",
+					"jsonFile" : "directory-cmake.stm32cubemx-Debug-a874d3cc84b5982fda2e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "cmake/stm32cubemx"
+				},
+				{
+					"build" : "HW-Components",
+					"childIndexes" : 
+					[
+						3,
+						13,
+						18,
+						28,
+						30,
+						33
+					],
+					"jsonFile" : "directory-HW-Components-Debug-dd290b4164bf20207dab.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "HW-Components"
+				},
+				{
+					"build" : "HW-Components/algorithms",
+					"childIndexes" : 
+					[
+						4,
+						5,
+						6,
+						7,
+						8,
+						10,
+						11,
+						12
+					],
+					"jsonFile" : "directory-HW-Components.algorithms-Debug-3899516a73d2b425238f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 3,
+					"source" : "HW-Components/algorithms"
+				},
+				{
+					"build" : "HW-Components/algorithms/ahrs",
+					"jsonFile" : "directory-HW-Components.algorithms.ahrs-Debug-9a8da58e270b50328e6b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 4,
+					"source" : "HW-Components/algorithms/ahrs",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/controller",
+					"jsonFile" : "directory-HW-Components.algorithms.controller-Debug-888cb07a230fedb4823c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 5,
+					"source" : "HW-Components/algorithms/controller",
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/filter",
+					"jsonFile" : "directory-HW-Components.algorithms.filter-Debug-02e60cf0b1ce8bf2c094.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 6,
+					"source" : "HW-Components/algorithms/filter",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/fsm",
+					"jsonFile" : "directory-HW-Components.algorithms.fsm-Debug-4c71e11cccfe737027be.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 7,
+					"source" : "HW-Components/algorithms/fsm",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/ik_solver",
+					"childIndexes" : 
+					[
+						9
+					],
+					"jsonFile" : "directory-HW-Components.algorithms.ik_solver-Debug-a84ac7207bf7beedc733.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 8,
+					"source" : "HW-Components/algorithms/ik_solver"
+				},
+				{
+					"build" : "HW-Components/algorithms/ik_solver/chassis",
+					"jsonFile" : "directory-HW-Components.algorithms.ik_solver.chassis-Debug-8964225916eb6c200188.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 8,
+					"projectIndex" : 9,
+					"source" : "HW-Components/algorithms/ik_solver/chassis",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/observer",
+					"jsonFile" : "directory-HW-Components.algorithms.observer-Debug-670dbc33315932170c89.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 10,
+					"source" : "HW-Components/algorithms/observer",
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/power_limiter",
+					"jsonFile" : "directory-HW-Components.algorithms.power_limiter-Debug-d7eff920eff44e88d3aa.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 11,
+					"source" : "HW-Components/algorithms/power_limiter",
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"build" : "HW-Components/algorithms/serial_rod",
+					"jsonFile" : "directory-HW-Components.algorithms.serial_rod-Debug-981d1f2659c0455db76a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 3,
+					"projectIndex" : 12,
+					"source" : "HW-Components/algorithms/serial_rod",
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"build" : "HW-Components/bsp",
+					"childIndexes" : 
+					[
+						14,
+						15,
+						16,
+						17
+					],
+					"jsonFile" : "directory-HW-Components.bsp-Debug-98a51fa50ae45654cc04.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 13,
+					"source" : "HW-Components/bsp"
+				},
+				{
+					"build" : "HW-Components/bsp/comm",
+					"jsonFile" : "directory-HW-Components.bsp.comm-Debug-5f567c84d5ac08758872.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 13,
+					"projectIndex" : 14,
+					"source" : "HW-Components/bsp/comm",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"build" : "HW-Components/bsp/software_i2c",
+					"jsonFile" : "directory-HW-Components.bsp.software_i2c-Debug-6047448245ad9ba4e4d6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 13,
+					"projectIndex" : 15,
+					"source" : "HW-Components/bsp/software_i2c",
+					"targetIndexes" : 
+					[
+						10
+					]
+				},
+				{
+					"build" : "HW-Components/bsp/stm32_hal",
+					"jsonFile" : "directory-HW-Components.bsp.stm32_hal-Debug-294362c0815d4bb3a7bc.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 13,
+					"projectIndex" : 16,
+					"source" : "HW-Components/bsp/stm32_hal",
+					"targetIndexes" : 
+					[
+						11
+					]
+				},
+				{
+					"build" : "HW-Components/bsp/tick",
+					"jsonFile" : "directory-HW-Components.bsp.tick-Debug-c98f1c9d695fe5ff3de3.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 13,
+					"projectIndex" : 17,
+					"source" : "HW-Components/bsp/tick"
+				},
+				{
+					"build" : "HW-Components/devices",
+					"childIndexes" : 
+					[
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27
+					],
+					"jsonFile" : "directory-HW-Components.devices-Debug-da0c3f7ae4279e6ea61f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 18,
+					"source" : "HW-Components/devices"
+				},
+				{
+					"build" : "HW-Components/devices/buzzer",
+					"jsonFile" : "directory-HW-Components.devices.buzzer-Debug-cb8d4b9163c7f5734584.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 19,
+					"source" : "HW-Components/devices/buzzer",
+					"targetIndexes" : 
+					[
+						12
+					]
+				},
+				{
+					"build" : "HW-Components/devices/cap",
+					"jsonFile" : "directory-HW-Components.devices.cap-Debug-86b2d409a75844c841eb.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 20,
+					"source" : "HW-Components/devices/cap",
+					"targetIndexes" : 
+					[
+						13
+					]
+				},
+				{
+					"build" : "HW-Components/devices/imu",
+					"jsonFile" : "directory-HW-Components.devices.imu-Debug-2a56d2b4d9f21c2c1e4c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 21,
+					"source" : "HW-Components/devices/imu",
+					"targetIndexes" : 
+					[
+						14
+					]
+				},
+				{
+					"build" : "HW-Components/devices/laser",
+					"jsonFile" : "directory-HW-Components.devices.laser-Debug-b05c70b426d907e072ff.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 22,
+					"source" : "HW-Components/devices/laser",
+					"targetIndexes" : 
+					[
+						15
+					]
+				},
+				{
+					"build" : "HW-Components/devices/motor",
+					"jsonFile" : "directory-HW-Components.devices.motor-Debug-af9731137ba6b26d822d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 23,
+					"source" : "HW-Components/devices/motor",
+					"targetIndexes" : 
+					[
+						16
+					]
+				},
+				{
+					"build" : "HW-Components/devices/referee",
+					"jsonFile" : "directory-HW-Components.devices.referee-Debug-236ee67794b9cf2500b9.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 24,
+					"source" : "HW-Components/devices/referee",
+					"targetIndexes" : 
+					[
+						17
+					]
+				},
+				{
+					"build" : "HW-Components/devices/remote_control",
+					"jsonFile" : "directory-HW-Components.devices.remote_control-Debug-da90bacc8c82c8b5e56c.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 25,
+					"source" : "HW-Components/devices/remote_control",
+					"targetIndexes" : 
+					[
+						18
+					]
+				},
+				{
+					"build" : "HW-Components/devices/servo",
+					"jsonFile" : "directory-HW-Components.devices.servo-Debug-f4126d9a6075e8041200.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 26,
+					"source" : "HW-Components/devices/servo",
+					"targetIndexes" : 
+					[
+						19
+					]
+				},
+				{
+					"build" : "HW-Components/devices/vision",
+					"jsonFile" : "directory-HW-Components.devices.vision-Debug-f26d60abe99da05dd144.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 18,
+					"projectIndex" : 27,
+					"source" : "HW-Components/devices/vision",
+					"targetIndexes" : 
+					[
+						20
+					]
+				},
+				{
+					"build" : "HW-Components/modules",
+					"childIndexes" : 
+					[
+						29
+					],
+					"jsonFile" : "directory-HW-Components.modules-Debug-9f7b41834d9e2e4b0bf6.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 28,
+					"source" : "HW-Components/modules"
+				},
+				{
+					"build" : "HW-Components/modules/imu",
+					"jsonFile" : "directory-HW-Components.modules.imu-Debug-959ff48722dab166e162.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 28,
+					"projectIndex" : 29,
+					"source" : "HW-Components/modules/imu",
+					"targetIndexes" : 
+					[
+						21
+					]
+				},
+				{
+					"build" : "HW-Components/third_party",
+					"childIndexes" : 
+					[
+						31,
+						32
+					],
+					"jsonFile" : "directory-HW-Components.third_party-Debug-0918d6b5fa2d8ef0a94b.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 30,
+					"source" : "HW-Components/third_party"
+				},
+				{
+					"build" : "HW-Components/third_party/Eigen3",
+					"jsonFile" : "directory-HW-Components.third_party.Eigen3-Debug-aa54b43640cec474e706.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 30,
+					"projectIndex" : 31,
+					"source" : "HW-Components/third_party/Eigen3"
+				},
+				{
+					"build" : "HW-Components/third_party/dsp",
+					"jsonFile" : "directory-HW-Components.third_party.dsp-Debug-2c9a50b9a2e8b825f8fd.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 30,
+					"projectIndex" : 32,
+					"source" : "HW-Components/third_party/dsp",
+					"targetIndexes" : 
+					[
+						22
+					]
+				},
+				{
+					"build" : "HW-Components/tools",
+					"jsonFile" : "directory-HW-Components.tools-Debug-dbea1cb4bb6eeed54f4e.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.25"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 33,
+					"source" : "HW-Components/tools",
+					"targetIndexes" : 
+					[
+						23
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1,
+						2
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "omni_gimbal",
+					"targetIndexes" : 
+					[
+						0,
+						24
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						1
+					],
+					"name" : "stm32cubemx",
+					"parentIndex" : 0
+				},
+				{
+					"childIndexes" : 
+					[
+						3,
+						13,
+						18,
+						28,
+						30,
+						33
+					],
+					"directoryIndexes" : 
+					[
+						2
+					],
+					"name" : "hwcomponents",
+					"parentIndex" : 0
+				},
+				{
+					"childIndexes" : 
+					[
+						4,
+						5,
+						6,
+						7,
+						8,
+						10,
+						11,
+						12
+					],
+					"directoryIndexes" : 
+					[
+						3
+					],
+					"name" : "hwcomponents_algorithms",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						4
+					],
+					"name" : "hwcomponents_algorithms_ahrs",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						5
+					],
+					"name" : "hwcomponents_algorithms_controller",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						2
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						6
+					],
+					"name" : "hwcomponents_algorithms_filter",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "hwcomponents_algorithms_fsm",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						9
+					],
+					"directoryIndexes" : 
+					[
+						8
+					],
+					"name" : "hwcomponents_algorithms_ik_solver",
+					"parentIndex" : 3
+				},
+				{
+					"directoryIndexes" : 
+					[
+						9
+					],
+					"name" : "hwcomponents_algorithms_ik_solver_chassis",
+					"parentIndex" : 8,
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						10
+					],
+					"name" : "hwcomponents_algorithms_observer",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						6
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						11
+					],
+					"name" : "hwcomponents_algorithms_power_limiter",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						7
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						12
+					],
+					"name" : "hwcomponents_algorithms_serial_rod",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						8
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						14,
+						15,
+						16,
+						17
+					],
+					"directoryIndexes" : 
+					[
+						13
+					],
+					"name" : "hwcomponents_bsp",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						14
+					],
+					"name" : "hwcomponents_bsp_comm",
+					"parentIndex" : 13,
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						15
+					],
+					"name" : "hwcomponents_bsp_software_i2c",
+					"parentIndex" : 13,
+					"targetIndexes" : 
+					[
+						10
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						16
+					],
+					"name" : "hwcomponents_bsp_stm32_hal",
+					"parentIndex" : 13,
+					"targetIndexes" : 
+					[
+						11
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						17
+					],
+					"name" : "hwcomponents_bsp_tick",
+					"parentIndex" : 13
+				},
+				{
+					"childIndexes" : 
+					[
+						19,
+						20,
+						21,
+						22,
+						23,
+						24,
+						25,
+						26,
+						27
+					],
+					"directoryIndexes" : 
+					[
+						18
+					],
+					"name" : "hwcomponents_devices",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						19
+					],
+					"name" : "hwcomponents_devices_buzzer",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						12
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						20
+					],
+					"name" : "hwcomponents_devices_cap",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						13
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						21
+					],
+					"name" : "hwcomponents_devices_imu",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						14
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						22
+					],
+					"name" : "hwcomponents_devices_laser",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						15
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						23
+					],
+					"name" : "hwcomponents_devices_motor",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						16
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						24
+					],
+					"name" : "hwcomponents_devices_referee",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						17
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						25
+					],
+					"name" : "hwcomponents_devices_remote_control",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						18
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						26
+					],
+					"name" : "hwcomponents_devices_servo",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						19
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						27
+					],
+					"name" : "hwcomponents_devices_vision",
+					"parentIndex" : 18,
+					"targetIndexes" : 
+					[
+						20
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						29
+					],
+					"directoryIndexes" : 
+					[
+						28
+					],
+					"name" : "hwcomponents_modules",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						29
+					],
+					"name" : "hwcomponents_modules_imu",
+					"parentIndex" : 28,
+					"targetIndexes" : 
+					[
+						21
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						31,
+						32
+					],
+					"directoryIndexes" : 
+					[
+						30
+					],
+					"name" : "hwcomponents_third_party",
+					"parentIndex" : 2
+				},
+				{
+					"directoryIndexes" : 
+					[
+						31
+					],
+					"name" : "hwcomponents_third_party_eigen3",
+					"parentIndex" : 30
+				},
+				{
+					"directoryIndexes" : 
+					[
+						32
+					],
+					"name" : "hwcomponents_third_party_dsp",
+					"parentIndex" : 30,
+					"targetIndexes" : 
+					[
+						22
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						33
+					],
+					"name" : "hwcomponents_tools",
+					"parentIndex" : 2,
+					"targetIndexes" : 
+					[
+						23
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "drivers::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-drivers-Debug-08d705c9d06746bbda29.json",
+					"name" : "drivers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "hwcomponents_algorithms_ahrs::@d12bcdc057c1f4303e4d",
+					"jsonFile" : "target-hwcomponents_algorithms_ahrs-Debug-b049f2de7b035d95e4e2.json",
+					"name" : "hwcomponents_algorithms_ahrs",
+					"projectIndex" : 4
+				},
+				{
+					"directoryIndex" : 5,
+					"id" : "hwcomponents_algorithms_controller::@9a81c444695ea1073feb",
+					"jsonFile" : "target-hwcomponents_algorithms_controller-Debug-743673623e2ceee601cc.json",
+					"name" : "hwcomponents_algorithms_controller",
+					"projectIndex" : 5
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "hwcomponents_algorithms_filter::@68de71322a60219bf040",
+					"jsonFile" : "target-hwcomponents_algorithms_filter-Debug-ef6360d32ff6863063b9.json",
+					"name" : "hwcomponents_algorithms_filter",
+					"projectIndex" : 6
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "hwcomponents_algorithms_fsm::@537564da3c7ece035d66",
+					"jsonFile" : "target-hwcomponents_algorithms_fsm-Debug-1b297033ea6fae98c5c1.json",
+					"name" : "hwcomponents_algorithms_fsm",
+					"projectIndex" : 7
+				},
+				{
+					"directoryIndex" : 9,
+					"id" : "hwcomponents_algorithms_ik_solver_chassis::@81a655df5bfe905d9f9b",
+					"jsonFile" : "target-hwcomponents_algorithms_ik_solver_chassis-Debug-2b407b7add8d2e146506.json",
+					"name" : "hwcomponents_algorithms_ik_solver_chassis",
+					"projectIndex" : 9
+				},
+				{
+					"directoryIndex" : 10,
+					"id" : "hwcomponents_algorithms_observer::@590206702900a749542a",
+					"jsonFile" : "target-hwcomponents_algorithms_observer-Debug-b698b0bba086ac899911.json",
+					"name" : "hwcomponents_algorithms_observer",
+					"projectIndex" : 10
+				},
+				{
+					"directoryIndex" : 11,
+					"id" : "hwcomponents_algorithms_power_limiter::@8534d7b1fc2aa153b239",
+					"jsonFile" : "target-hwcomponents_algorithms_power_limiter-Debug-6a2233f463812e1eefd1.json",
+					"name" : "hwcomponents_algorithms_power_limiter",
+					"projectIndex" : 11
+				},
+				{
+					"directoryIndex" : 12,
+					"id" : "hwcomponents_algorithms_serial_rod::@074a2cff8337000d4baf",
+					"jsonFile" : "target-hwcomponents_algorithms_serial_rod-Debug-b07768559ab3367ceb3d.json",
+					"name" : "hwcomponents_algorithms_serial_rod",
+					"projectIndex" : 12
+				},
+				{
+					"directoryIndex" : 14,
+					"id" : "hwcomponents_bsp_comm::@a4793edceee467982369",
+					"jsonFile" : "target-hwcomponents_bsp_comm-Debug-e03185cfe2c6bea0a34f.json",
+					"name" : "hwcomponents_bsp_comm",
+					"projectIndex" : 14
+				},
+				{
+					"directoryIndex" : 15,
+					"id" : "hwcomponents_bsp_software_i2c::@5dd773c8a6a419c32859",
+					"jsonFile" : "target-hwcomponents_bsp_software_i2c-Debug-10c23c6abf4b1c0d28a6.json",
+					"name" : "hwcomponents_bsp_software_i2c",
+					"projectIndex" : 15
+				},
+				{
+					"directoryIndex" : 16,
+					"id" : "hwcomponents_bsp_stm32_hal::@7b37251b6bad7064c3a9",
+					"jsonFile" : "target-hwcomponents_bsp_stm32_hal-Debug-0bcdd53238e88170dad3.json",
+					"name" : "hwcomponents_bsp_stm32_hal",
+					"projectIndex" : 16
+				},
+				{
+					"directoryIndex" : 19,
+					"id" : "hwcomponents_devices_buzzer::@512fc61883efe68552e9",
+					"jsonFile" : "target-hwcomponents_devices_buzzer-Debug-db236fdc6fd581ff2057.json",
+					"name" : "hwcomponents_devices_buzzer",
+					"projectIndex" : 19
+				},
+				{
+					"directoryIndex" : 20,
+					"id" : "hwcomponents_devices_cap::@227865199fa39c8a8707",
+					"jsonFile" : "target-hwcomponents_devices_cap-Debug-f7aafc747f76a5935b4c.json",
+					"name" : "hwcomponents_devices_cap",
+					"projectIndex" : 20
+				},
+				{
+					"directoryIndex" : 21,
+					"id" : "hwcomponents_devices_imu::@eb4e3f9ce53ecd8745f6",
+					"jsonFile" : "target-hwcomponents_devices_imu-Debug-449c6c8a4c2a9860697f.json",
+					"name" : "hwcomponents_devices_imu",
+					"projectIndex" : 21
+				},
+				{
+					"directoryIndex" : 22,
+					"id" : "hwcomponents_devices_laser::@ad1f8c744d605240ed0a",
+					"jsonFile" : "target-hwcomponents_devices_laser-Debug-b925be5378b08996212e.json",
+					"name" : "hwcomponents_devices_laser",
+					"projectIndex" : 22
+				},
+				{
+					"directoryIndex" : 23,
+					"id" : "hwcomponents_devices_motor::@b347063fd2fae143bbb2",
+					"jsonFile" : "target-hwcomponents_devices_motor-Debug-e1efda518c7eff1b95f2.json",
+					"name" : "hwcomponents_devices_motor",
+					"projectIndex" : 23
+				},
+				{
+					"directoryIndex" : 24,
+					"id" : "hwcomponents_devices_referee::@4d278ec22f109db254d6",
+					"jsonFile" : "target-hwcomponents_devices_referee-Debug-409f7d9d0a79a741ea23.json",
+					"name" : "hwcomponents_devices_referee",
+					"projectIndex" : 24
+				},
+				{
+					"directoryIndex" : 25,
+					"id" : "hwcomponents_devices_remote_control::@7cd2b84d9f27cad9e503",
+					"jsonFile" : "target-hwcomponents_devices_remote_control-Debug-aae2a211483dcdc458fd.json",
+					"name" : "hwcomponents_devices_remote_control",
+					"projectIndex" : 25
+				},
+				{
+					"directoryIndex" : 26,
+					"id" : "hwcomponents_devices_servo::@3ecb891aa441653efa2d",
+					"jsonFile" : "target-hwcomponents_devices_servo-Debug-336033429dc0af31bce9.json",
+					"name" : "hwcomponents_devices_servo",
+					"projectIndex" : 26
+				},
+				{
+					"directoryIndex" : 27,
+					"id" : "hwcomponents_devices_vision::@06d382707117ae49d992",
+					"jsonFile" : "target-hwcomponents_devices_vision-Debug-8349a48d6ddd3a2dea31.json",
+					"name" : "hwcomponents_devices_vision",
+					"projectIndex" : 27
+				},
+				{
+					"directoryIndex" : 29,
+					"id" : "hwcomponents_modules_imu::@6390b95b5f214fd90bc2",
+					"jsonFile" : "target-hwcomponents_modules_imu-Debug-0523adcd7fe269bf0b95.json",
+					"name" : "hwcomponents_modules_imu",
+					"projectIndex" : 29
+				},
+				{
+					"directoryIndex" : 32,
+					"id" : "hwcomponents_third_party_dsp::@03229d5779392e8da5d8",
+					"jsonFile" : "target-hwcomponents_third_party_dsp-Debug-9f5bcf827c45784c967b.json",
+					"name" : "hwcomponents_third_party_dsp",
+					"projectIndex" : 32
+				},
+				{
+					"directoryIndex" : 33,
+					"id" : "hwcomponents_tools::@9529d02dbd27d90a80c6",
+					"jsonFile" : "target-hwcomponents_tools-Debug-9ce46d2fd5f73142c64b.json",
+					"name" : "hwcomponents_tools",
+					"projectIndex" : 33
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "omni_gimbal::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-omni_gimbal-Debug-7aab4487b6f7f39220b2.json",
+					"name" : "omni_gimbal",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "D:/Omni/Omni/Gimbal/build/Debug",
+		"source" : "D:/Omni/Omni/Gimbal"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

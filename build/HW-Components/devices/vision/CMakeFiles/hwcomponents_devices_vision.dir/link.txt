@@ -1,0 +1,2 @@
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\vision\libhwcomponents_devices_vision.a CMakeFiles/hwcomponents_devices_vision.dir/src/vision.cpp.obj
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\vision\libhwcomponents_devices_vision.a

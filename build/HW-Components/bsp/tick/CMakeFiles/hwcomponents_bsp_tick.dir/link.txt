@@ -1,0 +1,2 @@
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\bsp\tick\libhwcomponents_bsp_tick.a CMakeFiles/hwcomponents_bsp_tick.dir/tick.cpp.obj
+D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\bsp\tick\libhwcomponents_bsp_tick.a

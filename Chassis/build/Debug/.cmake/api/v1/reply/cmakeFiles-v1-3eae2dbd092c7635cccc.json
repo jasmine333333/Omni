@@ -1,0 +1,740 @@
+{
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"path" : "cmake/gcc-arm-none-eabi.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/3.29.8/CMakeSystem.cmake"
+		},
+		{
+			"path" : "cmake/gcc-arm-none-eabi.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/3.29.8/CMakeCCompiler.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/3.29.8/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/3.29.8/CMakeASMCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeCInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/cmake/utils/function_tools.cmake"
+		},
+		{
+			"path" : "HW-Components/config.cmake"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/CMakeLists.txt"
+		},
+		{
+			"path" : "HW-Components/cmake/utils/tools.cmake"
+		},
+		{
+			"path" : "HW-Components/cmake/utils/macro_tools.cmake"
+		},
+		{
+			"path" : "HW-Components/cmake/utils/function_tools.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/ahrs/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/controller/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/filter/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/fsm/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/ik_solver/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/ik_solver/chassis/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/observer/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/power_limiter/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/algorithms/serial_rod/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/bsp/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/bsp/comm/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/bsp/software_i2c/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/bsp/stm32_hal/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/bsp/tick/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/buzzer/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/cap/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/imu/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/laser/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/motor/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/referee/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/remote_control/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/servo/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/devices/vision/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/modules/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/modules/imu/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/third_party/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/third_party/Eigen3/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/third_party/dsp/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"path" : "HW-Components/tools/CMakeLists.txt"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "D:/softwaredownload/cmake-3.29.8-windows-x86_64/cmake-3.29.8-windows-x86_64/share/cmake-3.29/Modules/Compiler/GNU.cmake"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "D:/Omni/Omni/Chassis/build/Debug",
+		"source" : "D:/Omni/Omni/Chassis"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 0
+	}
+}
