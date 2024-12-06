@@ -1,0 +1,4 @@
+[submodule "Chassis/HW-Components"]
+	path = Chassis/HW-Components
+	url = git@github.com:ZJU-HelloWorld/HW-Components.git
+	branch = cpp25-dev-module_feat
