@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_fsm.hpp
+ * @file      :ins_fsm.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -19,18 +19,19 @@
 /* Includes ------------------------------------------------------------------*/
 #include "gimbal.hpp"
 #include "robot.hpp"
-#include "scope.hpp"
 #include "feed.hpp"
-#include "fric.hpp"
+#include "fric_2motor.hpp"
 /* Exported macro ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 
+namespace hw_module = hello_world::module;
+typedef hw_module::Feed Feed;
+typedef hw_module::Fric Fric;
 robot::Gimbal* CreateGimbal();
-robot::Scope* CreateScope();
-robot::Feed* CreateFeed();
-robot::Fric* CreateFric();
+Feed* CreateFeed();
+Fric* CreateFric();
 robot::Robot* CreateRobot();
 
 /* Exported function prototypes ----------------------------------------------*/

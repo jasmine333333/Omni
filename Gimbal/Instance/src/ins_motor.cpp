@@ -23,7 +23,7 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = 0,
+    .angle_offset = -1.72f,
     /** 电机外置减速器的减速比（额外） */
     // .ex_redu_rat = 14,
 };
@@ -31,11 +31,11 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
 const hw_motor::OptionalParams kMotorParamsPitch = {
     .input_type = hw_motor::InputType::kTorq,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirFwd,  // 设置pitch轴电机低头角度低，抬头角度高
+    .dir = hw_motor::kDirRev,  // 设置pitch轴电机低头角度低，抬头角度高
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = 0,
+    .angle_offset = 0.5111f,
     /** 电机外置减速器的减速比（额外） */
     // .ex_redu_rat = 14,
 };

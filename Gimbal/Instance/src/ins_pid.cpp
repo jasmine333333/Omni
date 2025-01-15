@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_pid.cpp
+ * @file      :ins_pid.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -30,88 +30,94 @@ const hw_pid::OutLimit kOutLimitFric = hw_pid::OutLimit(true, -kMaxPidOutFric, k
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsYaw = {
     {
-     .auto_reset = true,
-     .kp = 15,
-     .ki = 0.001,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(true, 2 * PI),
-     .inte_anti_windup = hw_pid::InteAntiWindup(true, -2.0f, 2.0f),
-     .inte_separation = hw_pid::InteSeparation(true, -1.0 / 180 * PI, 1.0 / 180 * PI),
-     .diff_filter = hw_pid::DiffFilter(false, -0.0f, 0.0f, 0.0f),
-     .out_limit = hw_pid::OutLimit(true, -40, 40),
+      // 角度环
+      .auto_reset = false,  ///< 是否自动清零
+      .kp = 20.5f,
+      .ki = 0.00f,  // 0.45
+      .kd = 0.0f,
+      .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),
+      .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),
+      .period_sub = hw_pid::PeriodSub(true, 2 * PI),
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -2.0f, 2.0f),
+      .inte_changing_rate = hw_pid::InteChangingRate(true, 0.2f, 0.35f),
+      // .diff_filter = hw_pid::DiffFilter(true, -3.0f, 3.0f, 0.5f),
+      .out_limit = hw_pid::OutLimit(true, -20.0f, 20.0f),  ///< 输出限制 @see OutLimit
      },
     {
-     .auto_reset = true,
-     .kp = 3.0,
-     .ki = 0,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(false, 0),
-     .diff_filter = hw_pid::DiffFilter(true, 0.0f, 0.0f, 0.0f),
-     .diff_previous = hw_pid::DiffPrevious(true, 0.5f),
-     .out_limit = kOutLimitYaw,
+      // 速度环
+      .auto_reset = false,  ///< 是否自动清零
+      .kp = 1.660f,         // 2.32f
+      .ki = 0.000f,
+      .kd = 0.0f,
+      .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),
+      .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -1.5f, 1.5f),
+      .inte_changing_rate = hw_pid::InteChangingRate(true, 0.1f, 0.5f),
+      .diff_filter = hw_pid::DiffFilter(true, -3.0f, 3.0f, 0.5f),
+      .out_limit = hw_pid::OutLimit(true, -7.0f, 7.0f),  ///< 输出限制 @see OutLimit
      },
 };
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsPitch = {
     {
-     .auto_reset = true,
-     .kp = 3.0,
-     .ki = 0.001,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(true, 2 * PI),
-     .inte_anti_windup = hw_pid::InteAntiWindup(true, -3.0f, 3.0f),
-     .diff_filter = hw_pid::DiffFilter(false, -0.0f, 0.0f, 0.0f),
-     .out_limit = hw_pid::OutLimit(true, -40, 40),
+      // 角度环
+      .auto_reset = true,  ///< 是否自动清零
+      .kp = 21.00f,        // 21? 33 
+      .ki = 0.00f,          //0.002??
+      .kd = 0.0f,
+      .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),
+      .period_sub = hw_pid::PeriodSub(true, 2 * PI),
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -2.0f, 2.0f),
+      .inte_changing_rate = hw_pid::InteChangingRate(true, 0.08f, 0.10f),
+      .diff_filter = hw_pid::DiffFilter(true, -3.0f, 3.0f, 0.5f),
+      .out_limit = hw_pid::OutLimit(true, -20.0f, 20.0f),  ///< 输出限制 @see OutLimit
      },
     {
-     .auto_reset = true,
-     .kp = 2.0,
-     .ki = 0,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(false, 0),
-     .diff_filter = hw_pid::DiffFilter(false, 0.0f, 0.0f, 0.0f),
-     .diff_previous = hw_pid::DiffPrevious(false, 0.5f),
-     .out_limit = kOutLimitPitch,
+      // 速度环
+      .auto_reset = true,  ///< 是否自动清零
+      .kp = 1.005f,        // 1.005
+      .ki = 0.0f,
+      .kd = 0.0f,
+      .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -2.0f, 2.0f),
+      .inte_changing_rate = hw_pid::InteChangingRate(true, 0.05f, 0.1f),
+      .diff_filter = hw_pid::DiffFilter(true, -3.0f, 3.0f, 0.5f),
+      // .diff_previous = hw_pid::DiffPrevious(true, 80.0f),
+      .out_limit = hw_pid::OutLimit(true, -7.0f, 7.0f),  ///< 输出限制 @see OutLimit
      },
 };
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsFric = {
     {
-     .auto_reset = true,
-     .kp = 100,
-     .ki = 0,
-     .kd = 0,
-     .out_limit = kOutLimitFric,
+      .auto_reset = true,  ///< 是否自动清零
+      .kp = 240.0f,
+      .ki = 0.1f,
+      .kd = 0.0f,
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -5000.0f, 5000.0f),
+      .out_limit = hw_pid::OutLimit(true, -16384.0f, 16384.0f),  ///< 输出限制 @see OutLimit
      },
 };
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsFeed = {
     {
-     .auto_reset = true,
-     .kp = 20,
-     .ki = 0.01,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(true, 2 * PI),
-     .inte_anti_windup = hw_pid::InteAntiWindup(true, -3.0f, 3.0f),
-     .inte_separation = hw_pid::InteSeparation(true, -0.2f, 0.2f),
-     .diff_filter = hw_pid::DiffFilter(true, -0.0f, 0.0f, 0.0f),
-     .out_limit = hw_pid::OutLimit(true, -20, 20),
-     },
-    {
-     .auto_reset = true,
-     .kp = 2.0,
-     .ki = 0,
-     .kd = 0,
-     .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
-     .period_sub = hw_pid::PeriodSub(false, 0),
-     .diff_filter = hw_pid::DiffFilter(false, 0.0f, 0.0f, 0.0f),
-     .diff_previous = hw_pid::DiffPrevious(false, 0.5f),
-     .out_limit = kOutLimitFeed,
+          // 角度环
+          .auto_reset = true,  ///< 是否自动清零
+          .kp = 17.0f,
+          .ki = 0.0f,
+          .kd = 0.0f,
+          .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),
+          .period_sub = hw_pid::PeriodSub(true, 2 * PI),
+          .out_limit = hw_pid::OutLimit(true, -20.0f, 20.0f),  ///< 输出限制 @see OutLimit
+                                                            //.inte_anti_windup=pid::InteAntiWindup(-0.00,0.00)
+      },
+      {
+          // 速度环
+          .auto_reset = true,  ///< 是否自动清零
+          .kp = 1.0f,
+          .ki = 0.0f,
+          .kd = 0.0f,
+          .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),
+          .out_limit = hw_pid::OutLimit(true, -10000.0f, 10000.0f),  ///< 输出限制 @see OutLimit
      },
 };
 

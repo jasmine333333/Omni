@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_imu.cpp
+ * @file      :ins_imu.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -15,7 +15,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "ins_imu.hpp"
 /* Private constants ---------------------------------------------------------*/
-const float kImuRotMatFlatten[9] = {-1, 0, 0, 0, -1, 0, 0, 0, 1};
+const float kImuRotMatFlatten[9] = {0, 1, 0, 1, 0, 0, 0, 0, -1};
 const robot::Imu::Config kImuInitParams = {
     .rot_mat_ptr = kImuRotMatFlatten,
 };

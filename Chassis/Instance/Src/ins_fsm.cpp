@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_fsm.cpp
+ * @file      :ins_fsm.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -32,7 +32,6 @@ robot::Robot unique_robot = robot::Robot();
 robot::Chassis unique_chassis = robot::Chassis(kChassisConfig);
 robot::Feed unique_feed = robot::Feed();
 robot::Gimbal unique_gimbal = robot::Gimbal();
-robot::Scope unique_scope = robot::Scope();
 robot::Shooter unique_shooter = robot::Shooter();
 
 /* External variables --------------------------------------------------------*/
@@ -74,7 +73,6 @@ robot::Chassis* CreateChassis()
 };
 
 robot::Gimbal* CreateGimbal() { return &unique_gimbal; };
-robot::Scope* CreateScope() { return &unique_scope; };
 robot::Shooter* CreateShooter() { return &unique_shooter; };
 robot::Feed* CreateFeed() { return &unique_feed; }
 
@@ -86,11 +84,10 @@ robot::Robot* CreateRobot()
     unique_robot.registerChassis(CreateChassis());
     unique_robot.registerShooter(CreateShooter());
     unique_robot.registerGimbal(CreateGimbal());
-    unique_robot.registerScope(CreateScope());
     unique_robot.registerFeed(CreateFeed());
 
     // 无通信功能的组件指针
-    unique_robot.registerBuzzer(CreateBuzzer());
+    //unique_robot.registerBuzzer(CreateBuzzer());
     unique_robot.registerImu(CreateImu());
 
     // 只接收数据的组件指针

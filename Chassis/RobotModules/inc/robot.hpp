@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : robot.hpp
+ * @file      :robot.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -27,7 +27,6 @@
 #include "gimbal_chassis_comm.hpp"
 #include "motor.hpp"
 #include "referee.hpp"
-#include "scope.hpp"
 #include "shooter.hpp"
 #include "super_cap.hpp"
 #include "tick.hpp"
@@ -64,7 +63,6 @@ class Robot : public Fsm
   typedef robot::Chassis Chassis;
   typedef robot::Gimbal Gimbal;
   typedef robot::Imu Imu;
-  typedef robot::Scope Scope;
   typedef robot::Shooter Shooter;
   typedef robot::Feed Feed;
 
@@ -126,7 +124,6 @@ class Robot : public Fsm
   void registerChassis(Chassis *ptr);
   void registerFeed(Feed *ptr);
   void registerGimbal(Gimbal *ptr);
-  void registerScope(Scope *ptr);
   void registerShooter(Shooter *ptr);
   void registerBuzzer(Buzzer *ptr);
   void registerImu(Imu *ptr);
@@ -196,7 +193,6 @@ class Robot : public Fsm
   Gimbal *gimbal_ptr_ = nullptr;    ///< 云台模块指针
   Feed *feed_ptr_ = nullptr;        ///< 送弹模块指针
   Shooter *shooter_ptr_ = nullptr;  ///< 发射模块指针
-  Scope *scope_ptr_ = nullptr;      ///< 倍镜模块指针
 
   // 无通信功能的组件指针
   Buzzer *buzzer_ptr_ = nullptr;  ///< 蜂鸣器指针

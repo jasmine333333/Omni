@@ -49,11 +49,9 @@ static CanRxMgr* can2_rx_mgr_ptr = nullptr;
 static CanTxMgr* can2_tx_mgr_ptr = nullptr;
 
 static UartRxMgr* rc_rx_mgr_ptr = nullptr;
-// static DT7* rc_ptr = nullptr;
 
 static UartRxMgr* rfr_rx_mgr_ptr = nullptr;
 static UartTxMgr* rfr_tx_mgr_ptr = nullptr;
-// static Referee* rfr_ptr = nullptr;
 
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/

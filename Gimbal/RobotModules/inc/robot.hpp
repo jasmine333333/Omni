@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : robot.hpp
+ * @file      :robot.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -23,11 +23,9 @@
 #include "fsm.hpp"
 #include "gimbal.hpp"
 #include "gimbal_chassis_comm.hpp"
-#include "laser.hpp"
-#include "motor.hpp"
-#include "scope.hpp"
 #include "feed.hpp"
-#include "fric.hpp"
+#include "fric_2motor.hpp"
+#include "motor.hpp"
 #include "tick.hpp"
 #include "transmitter.hpp"
 #include "tx_mgr.hpp"
@@ -46,17 +44,15 @@ class Robot : public Fsm
  public:
   typedef hello_world::buzzer::Buzzer Buzzer;
   typedef hello_world::motor::Motor Motor;
-  typedef hello_world::laser::Laser Laser;
   typedef hello_world::comm::Transmitter Transmitter;
   typedef hello_world::comm::CanTxMgr CanTxMgr;
   typedef hello_world::comm::UartTxMgr UartTxMgr;
   typedef hello_world::comm::TxMgr TxMgr;
   typedef hello_world::vision::Vision Vision;
+  typedef hello_world::module::Feed Feed;
+  typedef hello_world::module::Fric Fric;
 
   typedef robot::Gimbal Gimbal;
-  typedef robot::Scope Scope;
-  typedef robot::Feed Feed;
-  typedef robot::Fric Fric;
 
   typedef robot::GimbalChassisComm GimbalChassisComm;
   typedef robot::Imu Imu;
@@ -121,13 +117,11 @@ class Robot : public Fsm
   void standby() override;
 
   void registerGimbal(Gimbal *ptr);
-  void registerScope(Scope *ptr);
   void registerFeed(Feed *ptr);
   void registerFric(Fric *ptr);
 
   void registerBuzzer(Buzzer *ptr);
   void registerImu(Imu *ptr);
-  void registerLaser(Laser *ptr);
   void registerMotor(Motor *dev_ptr, uint8_t idx, CanTxMgr *tx_mgr_ptr);
   void registerGimbalChassisComm(GimbalChassisComm *dev_ptr, CanTxMgr *tx_mgr_ptr);
   void registerVision(Vision *dev_ptr, UartTxMgr *tx_mgr_ptr);
@@ -174,12 +168,10 @@ class Robot : public Fsm
   Gimbal *gimbal_ptr_ = nullptr;    ///< 云台模块指针
   Feed *feed_ptr_ = nullptr;        ///< 拨盘模块指针
   Fric *fric_ptr_ = nullptr;        ///< 摩擦轮模块指针
-  Scope *scope_ptr_ = nullptr;      ///< 倍镜模块指针
 
   // 无通信功能的组件指针
   Buzzer *buzzer_ptr_ = nullptr;  ///< 蜂鸣器指针
   Imu *imu_ptr_ = nullptr;        ///< IMU 指针
-  Laser *laser_ptr_ = nullptr;    ///< 红点激光指针
 
   // 只接收数据的组件指针
 

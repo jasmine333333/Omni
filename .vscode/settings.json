@@ -1,6 +1,10 @@
 {
-    "cmake.sourceDirectory": "D:/Omni/Omni/Gimbal",
+    "cmake.sourceDirectory": "D:/Omni/Omni/Chassis",
     "files.associations": {
-        "limits": "cpp"
+        "limits": "cpp",
+        "main_task.hpp": "c",
+        "cmath": "cpp",
+        "*.tcc": "cpp",
+        "xmemory": "cpp"
     }
 }

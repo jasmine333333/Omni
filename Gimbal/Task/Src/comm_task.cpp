@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : comm_task.cpp
+ * @file      :comm_task.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -210,12 +210,12 @@ static void CommAddReceiver(void)
   HW_ASSERT(can1_rx_mgr_ptr != nullptr, "can1_rx_mgr_ptr is nullptr", can1_rx_mgr_ptr);
   can1_rx_mgr_ptr->addReceiver(CreateGimbalChassisComm());
   can1_rx_mgr_ptr->addReceiver(CreateMotorYaw());
-  can1_rx_mgr_ptr->addReceiver(CreateMotorFeed());
 
   HW_ASSERT(can2_rx_mgr_ptr != nullptr, "can2_rx_mgr_ptr is nullptr", can2_rx_mgr_ptr);
   can2_rx_mgr_ptr->addReceiver(CreateMotorFricLeft());
   can2_rx_mgr_ptr->addReceiver(CreateMotorFricRight());
   can2_rx_mgr_ptr->addReceiver(CreateMotorPitch());
+  can2_rx_mgr_ptr->addReceiver(CreateMotorFeed());
 
   HW_ASSERT(vision_rx_mgr_ptr != nullptr, "vision_rx_mgr_ptr is nullptr", vision_rx_mgr_ptr);
   vision_rx_mgr_ptr->addReceiver(CreateVision());
@@ -226,12 +226,12 @@ static void CommAddTransmitter(void)
   HW_ASSERT(can1_tx_mgr_ptr != nullptr, "can1_tx_mgr_ptr is nullptr", can1_tx_mgr_ptr);
   can1_tx_mgr_ptr->addTransmitter(CreateGimbalChassisComm());
   can1_tx_mgr_ptr->addTransmitter(CreateMotorYaw());
-  can1_tx_mgr_ptr->addTransmitter(CreateMotorFeed());
 
   HW_ASSERT(can2_tx_mgr_ptr != nullptr, "can2_tx_mgr_ptr is nullptr", can2_tx_mgr_ptr);
   can2_tx_mgr_ptr->addTransmitter(CreateMotorFricLeft());
   can2_tx_mgr_ptr->addTransmitter(CreateMotorFricRight());
   can2_tx_mgr_ptr->addTransmitter(CreateMotorPitch());
+  can2_tx_mgr_ptr->addTransmitter(CreateMotorFeed());
 
   HW_ASSERT(vision_tx_mgr_ptr != nullptr, "vision_tx_mgr_ptr is nullptr", vision_tx_mgr_ptr);
   vision_tx_mgr_ptr->addTransmitter(CreateVision());

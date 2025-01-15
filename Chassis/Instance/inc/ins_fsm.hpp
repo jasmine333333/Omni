@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_fsm.hpp
+ * @file      :ins_fsm.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -20,7 +20,6 @@
 #include "chassis.hpp"
 #include "gimbal.hpp"
 #include "robot.hpp"
-#include "scope.hpp"
 #include "shooter.hpp"
 #include "feed.hpp"
 /* Exported macro ------------------------------------------------------------*/
@@ -30,7 +29,6 @@
 
 robot::Chassis* CreateChassis();
 robot::Gimbal* CreateGimbal();
-robot::Scope* CreateScope();
 robot::Robot* CreateRobot();
 robot::Shooter* CreateShooter();
 robot::Feed* CreateFeed();

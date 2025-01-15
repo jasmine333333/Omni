@@ -22,7 +22,7 @@
 #include "allocator.hpp"
 #include "chassis_iksolver.hpp"
 #include "gimbal_chassis_comm.hpp"
-#include "module_fsm.hpp"
+#include "module_fsm_private.hpp"
 #include "motor.hpp"
 #include "pid.hpp"
 #include "power_limiter.hpp"

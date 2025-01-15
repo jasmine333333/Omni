@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : gimbal.hpp
+ * @file      :gimbal.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -17,11 +17,12 @@
 #define ROBOT_MODULES_GIMBAL_HPP_
 /* Includes ------------------------------------------------------------------*/
 #include "filter.hpp"
-#include "module_fsm.hpp"
+#include "module_fsm_private.hpp"
 #include "module_state.hpp"
 #include "motor.hpp"
 #include "pid.hpp"
 #include "usr_imu.hpp"
+#include "feed.hpp"
 /* Exported macro ------------------------------------------------------------*/
 
 namespace robot

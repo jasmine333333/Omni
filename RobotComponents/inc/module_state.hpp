@@ -55,12 +55,14 @@ enum class ChassisWorkingMode : uint8_t {
   Follow,    ///< 随动模式
   Gyro,      ///< 小陀螺模式
   Farshoot,  ///< 吊射模式
+  dead,      ///急停
 };
 
 /** 云台工作模式 */
 enum class GimbalWorkingMode {
   Normal,    ///< 正常模式
   Farshoot,  ///< 吊射模式
+  dead,      ///急停
 };
 /** 发射机构工作模式 */
 enum class ShooterWorkingMode : uint8_t {

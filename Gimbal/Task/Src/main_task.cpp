@@ -51,25 +51,27 @@ void MainTask(void)
 
 static float main_task_time_cost = 0;
 static float comm_task_time_cost = 0;
+static uint32_t tick = 0;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 {
   int64_t start_time;
   int64_t end_time;
   int64_t time_cost;
   if (htim == &htim6) {
-    
-    start_time = __HAL_TIM_GET_COUNTER(&htim3);
+    tick ++;
+    start_time = __HAL_TIM_GET_COUNTER(&htim2);
     MainTask();
-    end_time = __HAL_TIM_GET_COUNTER(&htim3);
+    end_time = __HAL_TIM_GET_COUNTER(&htim2);
     time_cost = end_time - start_time;
     if (time_cost < 0) {
       time_cost += std::numeric_limits<uint32_t>::max();
     }
     main_task_time_cost = time_cost / (1000.0f * 84.0f);
 
-    start_time = __HAL_TIM_GET_COUNTER(&htim3);
+    start_time = __HAL_TIM_GET_COUNTER(&htim2);
     CommTask();
-    end_time = __HAL_TIM_GET_COUNTER(&htim3);
+    end_time = __HAL_TIM_GET_COUNTER(&htim2);
     time_cost = end_time - start_time;
     if (time_cost < 0) {
       time_cost += std::numeric_limits<uint32_t>::max();

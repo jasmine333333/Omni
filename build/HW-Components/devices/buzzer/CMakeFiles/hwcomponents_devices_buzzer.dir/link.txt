@@ -1,2 +1,0 @@
-D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ar.exe qc D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\buzzer\libhwcomponents_devices_buzzer.a CMakeFiles/hwcomponents_devices_buzzer.dir/src/buzzer.cpp.obj
-D:\ST\STM32CubeCLT_1.16.0\GNU-tools-for-STM32\bin\arm-none-eabi-ranlib.exe D:\Omni\Omni\Chassis\Lib\hwcomponents\devices\buzzer\libhwcomponents_devices_buzzer.a

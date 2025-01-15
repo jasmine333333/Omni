@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_comm.cpp
+ * @file      :ins_comm.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -100,7 +100,7 @@ CanTxMgr* CreateCan2TxMgr(void)
 UartRxMgr* CreateVisionRxMgr(void)
 {
   if (!is_vision_rx_mgr_inited) {
-    vision_rx_mgr.init(&huart6, UartRxMgr::EofType::kIdle, kRxvisionBufferSize, kRxvisionBufferSize);
+    vision_rx_mgr.init(&huart1, UartRxMgr::EofType::kIdle, kRxvisionBufferSize, kRxvisionBufferSize);
     vision_rx_mgr.clearReceiver();
     is_vision_rx_mgr_inited = true;
   }
@@ -109,7 +109,7 @@ UartRxMgr* CreateVisionRxMgr(void)
 UartTxMgr* CreateVisionTxMgr(void)
 {
   if (!is_vision_tx_mgr_inited) {
-    vision_tx_mgr.init(&huart6, kRxvisionBufferSize);
+    vision_tx_mgr.init(&huart1, kRxvisionBufferSize);
     vision_tx_mgr.clearTransmitter();
     is_vision_tx_mgr_inited = true;
   }

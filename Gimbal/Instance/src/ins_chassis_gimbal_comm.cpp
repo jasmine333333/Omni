@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_chassis_gimbal_comm.cpp
+ * @file      :ins_chassis_gimbal_comm.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -18,7 +18,7 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-robot::GimbalChassisComm unique_gimbal_chassis_comm = robot::GimbalChassisComm(robot::GimbalChassisComm::CodePart::Gimbal, 0x01, 0x02);
+robot::GimbalChassisComm unique_gimbal_chassis_comm = robot::GimbalChassisComm(robot::GimbalChassisComm::CodePart::Gimbal, 0x1FE, 0x1FF);
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Exported function definitions ---------------------------------------------*/

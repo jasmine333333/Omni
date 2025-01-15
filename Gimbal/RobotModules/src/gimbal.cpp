@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : gimbal.cpp
+ * @file      :gimbal.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -110,7 +110,7 @@ void Gimbal::updateImuData()
 {
   HW_ASSERT(imu_ptr_ != nullptr, "pointer %d to imu %d is nullptr", imu_ptr_);
   // TODO(ZSC): 之后需要检查此处的数据映射
-  // IMU是右手系，但pitch轴直觉上应该得是左手系，即低头角度为负，抬头角度为正，故在此处加负号
+  // IMU是右手系，但pitch轴直觉上应该得是左手系，即低头角度为负，抬头角度为正，(故在此处加负号)
   imu_ang_fdb_[kJointYaw] = imu_ptr_->getAngYaw();
   imu_ang_fdb_[kJointPitch] = -imu_ptr_->getAngPitch();
 
@@ -149,6 +149,16 @@ void Gimbal::runOnResurrection()
 
 void Gimbal::runOnWorking()
 {
+  if (working_mode_ == WorkingMode::dead)
+  {
+    JointIdx joint_idxs[2] = {kJointYaw, kJointPitch};
+    for (size_t i = 0; i < 2; i++) {
+      JointIdx joint_idx = joint_idxs[i];
+      pid_ptr_[joint_idx]->reset();
+      motor_ptr_[joint_idx]->setInput(0);}
+      
+  }
+  else{
   calcCtrlAngBased();
   adjustJointFdb();
   adjustLastJointAngRef();
@@ -156,6 +166,7 @@ void Gimbal::runOnWorking()
   calcJointTorRef();
 
   setCommData(true);
+  }
 };
 
 void Gimbal::standby()
@@ -281,7 +292,7 @@ void Gimbal::calcJointAngRef()
 void Gimbal::calcJointTorRef()
 {
   JointIdx joint_idxs[kJointNum] = {kJointYaw, kJointPitch};
-  float pitch_ffd[2] = {cfg_.max_pitch_torq * arm_cos_f32(joint_ang_fdb_[kJointPitch] + cfg_.pitch_center_offset), 0};
+  float pitch_ffd[2] = {cfg_.max_pitch_torq * arm_sin_f32(joint_ang_fdb_[kJointPitch] + cfg_.pitch_center_offset), 0};
   float *ffd_list[2] = {nullptr, pitch_ffd};
   for (uint8_t i = 0; i < kJointNum; i++) {
     JointIdx joint_idx = joint_idxs[i];
@@ -413,7 +424,6 @@ void Gimbal::registerImu(Imu *ptr)
   HW_ASSERT(ptr != nullptr, "pointer to imu is nullptr", ptr);
   imu_ptr_ = ptr;
 }
-
 void Gimbal::registerTd(Td *ptr, size_t idx)
 {
   HW_ASSERT(ptr != nullptr, "pointer to Td is nullptr", ptr);
