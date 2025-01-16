@@ -110,7 +110,6 @@ bool watch;
 void Chassis::updateMotor()
 {
   static uint32_t offline_tick[4] = {0};
-  static float diff[4] = {0};
   Motor *motor_ptr = nullptr;
   WheelMotorIdx wmis[4] = {
       kWheelMotorIdxLeftFront,
@@ -125,7 +124,6 @@ void Chassis::updateMotor()
     motor_ptr = wheel_motor_ptr_[wmi];
     HW_ASSERT(motor_ptr != nullptr, "pointer to motor %d is nullptr", wmi);
     if (motor_ptr->isOffline()) {
-      diff[i] = motor_ptr->oc_.diff_;
       offline_tick[i]++;
       wheel_speed_fdb_[wmi] = 0.0;
       wheel_current_fdb_[wmi] = 0.0;
@@ -156,7 +154,7 @@ void Chassis::updateCap()
     is_high_spd_enabled_ = false;
     cap_remaining_energy_ = 0.0f;
   } else {
-    //is_high_spd_enabled_ = cap_ptr_->isUsingSuperCap();
+    is_high_spd_enabled_ = cap_ptr_->isUsingSuperCap();
     cap_remaining_energy_ = cap_ptr_->getRemainingPower();
   }
 };
@@ -357,8 +355,8 @@ void Chassis::calcWheelCurrentRef()
   for (size_t i = 0; i < 4; i++) {
     pid_ptr = wheel_pid_ptr_[wpis[i]];
     HW_ASSERT(pid_ptr != nullptr, "pointer to PID %d is nullptr", wpis[i]);
-    //pid_ptr->calc(&wheel_speed_ref_limited_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
-    pid_ptr->calc(&wheel_speed_ref_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
+    pid_ptr->calc(&wheel_speed_ref_limited_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
+    //pid_ptr->calc(&wheel_speed_ref_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
   }
 };
 void Chassis::calcWheelCurrentLimited() {

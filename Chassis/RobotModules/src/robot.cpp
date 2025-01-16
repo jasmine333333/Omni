@@ -262,17 +262,18 @@ void Robot::genModulesCmdFromRc()
     // * 左上
     chassis_working_mode = Chassis::WorkingMode::Depart;
     gimbal_working_mode = Gimbal::WorkingMode::Normal;
-    gimbal_ctrl_mode = CtrlMode::Manual;
-    shooter_working_mode = Shooter::WorkingMode::Normal;
-    feed_ctrl_mode = CtrlMode::Manual;
-    shoot_flag = (rc_wheel > 0.9f);
     //cap_help_flag = (rc_wheel < -0.9f);
     if (r_switch == RcSwitchState::kUp) {
+      gimbal_ctrl_mode = CtrlMode::Manual;
+      shooter_working_mode = Shooter::WorkingMode::Normal;
+      feed_ctrl_mode = CtrlMode::Manual;
+      shoot_flag = (rc_wheel > 0.9f);
       // * 左上右上
     } else if (r_switch == RcSwitchState::kMid) {
+/*    gimbal_ctrl_mode = CtrlMode::Auto ;
       feed_ctrl_mode = CtrlMode::Auto;
-      shoot_flag = false;
-      // * 左上右中
+      shoot_flag = (rc_wheel > 0.9f);
+ */      // * 左上右中
     } else if (r_switch == RcSwitchState::kDown) {
       // * 左上右下
     }
@@ -583,7 +584,7 @@ void Robot::sendCapData()
   if (cap_ptr_ == nullptr) {
     return;
   }
-  //tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kCap].setTransmitterNeedToTransmit();
+  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kCap].setTransmitterNeedToTransmit();
 };
 void Robot::sendGimbalChassisCommData()
 {

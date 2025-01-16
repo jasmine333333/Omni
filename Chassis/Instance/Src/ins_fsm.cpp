@@ -87,7 +87,7 @@ robot::Robot* CreateRobot()
     unique_robot.registerFeed(CreateFeed());
 
     // 无通信功能的组件指针
-    //unique_robot.registerBuzzer(CreateBuzzer());
+    unique_robot.registerBuzzer(CreateBuzzer());
     unique_robot.registerImu(CreateImu());
 
     // 只接收数据的组件指针

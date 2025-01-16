@@ -171,8 +171,8 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
     } else {
       HW_ASSERT(false, "Invalid code part", __FILE__);
     }
-    tx_ids_ = {tx_id_};
-    rx_ids_ = {rx_id_};
+    // tx_ids_ = {tx_id_};
+    // rx_ids_ = {rx_id_};
   };
   virtual ~GimbalChassisComm() = default;
 
@@ -183,7 +183,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
    * @note        None
    */
   virtual uint32_t rxId(void) const override { return rx_id_; };
-  virtual const RxIds &rxIds(void) const override {return rx_ids_;};
+  // virtual const RxIds &rxIds(void) const override {return rx_ids_;};
   /**
    * @brief       解码
    * @param        data: 数据指针
@@ -223,7 +223,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
    * @note        None
    */
   virtual uint32_t txId(void) const override { return tx_id_; };
-  virtual const TxIds &txIds(void) const override {return tx_ids_;};
+  // virtual const TxIds &txIds(void) const override {return tx_ids_;};
   /**
    * @brief       编码
    * @param        len: 缓冲区长度
@@ -265,15 +265,16 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
 
   // 解码相关
   uint32_t rx_id_ = 0x112;                   ///< 接收的CAN消息ID
-  RxIds rx_ids_ = {rx_id_};
+  // RxIds rx_ids_ = {rx_id_};
   bool is_update_ = false;                   ///< 是否有更新数据
   pUpdateCallback update_cb_ = nullptr;      ///< 更新回调函数
   OfflineChecker oc_ = OfflineChecker(100);  ///< 离线检测器
 
   // 编码相关
   uint32_t tx_id_ = 0x111;             ///< 发送的CAN消息ID
-  TxIds tx_ids_ = {tx_id_};
+  // TxIds tx_ids_ = {tx_id_};
   uint32_t transmit_success_cnt_ = 0;  ///< 发送成功次数
+  uint32_t receive_success_cnt_ = 0;   
 
   // 所有数据
   MainBoardData main_board_data_;

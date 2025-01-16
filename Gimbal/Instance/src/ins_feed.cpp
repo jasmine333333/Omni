@@ -28,8 +28,8 @@
 
 hello_world::module::Feed::Config kFeedConfig = {
   .ang_ref_offset           = 0.0f,  
-  .ang_per_blt              = PI / 3,   
-  .heat_per_blt             = 100, 
+  .ang_per_blt              = PI / 5.0f,   
+  .heat_per_blt             = 10, 
   .stuck_curr_thre          = 13.5f,          
   .resurrection_pos_err     = 5.0f / 180 * PI,  
   .stuck_duration_thre      = 200,           

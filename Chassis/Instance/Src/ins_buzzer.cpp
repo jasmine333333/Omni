@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_buzzer.cpp
+ * @file      :ins_buzzer.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -19,30 +19,35 @@
 /* Private constants ---------------------------------------------------------*/
 const hw_buzzer::TuneListInfo kTuneListInfo = {
     .intensity_scale = 1.0f,
-    .tune_duration = 125,
+    .tune_duration = 180,
     .list =
         {
-               hw_buzzer::kTuneA3,  hw_buzzer::kTuneA3, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneD4, hw_buzzer::kTuneG4,  hw_buzzer::kTuneG4, hw_buzzer::kTuneD4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneG4, hw_buzzer::kTuneG4,
-               hw_buzzer::kTuneG4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneF4S, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneD4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneG4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneD4, hw_buzzer::kTuneG4,
-               hw_buzzer::kTuneD4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneA4, hw_buzzer::kTuneE4, hw_buzzer::kTuneG4,  hw_buzzer::kTuneD5, hw_buzzer::kTuneG4,
-               hw_buzzer::kTuneA4,  hw_buzzer::kTuneE5, hw_buzzer::kTuneA4, hw_buzzer::kTuneD5, hw_buzzer::kTuneE5,  hw_buzzer::kTuneA3, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneG4, hw_buzzer::kTuneA3,  hw_buzzer::kTuneD4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneG4, hw_buzzer::kTuneA4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4, hw_buzzer::kTuneE4,  hw_buzzer::kTuneD4, hw_buzzer::kTuneE4,
-               hw_buzzer::kTuneG4,  hw_buzzer::kTuneA3, hw_buzzer::kTuneD4, hw_buzzer::kTuneA3, hw_buzzer::kTuneG3,  hw_buzzer::kTuneG3, hw_buzzer::kTuneC4,
-               hw_buzzer::kTuneC4,  hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, hw_buzzer::kTuneD4,  hw_buzzer::kTuneE4, hw_buzzer::kTuneD4,
-               hw_buzzer::kTuneE4,  hw_buzzer::kTuneG4, hw_buzzer::kTuneE4, hw_buzzer::kTuneG4, hw_buzzer::kTuneA4,  hw_buzzer::kTuneG4, hw_buzzer::kTuneA4,
-               hw_buzzer::kTuneC5,  hw_buzzer::kTuneA4, hw_buzzer::kTuneC5, hw_buzzer::kTuneD5, hw_buzzer::kTuneC5,  hw_buzzer::kTuneD5, hw_buzzer::kTuneE5,
-               hw_buzzer::kTuneD5,  hw_buzzer::kTuneE5, hw_buzzer::kTuneG5, hw_buzzer::kTuneA5, hw_buzzer::kTuneA5,  hw_buzzer::kTuneA5, hw_buzzer::kTuneA5,
-               hw_buzzer::kTuneEnd,
+            // 第一段旋律
+            hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, // C-D-E-D-C
+            hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, // C-D-E-D-C
+            hw_buzzer::kTuneE4, hw_buzzer::kTuneF4, hw_buzzer::kTuneG4, hw_buzzer::kTuneF4, hw_buzzer::kTuneE4, // E-F-G-F-E
+            hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, // D-C-D-E-D
+
+            // 第二段旋律（略微变调）
+            hw_buzzer::kTuneC4, hw_buzzer::kTuneE4, hw_buzzer::kTuneF4, hw_buzzer::kTuneG4, hw_buzzer::kTuneF4, // C-E-F-G-F
+            hw_buzzer::kTuneE4, hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, // E-C-D-E-D
+            hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneC4, hw_buzzer::kTuneEnd, // C-D-E-C
+
+            // 第三段旋律（变调与节奏变化）
+            hw_buzzer::kTuneG4, hw_buzzer::kTuneA4, hw_buzzer::kTuneG4, hw_buzzer::kTuneF4, hw_buzzer::kTuneE4, // G-A-G-F-E
+            hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneF4, hw_buzzer::kTuneG4, hw_buzzer::kTuneA4, // D-E-F-G-A
+            hw_buzzer::kTuneA4, hw_buzzer::kTuneC5, hw_buzzer::kTuneB4, hw_buzzer::kTuneC5, hw_buzzer::kTuneEnd, // A-C5-B-C5
+
+            // 第四段旋律（转调）
+            hw_buzzer::kTuneF4, hw_buzzer::kTuneG4, hw_buzzer::kTuneA4, hw_buzzer::kTuneB4, hw_buzzer::kTuneA4, // F-G-A-B-A
+            hw_buzzer::kTuneG4, hw_buzzer::kTuneF4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, // G-F-E-D-C
+            hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, hw_buzzer::kTuneF4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, // D-E-F-E-D
+            hw_buzzer::kTuneC4, hw_buzzer::kTuneEnd, // C
+
+            // 结尾部分
+            hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneC4, hw_buzzer::kTuneD4, hw_buzzer::kTuneE4, // E-D-C-D-E
+            hw_buzzer::kTuneF4, hw_buzzer::kTuneG4, hw_buzzer::kTuneA4, hw_buzzer::kTuneA4, hw_buzzer::kTuneG4, // F-G-A-A-G
+            hw_buzzer::kTuneF4, hw_buzzer::kTuneE4, hw_buzzer::kTuneD4, hw_buzzer::kTuneEnd, // F-E-D-End
                },
 };
 /* Private macro -------------------------------------------------------------*/

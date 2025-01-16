@@ -66,11 +66,11 @@ void Robot::updateGimbalChassisCommData()
   feed_rfr_input_data.heat_cooling_ps = referee_data.shooter_cooling;
   feed_ptr_->updateRfrData(feed_rfr_input_data);
 
-  hello_world::module::Fric::RfrInputData fric_rfr_input_data;
-  fric_rfr_input_data.bullet_spd = referee_data.bullet_speed;
-  fric_rfr_input_data.is_new_bullet_shot = referee_data.is_new_bullet_shot;
-  fric_rfr_input_data.is_power_on = referee_data.is_rfr_shooter_power_on;
-  fric_ptr_->updateRfrData(fric_rfr_input_data);
+  // hello_world::module::Fric::RfrInputData fric_rfr_input_data;
+  // fric_rfr_input_data.bullet_spd = referee_data.bullet_speed;
+  // fric_rfr_input_data.is_new_bullet_shot = referee_data.is_new_bullet_shot;
+  // fric_rfr_input_data.is_power_on = referee_data.is_rfr_shooter_power_on;
+  // fric_ptr_->updateRfrData(fric_rfr_input_data);
 
   gimbal_ptr_->updateIsRfrPwrOn(referee_data.is_rfr_gimbal_power_on);
 };
@@ -147,7 +147,7 @@ void Robot::runOnWorking()
   gimbal_ptr_->update();
   gimbal_ptr_->run();
 
-  HW_ASSERT(fric_ptr_ != nullptr, "Fric FSM pointer is null", fric_ptr_);
+  // HW_ASSERT(fric_ptr_ != nullptr, "Fric FSM pointer is null", fric_ptr_);
   fric_ptr_->update();
   fric_ptr_->run();
 
@@ -211,9 +211,9 @@ void Robot::genModulesCmd()
   }
   
   if (shooter_data.working_mode ==ShooterWorkingMode::Normal) {
-    fric_ptr_->setWorkingMode(hello_world::module::fric_impl::Shoot);
+    fric_ptr_->setWorkingMode(hello_world::module::Fric::WorkingMode::kShoot);
   } else if(shooter_data.working_mode ==ShooterWorkingMode::Stop){
-    fric_ptr_->setWorkingMode(hello_world::module::fric_impl::Stop);
+    fric_ptr_->setWorkingMode(hello_world::module::Fric::WorkingMode::kStop);
   }
 };
 
@@ -258,8 +258,8 @@ void Robot::setVisionCommData()
   Vision::WorkState vision_work_State = Vision::WorkState::kStandby;
   if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto || feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::Auto) {
     vision_work_State = Vision::WorkState::kNormal;
-  }
-  // vision_ptr_->setBulletSpeed(fric_ptr_->getBulletSpeed()); TODO
+  } 
+  // vision_ptr_->setBulletSpeed(fric_ptr_->getBulletSpeed()); 
 
   hello_world::referee::ids::RobotId robot_id = gc_comm_ptr_->referee_data().cp.robot_id;
   hello_world::referee::RfrId rfr_id = static_cast<hello_world::referee::RfrId>(robot_id);
