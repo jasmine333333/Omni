@@ -14,6 +14,7 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "robot.hpp"
+#include "vision.hpp"
 #include "can.h"
 #include "rfr_pkg/rfr_id.hpp"
 /* Private macro -------------------------------------------------------------*/

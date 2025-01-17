@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "HW-Components/algorithms/ik_solver",
+		"source" : "HW-Components/algorithms/ik_solver"
+	}
+}
