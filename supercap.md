@@ -1,0 +1,20 @@
+超电的快速放电模式和普通放电模式有什么区别？
+      .p_dummy_max = rfr_data_.pwr_limit,        // TODO: 这个参数和p_rfr_max有什么区别？
+void Chassis::setCommDataCap(bool working_flag) 更改其中的workingflag可以改变cap的enable还是disable 这个workingflag不会起作用，都会降到七十多八十的样子
+在robot的文件里可以修改updateRfrData函数来修改hp的值 修改到0不会杀死机器人，是超电数据一直保持在100不会掉
+组件库里supercap的getPowerSource是什么函数 isUsingSuperCap这个函数通过的电压的判定是否有意义？
+  void setRequestedPower(float req_pwr)是否被用？给不同的值给超电会有什么现象？
+## 静息输出out_pwr为2，volt为26
+开小陀螺第一秒钟很快，并且超电有放电，但是后面速度就减小，感觉像功率限制被限制住了
+感觉0.5秒就+1，迅速加到100
+直接给req_pwr应该定值，pwr并不会减少
+## 如果我不传入request——pwr,那么它给我的功率是从哪计算得到的？
+## 杨舟的功率限制是怎么用的？
+小于最小有效放电电压会自动关闭超电，但是似乎电压值始终不会减小？
+修改config中的各个参数，看是否能达到预期效果？
+把超电通讯关了看还能不能跑那么快？
+检查是否有真的功率限制住？
+如果我把功率限制给关了，小陀螺是否还是转的很慢？开启和关闭功率限制都转动的很慢，但是平移指令很快。
+一旦is_high_spd_enabled_就意味着速度会在原来的基础上*1.5，即从电容取电。关闭该条指令，观察车的运动情况
+如果更改我的电容收敛值会有什么影响？
+改小可用功率最大值会有什么影响？

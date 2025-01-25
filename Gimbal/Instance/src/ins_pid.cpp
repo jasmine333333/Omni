@@ -22,11 +22,12 @@ const float kMaxPidOutYaw = 6.9f;
 const float kMaxPidOutPitch = 6.9f;
 const float kMaxPidOutFric = 16384.0f;
 const float kMaxPidOutFeed = 15.0f;  ///< 3508电流控制的最大输出
-
+const float kMaxPidOutSameSpd = 100.0f;
 const hw_pid::OutLimit kOutLimitYaw = hw_pid::OutLimit(true, -kMaxPidOutYaw, kMaxPidOutYaw);
 const hw_pid::OutLimit kOutLimitPitch = hw_pid::OutLimit(true, -kMaxPidOutPitch, kMaxPidOutPitch);
 const hw_pid::OutLimit kOutLimitFeed = hw_pid::OutLimit(true, -kMaxPidOutFeed, kMaxPidOutFeed);
 const hw_pid::OutLimit kOutLimitFric = hw_pid::OutLimit(true, -kMaxPidOutFric, kMaxPidOutFric);
+const hw_pid::OutLimit kOutLimitSameSpd = hw_pid::OutLimit(true, -kMaxPidOutSameSpd, kMaxPidOutSameSpd);
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsYaw = {
     {
@@ -97,6 +98,16 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsFric = {
       .out_limit = hw_pid::OutLimit(true, -16384.0f, 16384.0f),  ///< 输出限制 @see OutLimit
      },
 };
+const hw_pid::MultiNodesPid::ParamsList kPidParamsSameSpd = {
+    {
+      .auto_reset = true,  ///< 是否自动清零
+      .kp = 2.40f,
+      .ki = 0.001f,
+      .kd = 0.0f,
+      .inte_anti_windup = hw_pid::InteAntiWindup(true, -5000.0f, 5000.0f),
+      .out_limit = hw_pid::OutLimit(true, -100.0f, 100.0f),  ///< 输出限制 @see OutLimit
+     },
+};
 
 const hw_pid::MultiNodesPid::ParamsList kPidParamsFeed = {
     {
@@ -131,7 +142,7 @@ hw_pid::MultiNodesPid unique_pid_pitch(kPidTypeCascade, kOutLimitPitch, kPidPara
 hw_pid::MultiNodesPid unique_pid_fric_left(kPidTypeCascade, kOutLimitFric, kPidParamsFric);
 hw_pid::MultiNodesPid unique_pid_fric_right(kPidTypeCascade, kOutLimitFric, kPidParamsFric);
 hw_pid::MultiNodesPid unique_pid_feed(kPidTypeCascade, kOutLimitFeed, kPidParamsFeed);
-
+hw_pid::MultiNodesPid unique_pid_samespd(kPidTypeCascade,kOutLimitSameSpd,kPidParamsSameSpd);
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Exported function definitions ---------------------------------------------*/
@@ -140,4 +151,5 @@ hw_pid::MultiNodesPid* CreatePidMotorPitch() { return &unique_pid_pitch; };
 hw_pid::MultiNodesPid* CreatePidMotorFricLeft() { return &unique_pid_fric_left; };
 hw_pid::MultiNodesPid* CreatePidMotorFricRight() { return &unique_pid_fric_right; };
 hw_pid::MultiNodesPid* CreatePidMotorFeed() { return &unique_pid_feed; };
+hw_pid::MultiNodesPid* CreatePidSamespd() { return &unique_pid_samespd;};
 /* Private function definitions ----------------------------------------------*/

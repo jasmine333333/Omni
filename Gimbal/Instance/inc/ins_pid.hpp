@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_pid.hpp
+ * @file      :ins_pid.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -30,4 +30,6 @@ hw_pid::MultiNodesPid* CreatePidMotorPitch();
 hw_pid::MultiNodesPid* CreatePidMotorFricLeft();
 hw_pid::MultiNodesPid* CreatePidMotorFricRight();
 hw_pid::MultiNodesPid* CreatePidMotorFeed();
+hw_pid::MultiNodesPid* CreatePidSamespd();
+
 #endif /* INSTANCE_INS_PID_HPP_ */
