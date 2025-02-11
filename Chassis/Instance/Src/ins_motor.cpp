@@ -19,7 +19,7 @@
 const hw_motor::OptionalParams kMotorParamsWheelLeftFront = {
     .input_type = hw_motor::InputType::kCurr,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirFwd,
+    .dir = hw_motor::kDirRev,
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = true,
     /** 电机输出端实际角度与规定角度的差值 */
@@ -31,7 +31,7 @@ const hw_motor::OptionalParams kMotorParamsWheelLeftFront = {
 const hw_motor::OptionalParams kMotorParamsWheelLeftRear = {
     .input_type = hw_motor::InputType::kCurr,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirFwd,
+    .dir = hw_motor::kDirRev,
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = true,
     /** 电机输出端实际角度与规定角度的差值 */
@@ -44,7 +44,7 @@ const hw_motor::OptionalParams kMotorParamsWheelLeftRear = {
 const hw_motor::OptionalParams kMotorParamsWheelRightRear = {
     .input_type = hw_motor::InputType::kCurr,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirFwd,
+    .dir = hw_motor::kDirRev,
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = true,
     /** 电机输出端实际角度与规定角度的差值 */
@@ -57,7 +57,7 @@ const hw_motor::OptionalParams kMotorParamsWheelRightRear = {
 const hw_motor::OptionalParams kMotorParamsWheelRightFront = {
     .input_type = hw_motor::InputType::kCurr,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirFwd,
+    .dir = hw_motor::kDirRev,
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = true,
     /** 电机输出端实际角度与规定角度的差值 */
@@ -75,7 +75,7 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = -1.72f ,
+    .angle_offset = 0.0f ,
     /** 电机外置减速器的减速比（额外） */
     // .ex_redu_rat = 14,
 };
@@ -84,7 +84,7 @@ const hw_motor::OptionalParams kMotorParamsFeed = {
     // feed轮是3508电机
     .input_type = hw_motor::InputType::kCurr,
     .angle_range = hw_motor::AngleRange::kNegPiToPosPi,
-    .dir = hw_motor::kDirRev,  //TODO(ZSC) 该方向适配 2024 分区赛英雄
+    .dir = hw_motor::kDirFwd,  //TODO(ZSC) 该方向适配 2024 分区赛英雄
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = true,
     /** 电机输出端实际角度与规定角度的差值 */
@@ -96,11 +96,11 @@ const hw_motor::OptionalParams kMotorParamsFeed = {
 // TODO: 这里的 MotorId 需要按照实际情况修改
 enum MotorID {
   kMotorIdWheelLeftFront = 1u,
-  kMotorIdWheelLeftRear = 4u,
+  kMotorIdWheelLeftRear = 2u,
   kMotorIdWheelRightRear = 3u,
-  kMotorIdWheelRightFront = 2u,
+  kMotorIdWheelRightFront = 4u,
   kMotorIdYaw = 2u,
-  kMotorIdFeed = 5u,
+  kMotorIdFeed = 3u,
 };
 /* Private macro -------------------------------------------------------------*/
 /* Private types -------------------------------------------------------------*/

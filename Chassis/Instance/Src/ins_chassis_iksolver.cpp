@@ -16,9 +16,9 @@
 #include "ins_chassis_iksolver.hpp"
 /* Private constants ---------------------------------------------------------*/
 
-const float kWheelRadius = 150 * 0.001 / 2;  ///< 轮子半径 [m]
+const float kWheelRadius = 77.86 * 0.001 ;  ///< 轮子半径 [m]
 
-const float kWheel2Center = 0.231f - 0.018f;  ///< 轮子中心距旋转中心的距离 [m]
+const float kWheel2Center = 216.91 * 0.001;  ///< 轮子中心距旋转中心的距离 [m]
 
 const float kWheelBase = kWheel2Center * sqrt(2.0f);  ///< 左右轮距 [m]
 

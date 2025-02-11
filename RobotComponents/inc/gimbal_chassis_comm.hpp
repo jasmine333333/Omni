@@ -119,22 +119,6 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
     } gp;
   };
 
-/*   struct ScopeData {
-    // chassis to gimbal
-    struct ChassisPart {
-      bool switch_flag = false;      ///< 倍镜切换信号标志位
-      bool ctrl_angle_flag = false;  ///< 控制倍镜俯仰角标志位
-
-      //ScopeWorkingMode working_mode = ScopeWorkingMode::Normal;  ///< 倍镜模块的工作模式
-    } cp;
-    // gimbal to chassis
-    struct GimbalPart {
-      PwrState pwr_state = PwrState::Dead;  ///< 倍镜模块工作状态
-
-      //float scope_ang = 0.0f;  ///< 倍镜的当前俯仰角度
-    } gp;
-  };
- */
   struct RefereeData {
     // chassis to gimbal
     struct ChassisPart {

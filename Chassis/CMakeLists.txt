@@ -50,6 +50,8 @@ include("${HWC_DIR}/config.cmake") # Default configuration
 # TODO: Overwrite default configuration instead of changing it in file tools
 # set(use_hwcomponents_tools ON) set(use_prebuilt_hwcomponents_tools OFF)
 # set(... ON)
+set(use_hwcomponents_tools ON)
+set(use_prebuilt_hwcomponents_modules OFF)
 
 # TODO: Add your own `config.cmake` file or set your own configuration here
 

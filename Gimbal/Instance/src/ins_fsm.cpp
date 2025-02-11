@@ -19,8 +19,8 @@
 const robot::Gimbal::Config kGimbalConfig = {
     .sensitivity_yaw = 300 / 1000.0 * PI / 180.0,           ///< yaw角度灵敏度，单位 rad/ms
     .sensitivity_pitch = 300 / 1000.0 * PI / 180.0,  ///< pitch角度灵敏度，单位 rad/ms
-    .max_pitch_ang = 0.52f,                                  ///< 最大俯仰角度，单位 rad
-    .min_pitch_ang = -0.30f,                                 ///< 最小俯仰角度，单位 rad
+    .max_pitch_ang = 0.4f,                                  ///< 最大俯仰角度，单位 rad
+    .min_pitch_ang = -0.4f,                                 ///< 最小俯仰角度，单位 rad
     .max_pitch_torq = 0,  //0.8826                               ///< 云台水平时的重力矩，单位 N·m
     .pitch_center_offset = 0.00,                            ///??< 云台水平时，重心和pitch轴的连线与水平轴的夹角，单位 rad
 };
@@ -126,7 +126,7 @@ robot::Robot* CreateRobot()
     unique_robot.registerFric(CreateFric());
 
     // 无通信功能的组件指针
-    //unique_robot.registerBuzzer(CreateBuzzer());
+    unique_robot.registerBuzzer(CreateBuzzer());
     unique_robot.registerImu(CreateImu());
 
     // 有通信功能的组件指针

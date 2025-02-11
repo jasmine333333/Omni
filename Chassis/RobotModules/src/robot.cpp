@@ -410,10 +410,7 @@ void Robot::genModulesCmdFromKb()
 
   shooter_ptr_->setWorkingMode(shooter_working_mode);
 
-/*   scope_ptr_->setWorkingMode(scope_working_mode);
-  scope_ptr_->setCtrlAngleFlag(scope_ctrl_angle_flag);
-  scope_ptr_->setSwitchScopeFlag(switch_scope_flag);
- */};
+};
 
 #pragma endregion
 
