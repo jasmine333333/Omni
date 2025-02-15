@@ -199,7 +199,7 @@ void Robot::genModulesCmd()
     gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
   } else if (gimbal_ctrl_mode == CtrlMode::Auto) {
     gimbal_ptr_->setCtrlMode(CtrlMode::Auto);
-    // gimbal_ptr_->setVisionCmd(vision_ptr_->getPoseRefYaw(), vision_ptr_->getPosePitch());
+    gimbal_ptr_->setVisionCmd(vision_ptr_->getPoseRefYaw(), vision_ptr_->getPosePitch());
     gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
   }
   gimbal_ptr_->setWorkingMode(gimbal_data.working_mode);
@@ -268,9 +268,9 @@ void Robot::setVisionCommData()
   hello_world::referee::RfrId rfr_id = static_cast<hello_world::referee::RfrId>(robot_id);
 
   if (hello_world::referee::ids::GetTeamColor(rfr_id) == hello_world::referee::ids::TeamColor::kRed) {
-    vision_ptr_->setTargetColor(Vision::TargetColor::kBlue);
-  } else if (hello_world::referee::ids::GetTeamColor(rfr_id) == hello_world::referee::ids::TeamColor::kBlue) {
     vision_ptr_->setTargetColor(Vision::TargetColor::kRed);
+  } else if (hello_world::referee::ids::GetTeamColor(rfr_id) == hello_world::referee::ids::TeamColor::kBlue) {
+    vision_ptr_->setTargetColor(Vision::TargetColor::kBlue);
   } else {
     vision_ptr_->setTargetColor(Vision::TargetColor::kPurple);
   }

@@ -25,7 +25,7 @@ const hw_motor::OptionalParams kMotorParamsWheelLeftFront = {
     /** 电机输出端实际角度与规定角度的差值 */
     .angle_offset = 0,
     /** 电机外置减速器的减速比（额外） */
-    .ex_redu_rat = 14,
+    .ex_redu_rat = 15.76f,
     .offline_tick_thres = 1000,
 };
 const hw_motor::OptionalParams kMotorParamsWheelLeftRear = {
@@ -37,7 +37,7 @@ const hw_motor::OptionalParams kMotorParamsWheelLeftRear = {
     /** 电机输出端实际角度与规定角度的差值 */
     .angle_offset = 0,
     /** 电机外置减速器的减速比（额外） */
-    .ex_redu_rat = 14,
+    .ex_redu_rat = 15.76f,
     .offline_tick_thres = 1000,
 
 };
@@ -50,7 +50,7 @@ const hw_motor::OptionalParams kMotorParamsWheelRightRear = {
     /** 电机输出端实际角度与规定角度的差值 */
     .angle_offset = 0,
     /** 电机外置减速器的减速比（额外） */
-    .ex_redu_rat = 14,
+    .ex_redu_rat = 15.76f,
     .offline_tick_thres = 1000,
 
 };
@@ -63,7 +63,7 @@ const hw_motor::OptionalParams kMotorParamsWheelRightFront = {
     /** 电机输出端实际角度与规定角度的差值 */
     .angle_offset = 0,
     /** 电机外置减速器的减速比（额外） */
-    .ex_redu_rat = 14,
+    .ex_redu_rat = 15.76f,
         .offline_tick_thres = 1000,
 
 };
@@ -75,7 +75,7 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = 0.0f ,
+    .angle_offset = -1.0f + PI,
     /** 电机外置减速器的减速比（额外） */
     // .ex_redu_rat = 14,
 };

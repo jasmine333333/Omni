@@ -259,12 +259,14 @@ void Chassis::revNormCmd()
         break;
       }
       // 跟随模式下，更新跟随目标
-      float theta_ref[1] = {0.0f};
+      float theta_ref[1] = {3.14159f};
       float theta_fdb[1] = {theta_i2r_};
       // 如果云台反转，期望值是PI
-      theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
+      // theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
       follow_omega_pid_ptr_->calc(theta_ref, theta_fdb, nullptr, &cmd.w);
       cmd.w = hello_world::Bound(cmd.w, -1.0f, 1.0f);
+      static auto data = follow_omega_pid_ptr_->getDatasAt(0);
+      data = follow_omega_pid_ptr_->getDatasAt(0);
       break;
     }
     case WorkingMode::Farshoot: {
@@ -306,37 +308,39 @@ void Chassis::calcWheelSpeedRef()
   ik_solver_ptr_->solve(move_vec, theta_i2r, nullptr);
   ik_solver_ptr_->getRotSpdAll(wheel_speed_ref_);
 };
+void Chassis::calcwheelfeedbackRef() 
+{
+  
+};
 void Chassis::calcWheelLimitedSpeedRef()
 {
-  hello_world::power_limiter::PwrLimitRuntimeParams runtime_params = {
-      .is_referee_online = rfr_data_.is_rfr_on,  // 裁判系统是否在线
-      .p_rfr_max = 60,          // 裁判系统给出功率上限
-      .z_rfr_measure = rfr_data_.pwr_buffer,     // 裁判系统给出剩余缓冲能量值
-      .p_rfr_measure = rfr_data_.pwr,            // 裁判系统给出实际功率
-      .p_dummy_max = 60,        // TODO: 这个参数和p_rfr_max有什么区别？
+
+  hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
+    .p_ref_max = 1.2f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
+    .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
+    .p_ref_min = 0.8f * rfr_data_.pwr_limit,
+    .remaining_energy = static_cast<float>(rfr_data_.pwr_buffer),
+    .energy_converge = 30.0f,
+    .p_slope = 1.6f,
+    .danger_energy = 5.0f,
   };
+  // hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
+  //   .p_ref_max = 2.0f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
+  //   .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
+  //   .p_ref_min = 0.8f * rfr_data_.pwr_limit,
+  //   .remaining_energy = 60,
+  //   .energy_converge = 10.0f,
+  //   .p_slope = 4.0f,
+  //   .danger_energy = 5.0f,
+  // };
+
   if (!cap_ptr_->isOffline()) {
-    runtime_params.is_super_cap_online = true;
-    runtime_params.super_cap_mode = hello_world::power_limiter::kPwrLimitSuperCapNormal;
-    runtime_params.z_dummy_measure = 30 ;
-    runtime_params.p_cap_measure = cap_ptr_->getOutputPower();
+    runtime_params.remaining_energy = cap_ptr_->getRemainingPower();
   }
 
-  // if (is_high_spd_enabled_) {
-  //   runtime_params.p_rfr_max += 800.0f;
-  //   runtime_params.z_rfr_measure = 60.0f;
-  // }
-  pwr_limiter_ptr_->PwrLimitUpdateRuntimeParams(runtime_params);  // 更新运行时参数
-  // 进行功率限制
-  hello_world::power_limiter::MotorRuntimeParams motor_run_par[4];
-  for(uint8_t i = 0; i < 4; i++) {
-    motor_run_par[i].iq_measure = wheel_motor_ptr_[i]->curr();
-    motor_run_par[i].spd_measure_radps = wheel_motor_ptr_[i]->vel();
-    motor_run_par[i].spd_ref_radps = wheel_speed_ref_[i];
-    motor_run_par[i].type = hello_world::power_limiter::kMotorWheel;
-  };
-  PwrLimiter::MotorRuntimeParamsList motor_run_par_list = {motor_run_par[0], motor_run_par[1], motor_run_par[2], motor_run_par[3]};
-  pwr_limiter_ptr_->PwrLimitCalcSpd(motor_run_par_list, wheel_speed_ref_limited_);
+      pwr_limiter_ptr_->updateWheelModel(wheel_speed_ref_, wheel_speed_fdb_,
+nullptr, nullptr);
+      pwr_limiter_ptr_->calc(runtime_params, wheel_speed_ref_limited_,nullptr); // 更新运行时参数
 };
 void Chassis::calcPwrLimitedCurrentRef() {};
 void Chassis::calcWheelCurrentRef()

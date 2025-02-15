@@ -63,7 +63,7 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsPitch = {
     {
       // 角度环
       .auto_reset = true,  ///< 是否自动清零
-      .kp = 21.00f,        // 21? 33 
+      .kp = 27.00f,        // 21? 33 
       .ki = 0.00f,          //0.002??
       .kd = 0.0f,
       .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),
@@ -76,7 +76,7 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsPitch = {
     {
       // 速度环
       .auto_reset = true,  ///< 是否自动清零
-      .kp = 1.005f,        // 1.005
+      .kp = 1.05f,        // 1.005
       .ki = 0.0f,
       .kd = 0.0f,
       .dead_band = hw_pid::DeadBand(false, -0.001f, 0.001f),

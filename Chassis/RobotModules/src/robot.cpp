@@ -543,7 +543,11 @@ void Robot::sendCommData()
 };
 void Robot::sendCanData()
 {
-  sendWheelsMotorData();
+  if (work_tick_ > 1500)
+  {
+    sendWheelsMotorData();
+  }
+  
   if (work_tick_ % 10 == 0) {
     sendCapData();
   }
