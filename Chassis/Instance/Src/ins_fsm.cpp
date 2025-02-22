@@ -55,6 +55,7 @@ robot::Chassis* CreateChassis()
     // * - 功率限制
     unique_chassis.registerPwrLimiter(CreatePwrLimiter());
 
+    unique_chassis.registerImu(CreateImu());
     // * 2. 只接收数据的组件指针
     // 云台和底盘通信
     unique_chassis.registerGimbalChassisComm(CreateGimbalChassisComm());

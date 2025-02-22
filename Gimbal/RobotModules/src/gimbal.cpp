@@ -136,19 +136,33 @@ void Gimbal::run()
 }
 void Gimbal::runOnDead()
 {
+  // HW_ASSERT(laser_ptr_ != nullptr, "pointer to laser is nullptr", laser_ptr_);
+  // laser_ptr_->disable();
   resetDataOnDead();
   setCommData(false);
 };
 
 void Gimbal::runOnResurrection()
 {
+  // HW_ASSERT(laser_ptr_ != nullptr, "pointer to laser is nullptr", laser_ptr_);
+  // laser_ptr_->disable();
   resetDataOnResurrection();
   setCommData(false);
 };
 void Gimbal::runOnWorking()
 {
+  // HW_ASSERT(laser_ptr_ != nullptr, "pointer to laser is nullptr", laser_ptr_);
+  // if (gimbal_ctrl_mode == CtrlMode::Auto) {
+  //   laser_ptr_->disable();
+  // } else {
+  //   laser_ptr_->enable();
+  // }
+  // laser_ptr_->enable();
+  // }
+  // laser_ptr_->disable();
   if (working_mode_ == WorkingMode::dead)
   {
+    // laser_ptr_->disable();
     JointIdx joint_idxs[2] = {kJointYaw, kJointPitch};
     for (size_t i = 0; i < 2; i++) {
       JointIdx joint_idx = joint_idxs[i];
@@ -162,7 +176,6 @@ void Gimbal::runOnWorking()
   adjustLastJointAngRef();
   calcJointAngRef();
   calcJointTorRef();
-
   setCommData(true);
   }
   };
@@ -182,12 +195,9 @@ void Gimbal::calcCtrlAngBased()
   last_ctrl_ang_based_[kJointYaw] = ctrl_ang_based_[kJointYaw];
   last_ctrl_ang_based_[kJointPitch] = ctrl_ang_based_[kJointPitch];
 
-  if (working_mode_ == WorkingMode::Farshoot) {
-    ctrl_ang_based_[kJointYaw] = CtrlAngBased::Motor;
-    ctrl_ang_based_[kJointPitch] = CtrlAngBased::Imu;
-  } else if (working_mode_ == WorkingMode::Normal) {
+  if (working_mode_ == WorkingMode::Normal) {
     ctrl_ang_based_[kJointYaw] = CtrlAngBased::Imu;
-    ctrl_ang_based_[kJointPitch] = CtrlAngBased::Imu;
+    ctrl_ang_based_[kJointPitch] = CtrlAngBased::Motor;
   } else {
     ctrl_ang_based_[kJointYaw] = CtrlAngBased::Imu;
     ctrl_ang_based_[kJointPitch] = CtrlAngBased::Imu;
@@ -229,24 +239,22 @@ void Gimbal::adjustLastJointAngRef()
   }
 }
 bool debug_enemydetected ;
+float debug_pitch = 0.0f;
+float debug_yaw = 0.0f;
 void Gimbal::calcJointAngRef()
 {
   debug_enemydetected = vis_data_.is_target_detected;
   // 如果控制模式是自动，且视觉模块没有离线、视觉模块检测到有效目标，且视觉反馈角度与当前角度相差不大
   Cmd tmp_ang_ref = {0.0f};
-  if (ctrl_mode_ == CtrlMode::Auto && vis_data_.is_target_detected &&
-      fabsf(joint_ang_fdb_[kJointYaw] - vis_data_.cmd.yaw) < 0.175f &&
-      fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.14f) {
+  if (ctrl_mode_ == CtrlMode::Auto && fabsf(joint_ang_fdb_[kJointYaw] - vis_data_.cmd.yaw) < 0.3927f &&
+      fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.30543f
+    ) {
     tmp_ang_ref = vis_data_.cmd;
-  } else if (ctrl_mode_ == CtrlMode::Manual) {
+  } else  {
     // 否则，根据上一控制周期的关节角度参考值计算当前控制周期的关节角度参考值
     float sensitivity_yaw = cfg_.sensitivity_yaw;      // yaw角度灵敏度，单位 rad/ms
     float sensitivity_pitch = cfg_.sensitivity_pitch;  // pitch角度灵敏度，单位 rad/ms
-    if (working_mode_ == WorkingMode::Farshoot) {
-      sensitivity_yaw *= 0.1f;
-      sensitivity_pitch *= 0.1f;
-    }
-
+    // 如果翻转头部朝向标志位为真，且距离上一次翻转头部朝向的时间超过200ms
     if (rev_head_flag_ && work_tick_ - last_rev_head_tick_ > 200) {
       tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + PI;
       last_rev_head_tick_ = work_tick_;
@@ -286,21 +294,37 @@ void Gimbal::calcJointAngRef()
 
   joint_ang_ref_[kJointYaw] = tmp_ang_ref.yaw;
   joint_ang_ref_[kJointPitch] = tmp_ang_ref.pitch;
+  // joint_ang_ref_[kJointPitch] = debug_pitch;
+  // joint_ang_ref_[kJointYaw] = debug_yaw;
 };
 
 void Gimbal::calcJointTorRef()
 {
   JointIdx joint_idxs[kJointNum] = {kJointYaw, kJointPitch};
-  float pitch_ffd[2] = {cfg_.max_pitch_torq * arm_sin_f32(joint_ang_fdb_[kJointPitch] + cfg_.pitch_center_offset), 0};
-  float *ffd_list[2] = {nullptr, pitch_ffd};
+  float pitch_ffd = calcJointFfdResistance(kJointPitch) +
+                    cfg_.max_pitch_torq * arm_cos_f32(joint_ang_fdb_[kJointPitch] + cfg_.pitch_center_offset);
+  float yaw_ffd = calcJointFfdResistance(kJointYaw);
+  float *ffd_list[2] = {&yaw_ffd, &pitch_ffd};
   for (uint8_t i = 0; i < kJointNum; i++) {
     JointIdx joint_idx = joint_idxs[i];
     float ref[2] = {joint_ang_ref_[joint_idx], 0.0f};
-    float fdb[2] = {joint_ang_fdb_[joint_idx], joint_spd_fdb_[joint_idx]};
+    float fdb[2] = {joint_ang_fdb_[joint_idx], imu_spd_fdb_[joint_idx]};
     float *ffd = ffd_list[i];
     Pid *pid_ptr = pid_ptr_[joint_idx];
     HW_ASSERT(pid_ptr != nullptr, "pointer to PID %d is nullptr", joint_idx);
     pid_ptr->calc(ref, fdb, ffd, &joint_tor_ref_[joint_idx]);
+  }
+  
+}
+float Gimbal::calcJointFfdResistance(JointIdx idx)
+{
+  float err = joint_ang_ref_[idx] - joint_ang_fdb_[idx];
+  if (err > cfg_.allowed_ang_err[idx]) {
+    return cfg_.resist_ffd_torq[idx];
+  } else if (err < -cfg_.allowed_ang_err[idx]) {
+    return -cfg_.resist_ffd_torq[idx];
+  } else {
+    return err * cfg_.resist_ffd_torq[idx] / cfg_.allowed_ang_err[idx];
   }
 }
 
@@ -429,6 +453,11 @@ void Gimbal::registerTd(Td *ptr, size_t idx)
   HW_ASSERT(idx >= 0 && idx < kJointNum, "index of Td out of range", idx);
   motor_spd_td_ptr_[idx] = ptr;
 }
+// void Gimbal::registerLaser(Laser *ptr)
+// {
+//   HW_ASSERT(ptr != nullptr, "pointer to laser is nullptr", ptr);
+//   laser_ptr_ = ptr;
+// }
 
 #pragma endregion
 

@@ -32,6 +32,7 @@
 #include "uart_tx_mgr.hpp"
 #include "usr_imu.hpp"
 #include "vision.hpp"
+#include "laser.hpp"
 /* Exported macro ------------------------------------------------------------*/
 
 namespace robot
@@ -51,6 +52,7 @@ class Robot : public Fsm
   typedef hello_world::vision::Vision Vision;
   typedef hello_world::module::Feed Feed;
   typedef hello_world::module::Fric Fric;
+  typedef hello_world::laser::Laser Laser;
 
   typedef robot::Gimbal Gimbal;
 
@@ -125,6 +127,7 @@ class Robot : public Fsm
   void registerMotor(Motor *dev_ptr, uint8_t idx, CanTxMgr *tx_mgr_ptr);
   void registerGimbalChassisComm(GimbalChassisComm *dev_ptr, CanTxMgr *tx_mgr_ptr);
   void registerVision(Vision *dev_ptr, UartTxMgr *tx_mgr_ptr);
+  void registerLaser(Laser *ptr);
 
  private:
   //  数据更新和工作状态更新，由 update 函数调用
@@ -172,6 +175,7 @@ class Robot : public Fsm
   // 无通信功能的组件指针
   Buzzer *buzzer_ptr_ = nullptr;  ///< 蜂鸣器指针
   Imu *imu_ptr_ = nullptr;        ///< IMU 指针
+  Laser *laser_ptr_ = nullptr;    ///< 红点激光指针
 
   // 只接收数据的组件指针
 

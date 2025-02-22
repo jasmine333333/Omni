@@ -179,6 +179,8 @@ void CommHardWareInit(void)
  * @retval  none
  * @note    none
 **/
+uint32_t cnt = 0;
+size_t size = 0;
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size)
 {
   // 视觉
@@ -187,6 +189,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t Size)
     return;
   }
   vision_rx_mgr_ptr->rxEventCallback(huart, Size);
+  cnt++;
+  size= Size;
 }
 
 /* Private function definitions ----------------------------------------------*/

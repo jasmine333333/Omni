@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_imu.cpp
+ * @file      :ins_imu.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -15,15 +15,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "ins_imu.hpp"
 /* Private constants ---------------------------------------------------------*/
+const float kImuRotMatFlatten[9] = {0, 1, 0, -1, 0, 0, 0, 0, 1};
 const robot::Imu::Config kImuInitConfig = {
     .offset_max_count = 1000,
     .acc_threshold = 10.0f,
     .gyro_threshold = 0.1f,
     .samp_freq = 1000.0f,
-    .kp = 1.0f,
+    .kp = 0.2f,
     .ki = 0.0f,
     .bmi088_hw_config_ptr = &robot::Imu::kBmi088DefaultHWConfig,
-    .rot_mat_ptr = robot::Imu::kImuRotMatFlatten,
+    .rot_mat_ptr = kImuRotMatFlatten,
     .bmi088_config_ptr = &robot::Imu::kBmi088DefaultConfig,
 };
 /* Private macro -------------------------------------------------------------*/

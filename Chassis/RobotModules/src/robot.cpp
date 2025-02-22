@@ -140,7 +140,7 @@ void Robot::updateRfrData()
 
   // TODO: 换成实际的枪口
   gimbal_rfr_data.bullet_speed = rsp_data.bullet_speed;
-  gimbal_rfr_data.shooter_heat = rph_data.shooter_42mm_barrel_heat;
+  gimbal_rfr_data.shooter_heat = rph_data.shooter_17mm_1_barrel_heat;
   gimbal_rfr_data.shooter_cooling = rpp_data.shooter_barrel_cooling_value;
   gimbal_rfr_data.shooter_heat_limit = rpp_data.shooter_barrel_heat_limit;
   gimbal_rfr_data.is_new_bullet_shot = is_new_bullet_shot;
@@ -155,7 +155,7 @@ void Robot::updatePwrState()
     // 主控板程序在跑就意味着有电，所以直接从死亡状态进入复活状态
     next_state = PwrState::Resurrection;
   } else if (pre_state == PwrState::Resurrection) {
-    if (is_imu_caled_offset_) {
+    if (is_imu_caled_offset_  && work_tick_ > 1000) {
       next_state = PwrState::Working;
     }
   } else if (pre_state == PwrState::Working) {
@@ -246,10 +246,10 @@ void Robot::genModulesCmdFromRc()
 
   CtrlMode gimbal_ctrl_mode = CtrlMode::Manual;
   Gimbal::WorkingMode gimbal_working_mode = Gimbal::WorkingMode::Normal;
-
   CtrlMode feed_ctrl_mode = CtrlMode::Manual;
   Shooter::WorkingMode shooter_working_mode = Shooter::WorkingMode::Stop;
   Feed::WorkingMode feed_working_mode = Feed::WorkingMode::Normal;
+
   bool shoot_flag = false;
 
   // TODO: 后续需要加入慢拨模式
@@ -257,6 +257,8 @@ void Robot::genModulesCmdFromRc()
   {
     chassis_working_mode = Chassis::WorkingMode::dead;
     gimbal_working_mode = Gimbal::WorkingMode::dead;
+    shooter_working_mode = Shooter::WorkingMode::Stop;
+    feed_working_mode = Feed::WorkingMode::Stop;
   }
   else{
   if (l_switch == RcSwitchState::kUp) {
@@ -264,7 +266,7 @@ void Robot::genModulesCmdFromRc()
     chassis_working_mode = Chassis::WorkingMode::Depart;
     gimbal_working_mode = Gimbal::WorkingMode::Normal;
     if (r_switch == RcSwitchState::kUp) {
-      gimbal_ctrl_mode = CtrlMode::Manual;
+      gimbal_ctrl_mode = CtrlMode::Auto;
       shooter_working_mode = Shooter::WorkingMode::Normal;
       feed_ctrl_mode = CtrlMode::Manual;
       shoot_flag = (rc_wheel > 0.9f);
@@ -283,11 +285,17 @@ void Robot::genModulesCmdFromRc()
     chassis_working_mode = Chassis::WorkingMode::Follow;
     gimbal_working_mode = Gimbal::WorkingMode::Normal;
     gimbal_ctrl_mode = CtrlMode::Manual;
+    feed_ctrl_mode = CtrlMode::Manual;
     if (r_switch == RcSwitchState::kUp) {
       // * 左中右上
-      use_cap_flag = true;
+      shooter_working_mode = Shooter::WorkingMode::Stop;
+
     } else if (r_switch == RcSwitchState::kMid) {
       // * 左中右中
+      use_cap_flag = true;
+      shooter_working_mode = Shooter::WorkingMode::Normal;
+      shoot_flag = (rc_wheel > 0.9f);
+
     } else if (r_switch == RcSwitchState::kDown) {
       // * 左中右下
     }
@@ -296,6 +304,7 @@ void Robot::genModulesCmdFromRc()
     chassis_working_mode = Chassis::WorkingMode::Gyro;
     gimbal_working_mode = Gimbal::WorkingMode::Normal;
     gimbal_ctrl_mode = CtrlMode::Manual;
+    shooter_working_mode = Shooter::WorkingMode::Stop;
     if (r_switch == RcSwitchState::kUp) {
       // * 左下右上
       use_cap_flag = true;

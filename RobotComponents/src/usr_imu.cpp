@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : usr_imu.cpp
+ * @file      :usr_imu.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -14,7 +14,7 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "usr_imu.hpp"
-
+#include "base.hpp"
 #include "spi.h"
 /* Private macro -------------------------------------------------------------*/
 
@@ -59,6 +59,8 @@ bool Imu::update()
   updateAccGyro();
 
   updateMahony();
+
+  updateSlopeAng();
   return true;
 };
 
@@ -80,6 +82,11 @@ void Imu::calcOffset()
   } else {
     status_ = ImuStatus::kNormWorking;
   }
+  // gyro_offset_.data[0] = ;
+  // gyro_offset_.data[1] = ;
+  // gyro_offset_.data[2] = ;
+
+  // status_ = ImuStatus::kNormWorking;
 };
 
 void Imu::updateAccGyro()
@@ -110,6 +117,16 @@ bool Imu::updateMahony()
   ahrs_ptr_->getEulerAngle(ang_.data);
   return true;
 };
+
+void Imu::updateSlopeAng()
+{
+  float sin_pitch, cos_pitch, sin_roll, cos_roll;
+  arm_sin_cos_f32(hello_world::Rad2Deg(ang_.y), &sin_pitch, &cos_pitch);
+  arm_sin_cos_f32(hello_world::Rad2Deg(ang_.x), &sin_roll, &cos_roll);
+  slope_ang_ = acosf(cos_pitch * cos_roll);
+  g_x_ = -sin_pitch;
+  g_y_ = cos_pitch * sin_roll;
+}
 
 /* Private function prototypes -----------------------------------------------*/
 }  // namespace robot

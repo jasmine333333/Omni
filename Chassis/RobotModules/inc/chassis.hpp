@@ -27,6 +27,7 @@
 #include "pid.hpp"
 #include "power_limiter.hpp"
 #include "super_cap.hpp"
+#include "usr_imu.hpp"
 /* Exported macro ------------------------------------------------------------*/
 
 namespace robot
@@ -108,6 +109,7 @@ class Chassis : public Fsm
 
   typedef robot::GimbalChassisComm GimbalChassisComm;
   typedef ChassisWorkingMode WorkingMode;
+  typedef robot::Imu Imu;
 
   typedef ChassisCmd Cmd;
   typedef ChassisRfrData RfrData;
@@ -168,6 +170,7 @@ class Chassis : public Fsm
   void registerCap(Cap *ptr);
   void registerGimbalChassisComm(GimbalChassisComm *ptr);
   void registerPwrLimiter(PwrLimiter *ptr);
+  void registerImu(Imu *ptr);
 
  private:
   //  数据更新和工作状态更新，由 update 函数调用
@@ -185,6 +188,7 @@ class Chassis : public Fsm
   // 工作状态下，获取控制指令的函数
   void revNormCmd();
   void calcWheelSpeedRef();
+  void calcwheelfeedbackRef();
   void calcWheelLimitedSpeedRef();
   void calcPwrLimitedCurrentRef();
   void calcWheelCurrentRef();
@@ -262,6 +266,7 @@ class Chassis : public Fsm
   // 只接收数据的组件指针
   GimbalChassisComm *gc_comm_ptr_ = nullptr;  ///< 云台底盘通信器指针 只接收数据
   Motor *yaw_motor_ptr_ = nullptr;            ///< 云台电机指针 接收、发送数据
+  Imu *imu_ptr_ = nullptr;                    ///< IMU指针 接收数据
   // 接收、发送数据的组件指针
   Cap *cap_ptr_ = nullptr;                              ///< 超电指针 接收、发送数据
   Motor *wheel_motor_ptr_[kWheelMotorNum] = {nullptr};  ///< 电机指针 接收、发送数据 【YAW 只接收数据】

@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_all.hpp
+ * @file      :ins_laser.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -13,26 +13,18 @@
  *******************************************************************************
  */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef INSTANCE_INS_ALL_HPP_
-#define INSTANCE_INS_ALL_HPP_
+#ifndef INSTANCE_INS_LASER_HPP_
+#define INSTANCE_INS_LASER_HPP_
 
 /* Includes ------------------------------------------------------------------*/
-#include "ins_buzzer.hpp"
-#include "ins_chassis_gimbal_comm.hpp"
-#include "ins_comm.hpp"
-#include "ins_filter.hpp"
-#include "ins_fsm.hpp"
-#include "ins_imu.hpp"
-#include "ins_motor.hpp"
-#include "ins_pid.hpp"
-#include "ins_vision.hpp"
-#include "ins_feed.hpp"
-#include "ins_laser.hpp"
+#include "laser.hpp"
+
+namespace hw_laser = hello_world::laser;
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
-
-#endif /* INSTANCE_INS_ALL_HPP_ */
+hw_laser::Laser *CreateLaser(void);
+#endif /* INSTANCE_INS_LASER_HPP_ */

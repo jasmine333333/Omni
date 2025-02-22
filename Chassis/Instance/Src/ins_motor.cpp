@@ -75,7 +75,7 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = -1.0f + PI,
+    .angle_offset = -1.0f ,
     /** 电机外置减速器的减速比（额外） */
     // .ex_redu_rat = 14,
 };
@@ -95,10 +95,10 @@ const hw_motor::OptionalParams kMotorParamsFeed = {
 
 // TODO: 这里的 MotorId 需要按照实际情况修改
 enum MotorID {
-  kMotorIdWheelLeftFront = 1u,
-  kMotorIdWheelLeftRear = 2u,
-  kMotorIdWheelRightRear = 3u,
-  kMotorIdWheelRightFront = 4u,
+  kMotorIdWheelLeftFront = 3u,
+  kMotorIdWheelLeftRear = 4u,
+  kMotorIdWheelRightRear = 1u,
+  kMotorIdWheelRightFront = 2u,
   kMotorIdYaw = 2u,
   kMotorIdFeed = 3u,
 };

@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      :ins_vision.cpp
+ * @file      :ins_laser.cpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -13,19 +13,20 @@
  *******************************************************************************
  */
 /* Includes ------------------------------------------------------------------*/
-#include "ins_vision.hpp"
+#include "ins_laser.hpp"
+#include "tim.h"
 /* Private constants ---------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-hw_vision::Vision::Config kvisionConfig= {
-    .default_blt_spd = 23.7f,
-    .hfov = 0.785,
-    .vfov = 0.6183,
-};
-hw_vision::Vision unique_vision = hw_vision::Vision(kvisionConfig);
+hw_laser::Laser* unique_laser = nullptr;
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Exported function definitions ---------------------------------------------*/
-hw_vision::Vision* CreateVision() { return &unique_vision; };
+hw_laser::Laser *CreateLaser(void) { 
+  if (unique_laser == nullptr){
+    unique_laser = new hw_laser::Laser(&htim3, TIM_CHANNEL_3, 75);
+  }
+  return unique_laser;
+};
 /* Private function definitions ----------------------------------------------*/

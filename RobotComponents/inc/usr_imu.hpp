@@ -125,6 +125,10 @@ class Imu : public hello_world::MemMgr
   float getGyroPitch() { return gyro_.y; };
   float getGyroYaw() { return gyro_.z; };
 
+  float getSlopeAng() {return slope_ang_; }
+  float getGx() {return g_x_; }
+  float getGy() {return g_y_; }
+
  private:
   void getRawData();
 
@@ -133,6 +137,8 @@ class Imu : public hello_world::MemMgr
   void updateAccGyro();
 
   bool updateMahony();
+
+  void updateSlopeAng();  //计算倾斜角
 
   BMI088 *bmi088_ptr_ = nullptr;  ///< 硬件接口
   Mahony *ahrs_ptr_ = nullptr;    ///< 姿态算法
@@ -150,6 +156,10 @@ class Imu : public hello_world::MemMgr
   Imu3AxisData gyro_ = {0};  ///< 角速度，供 mahony 算法和其他外部程序使用，单位：rad/s
 
   Imu3AxisData ang_ = {0};  ///< 姿态角度，由 mahony 算法计算，供外部程序使用，单位：rad
+
+  float slope_ang_ = 0;     /// IMU XY面与地面夹角，用于判断上坡
+  float g_x_ = 0;           /// 重力在X轴上的分量,[0, 1]
+  float g_y_ = 0;           /// 重力在Y轴上的分量,[0, 1]
 
   ImuStatus status_ = ImuStatus::kNotInitHardware;  ///< IMU 工作状态
   size_t offset_count_ = 0;                         ///< 计数器，用于计算角速度零飘

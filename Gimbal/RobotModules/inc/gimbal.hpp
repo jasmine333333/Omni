@@ -23,6 +23,8 @@
 #include "pid.hpp"
 #include "usr_imu.hpp"
 #include "feed.hpp"
+#include "laser.hpp"
+
 /* Exported macro ------------------------------------------------------------*/
 
 namespace robot
@@ -74,7 +76,7 @@ class Gimbal : public Fsm
   typedef hello_world::pid::MultiNodesPid Pid;
 
   typedef robot::Imu Imu;
-
+  typedef hello_world::laser::Laser Laser;
   typedef GimbalWorkingMode WorkingMode;
   typedef GimbalCmd Cmd;
 
@@ -83,13 +85,17 @@ class Gimbal : public Fsm
     float sensitivity_pitch;    ///< pitch角度灵敏度，单位 rad/ms
     float max_pitch_ang;        ///< 最大俯仰角度，单位 rad
     float min_pitch_ang;        ///< 最小俯仰角度，单位 rad
-    float max_pitch_torq;       ///< 云台位于水平时的重力矩，单位 N·m
+    /* Pitch重力前馈 */
+    float max_pitch_torq;       ///< 云台最大的重力矩，单位 N·m
     float pitch_center_offset;  ///< 云台水平时，重心和pitch轴的连线与水平轴的夹角，单位 rad
+    /* 电机阻力前馈 */
+    float resist_ffd_torq[2];  ///< 云台电机阻力前馈力矩，单位 N·m
+    float allowed_ang_err[2];  ///< 云台角度的允许误差（用于分段计算阻力前馈力矩）
   };
 
   struct VisionData {
     Cmd cmd = {0.0f, 0.0f};
-    bool is_target_detected = false;
+    bool is_target_detected = true;
   };
 
   enum JointIdx : uint8_t {
@@ -160,6 +166,7 @@ class Gimbal : public Fsm
   void registerPid(Pid *ptr, JointIdx idx);
   void registerTd(Td *ptr, size_t idx);
   void registerImu(Imu *ptr);
+  // void registerLaser(Laser *ptr);
 
  private:
   //  数据更新
@@ -179,6 +186,7 @@ class Gimbal : public Fsm
   void adjustLastJointAngRef();
   void calcJointAngRef();
   void calcJointTorRef();
+  float calcJointFfdResistance(JointIdx idx);
 
   // 数据重置
   void resetDataOnDead();
@@ -235,6 +243,7 @@ class Gimbal : public Fsm
 
   // 只接收数据的组件指针
   Imu *imu_ptr_ = nullptr;  ///< IMU 指针 只接收数据
+  // Laser *laser_ptr_ = nullptr;                   ///< 激光指针
 
   // 接收、发送数据的组件指针
   Motor *motor_ptr_[kJointNum] = {nullptr};  ///< 电机指针 接收、发送数据

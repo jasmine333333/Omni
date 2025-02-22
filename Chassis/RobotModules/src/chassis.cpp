@@ -259,7 +259,7 @@ void Chassis::revNormCmd()
         break;
       }
       // 跟随模式下，更新跟随目标
-      float theta_ref[1] = {3.14159f};
+      float theta_ref[1] = {0.0f};
       float theta_fdb[1] = {theta_i2r_};
       // 如果云台反转，期望值是PI
       // theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
@@ -308,9 +308,29 @@ void Chassis::calcWheelSpeedRef()
   ik_solver_ptr_->solve(move_vec, theta_i2r, nullptr);
   ik_solver_ptr_->getRotSpdAll(wheel_speed_ref_);
 };
+float feedbackspeed[4] = {0};
+uint32_t cnt = 0;
+float slope_ang = 0;
 void Chassis::calcwheelfeedbackRef() 
 {
-  
+  slope_ang = imu_ptr_->getSlopeAng();
+  if (slope_ang > 0.2 && slope_ang < 0.5) {
+    cnt++;
+    hello_world::chassis_ik_solver::MoveVec move_vec(imu_ptr_->getGx(), imu_ptr_->getGy(), 0);
+    ik_solver_ptr_->solve(move_vec, 0, nullptr);
+    ik_solver_ptr_->getRotSpdAll(feedbackspeed);
+    for (size_t i = 0; i < 4; i++)
+    {
+      feedbackspeed[i] = feedbackspeed[i] * 2.428;
+    }
+}
+else {
+    for (size_t i = 0; i < 4; i++)
+    {
+      feedbackspeed[i] = 0;
+    }
+}
+
 };
 void Chassis::calcWheelLimitedSpeedRef()
 {
@@ -353,12 +373,14 @@ void Chassis::calcWheelCurrentRef()
       kWheelPidIdxRightRear,
       kWheelPidIdxRightFront,
   };
+  calcwheelfeedbackRef();
   MultiNodesPid *pid_ptr = nullptr;
   for (size_t i = 0; i < 4; i++) {
     pid_ptr = wheel_pid_ptr_[wpis[i]];
     HW_ASSERT(pid_ptr != nullptr, "pointer to PID %d is nullptr", wpis[i]);
-    // pid_ptr->calc(&wheel_speed_ref_limited_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
-    pid_ptr->calc(&wheel_speed_ref_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
+    pid_ptr->calc(&wheel_speed_ref_limited_[i], &wheel_speed_fdb_[i], &feedbackspeed[i], &wheel_current_ref_[i]);
+    // pid_ptr->calc(&wheel_speed_ref_[i], &wheel_speed_fdb_[i], &feedbackspeed[i], &wheel_current_ref_[i]);
+    // pid_ptr->calc(&wheel_speed_ref_[i], &wheel_speed_fdb_[i], nullptr, &wheel_current_ref_[i]);
   }
 };
 void Chassis::calcWheelCurrentLimited() {
@@ -462,6 +484,7 @@ void Chassis::resetDataOnStandby()
   cmd_.reset();       ///< 控制指令，基于图传坐标系
   last_cmd_.reset();  ///< 上一控制周期的控制指令，基于图传坐标系
 
+  setPwrState(PwrState::Dead);  ///< 电源状态
   memset(wheel_speed_ref_, 0, sizeof(wheel_speed_ref_));
   memset(wheel_speed_ref_limited_, 0, sizeof(wheel_speed_ref_limited_));
   memset(wheel_current_ref_, 0, sizeof(wheel_current_ref_));
@@ -581,6 +604,11 @@ void Chassis::registerGimbalChassisComm(GimbalChassisComm *ptr)
 {
   HW_ASSERT(ptr != nullptr, "pointer to GimbalChassisComm is nullptr", ptr);
   gc_comm_ptr_ = ptr;
+};
+void Chassis::registerImu(Imu *ptr)
+{
+  HW_ASSERT(ptr != nullptr, "IMU pointer is null", ptr);
+  imu_ptr_ = ptr;
 };
 
 #pragma endregion

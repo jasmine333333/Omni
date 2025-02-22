@@ -16,14 +16,17 @@
 #include "ins_all.hpp"
 /* Private macro -------------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
+const float test_angle = 0.31f;
 const robot::Gimbal::Config kGimbalConfig = {
     .sensitivity_yaw = 300 / 1000.0 * PI / 180.0,           ///< yaw角度灵敏度，单位 rad/ms
     .sensitivity_pitch = 300 / 1000.0 * PI / 180.0,  ///< pitch角度灵敏度，单位 rad/ms
     .max_pitch_ang = 0.4f,                                  ///< 最大俯仰角度，单位 rad
     .min_pitch_ang = -0.4f,                                 ///< 最小俯仰角度，单位 rad
-    .max_pitch_torq = 0,  //0.8826                               ///< 云台水平时的重力矩，单位 N·m
-    .pitch_center_offset = 0.00,                            ///??< 云台水平时，重心和pitch轴的连线与水平轴的夹角，单位 rad
-};
+    .max_pitch_torq = 0.92f,  //0.92f                               ///< 云台水平时的重力矩，单位 N·m
+    .pitch_center_offset = test_angle, //0.31f                           ///??< 云台水平时，重心和pitch轴的连线与水平轴的夹角，单位 rad
+    .resist_ffd_torq = 0.0f,                                ///< 云台摩擦力矩，单位 N·m.
+    .allowed_ang_err = 0.0f,                               ///< 云台角度误差允许范围，单位 rad
+  };
 
 /* const robot::Feed::Config kFeedConfig = {
     .feed_ang_ref_offset = 0.0f,  ///< 拨盘电机目标角度偏移量
@@ -65,6 +68,7 @@ robot::Gimbal* CreateGimbal()
 
     unique_gimbal.registerTd(CreateTdYaw(), robot::Gimbal::kJointYaw);
     unique_gimbal.registerTd(CreateTdPitch(), robot::Gimbal::kJointPitch);
+    // unique_robot.registerLaser(CreateLaser());
 
     // 只接收数据的组件指针
     unique_gimbal.registerImu(CreateImu());
