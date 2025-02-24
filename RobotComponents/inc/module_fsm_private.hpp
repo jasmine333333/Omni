@@ -60,6 +60,42 @@ class Fsm : public hello_world::MemMgr
   virtual PwrState getPwrState() const { return pwr_state_; };
   virtual PwrState getLastPwrState() const { return last_pwr_state_; };
 
+  static std::string WorkStateToStr(PwrState state)
+  {
+    if (state == PwrState::Dead) return "Dead";
+    if (state == PwrState::Resurrection) return "Resurrection";
+    if (state == PwrState::Working) return "Working";
+    return "ErrWS";
+  };
+
+  static std::string CtrlModeToStr(CtrlMode mode)
+  {
+    if (mode == CtrlMode::Manual) return "Manual";
+    if (mode == CtrlMode::Auto) return "Auto";
+    return "ErrCM";
+  };
+
+  static std::string ManualCtrlSrcToStr(ManualCtrlSrc src)
+  {
+    if (src == ManualCtrlSrc::Rc) return "Rc";
+    if (src == ManualCtrlSrc::Kb) return "Kb";
+    return "ErrMCS";
+  };
+
+  static std::string AutoCamSrcToStr(AutoCamSrc src)
+  {
+    if (src == kAutoCamNormal) return "Normal";
+    if (src == kAutoCamLongFocal) return "LongFocal";
+    return "ErrACS";
+  };
+
+  static std::string CtrlModeSrcToStr(CtrlMode mode, ManualCtrlSrc src)
+  {
+    if (mode == CtrlMode::Manual) return ManualCtrlSrcToStr(src);
+    if (mode == CtrlMode::Auto) return CtrlModeToStr(mode);
+    return "ErrCM";
+  };
+
  protected:
   // 工具函数
   uint32_t getCurrentTickMs() const { return hello_world::tick::GetTickMs(); };

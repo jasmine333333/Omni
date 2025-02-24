@@ -213,11 +213,11 @@ namespace robot
 
     // gimbal
     CtrlMode gimbal_ctrl_mode = gimbal_data.ctrl_mode;
-    // if (gimbal_ctrl_mode == CtrlMode::Auto) {
-    //   if (!(vision_ptr_->isDetectedInView()) || !(vision_ptr_->getIsEnemyDetected())) {
-    //     gimbal_ctrl_mode = CtrlMode::Manual;
-    //   }
-    // }
+    if (gimbal_ctrl_mode == CtrlMode::Auto) {
+      if (!(vision_ptr_->isDetectedInView()) || !(vision_ptr_->getIsEnemyDetected())) {
+        gimbal_ctrl_mode = CtrlMode::Manual;
+      }
+    }
 
     if (gimbal_ctrl_mode == CtrlMode::Manual)
     {
@@ -245,6 +245,7 @@ namespace robot
     {
       feed_ptr_->setCtrlMode(hello_world::module::CtrlMode::kAuto);
     }
+    gc_comm_ptr_->vision_data().gp.is_enemy_detected = vision_ptr_->getIsEnemyDetected();
 
     if (shooter_data.working_mode == ShooterWorkingMode::Normal)
     {
@@ -348,6 +349,9 @@ namespace robot
 
     // shooter
     GimbalChassisComm::ShooterData::GimbalPart &shooter_data = gc_comm_ptr_->shooter_data().gp;
+
+    //vision
+
   };
 
   void Robot::sendCommData()

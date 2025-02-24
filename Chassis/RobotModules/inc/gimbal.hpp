@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : gimbal.hpp
+ * @file      :gimbal.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -79,6 +79,25 @@ class Gimbal : public hello_world::MemMgr
 
   void setWorkingMode(WorkingMode mode) { working_mode_ = mode; }
   WorkingMode getWorkingMode() const { return working_mode_; }
+
+  static std::string WorkStateToStr(PwrState state)
+  {
+    if (state == PwrState::Dead) return "Dead";
+    if (state == PwrState::Resurrection) return "Resurrection";
+    if (state == PwrState::Working) return "Working";
+    return "ErrWS";
+  };
+  static std::string WorkingModeToStr(WorkingMode mode)
+  {
+    if (mode == WorkingMode::Normal) return "Normal";
+    return "ErrGWM";
+  };
+  static std::string CtrlModeSrcToStr(CtrlMode mode, ManualCtrlSrc src)
+  {
+    if (mode == CtrlMode::Manual) return ManualCtrlSrcToStr(src);
+    if (mode == CtrlMode::Auto) return CtrlModeToStr(mode);
+    return "ErrCM";
+  };
 
  private:
   // 由 robot 设置的数据

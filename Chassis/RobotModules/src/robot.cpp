@@ -14,7 +14,7 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "robot.hpp"
-
+#include "usart.h"
 /* Private macro -------------------------------------------------------------*/
 
 namespace robot
@@ -121,6 +121,13 @@ void Robot::updateRfrData()
       is_new_bullet_shot = true;
     }
   }
+
+  if (!referee_ptr_->isOffline()) {
+    robot_id_ = (RobotId)rpp_data.robot_id;    
+  } else {
+    robot_id_ = RobotId::kRedStandard3;
+  }
+  ui_drawer_.setSenderId(robot_id_);
 
   chassis_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
   chassis_rfr_data.is_pwr_on = rpp_data.power_management_chassis_output;
@@ -365,12 +372,9 @@ void Robot::genModulesCmdFromKb()
   } else if (rc_ptr_->key_E()) {
     chassis_working_mode = Chassis::WorkingMode::Follow;
   } else if (rc_ptr_->key_X()) {
-    chassis_working_mode = Chassis::WorkingMode::Farshoot;
-    gimbal_working_mode = Gimbal::WorkingMode::Farshoot;
+
   } else {
-    if (chassis_working_mode == Chassis::WorkingMode::Farshoot) {
-      chassis_working_mode = chassis_ptr_->getLastWorkingMode();
-    } else if (chassis_working_mode == Chassis::WorkingMode::Depart) {
+    if (chassis_working_mode == Chassis::WorkingMode::Depart) {
       chassis_working_mode = Chassis::WorkingMode::Follow;
     }
   }
@@ -378,7 +382,7 @@ void Robot::genModulesCmdFromKb()
     rev_head_flag = true;
   }
   if (rc_ptr_->key_CTRL()) {
-    shooter_working_mode = Shooter::WorkingMode::Crazy;
+    
   }
   if (rc_ptr_->key_Z()) {
     shooter_working_mode = Shooter::WorkingMode::FricBackward;
@@ -480,65 +484,59 @@ void Robot::setGimbalChassisCommData()
 };
 
 void Robot::setUiDrawerData() {
-  // // Chassis
-  // HW_ASSERT(chassis_fsm_ptr_ != nullptr, "Chassis FSM pointer is null", chassis_fsm_ptr_);
-  // ui_drawer_.setChassisPwrState(chassis_fsm_ptr_->pwr_state());
-  // ui_drawer_.setChassisCtrlMode(chassis_fsm_ptr_->ctrl_mode());
-  // ui_drawer_.setChassisWorkingMode(chassis_fsm_ptr_->working_mode());
-  // ui_drawer_.setChassisManualCtrlSrc(chassis_fsm_ptr_->manual_ctrl_src());
-  // ui_drawer_.setChassisHeadDir(chassis_fsm_ptr_->theta_i2r());
 
-  // // Gimbal
-  // HW_ASSERT(gimbal_fsm_ptr_ != nullptr, "Gimbal FSM pointer is null", gimbal_fsm_ptr_);
-  // ui_drawer_.setGimbalPwrState(gimbal_fsm_ptr_->pwr_state());
-  // ui_drawer_.setGimbalCtrlMode(gimbal_fsm_ptr_->ctrl_mode());
-  // ui_drawer_.setGimbalWorkingMode(gimbal_fsm_ptr_->working_mode());
-  // ui_drawer_.setGimbalManualCtrlSrc(gimbal_fsm_ptr_->manual_ctrl_src());
-  // ui_drawer_.setGimbalJointAngPitchFdb(gc_comm_ptr_->gimbal_data().pitch_fdb);
-  // ui_drawer_.setGimbalJointAngPitchRef(gc_comm_ptr_->gimbal_data().pitch_ref);
-  // ui_drawer_.setGimbalJointAngYawFdb(gc_comm_ptr_->gimbal_data().yaw_fdb);
-  // ui_drawer_.setGimbalJointAngYawRef(gc_comm_ptr_->gimbal_data().yaw_ref);
+  // ui_drawer_.setSenderId(RobotId::kRedStandard3);
+  // Chassis
+  HW_ASSERT(chassis_ptr_ != nullptr, "Chassis FSM pointer is null", chassis_ptr_);
+  ui_drawer_.setChassisWorkState(chassis_ptr_->getPwrState());
+  // ui_drawer_.setChassisCtrlMode();
+  ui_drawer_.setChassisWorkingMode(chassis_ptr_->getWorkingMode());
+  // ui_drawer_.setChassisManualCtrlSrc(chassis_ptr_->getManualCtrlSrc());
+  ui_drawer_.setChassisHeadDir(chassis_ptr_->getThetaI2r());
 
-  // // Shooter
-  // HW_ASSERT(shooter_fsm_ptr_ != nullptr, "Shooter FSM pointer is null", shooter_fsm_ptr_);
-  // ui_drawer_.setShooterPwrState(shooter_fsm_ptr_->pwr_state());
-  // ui_drawer_.setShooterCtrlMode(shooter_fsm_ptr_->ctrl_mode());
-  // ui_drawer_.setShooterWorkingMode(shooter_fsm_ptr_->working_mode());
-  // ui_drawer_.setShooterManualCtrlSrc(shooter_fsm_ptr_->manual_ctrl_src());
-  // ui_drawer_.setHeat(shooter_fsm_ptr_->heat());
-  // ui_drawer_.setHeatLimit(shooter_fsm_ptr_->heat_limit());
+  // Gimbal
+  HW_ASSERT(gimbal_ptr_ != nullptr, "Gimbal FSM pointer is null", gimbal_ptr_);
+  // ui_drawer_.setGimbalWorkState(chassis_ptr_->getPwrState());
+  ui_drawer_.setGimbalCtrlMode(gimbal_ptr_->getCtrlMode());
+  ui_drawer_.setGimbalWorkingMode(gimbal_ptr_->getWorkingMode());
+  // ui_drawer_.setGimbalManualCtrlSrc(manual_ctrl_src_);
+  ui_drawer_.setGimbalJointAngPitchFdb(gc_comm_ptr_->gimbal_data().gp.pitch_fdb);
+  ui_drawer_.setGimbalJointAngPitchRef(gc_comm_ptr_->gimbal_data().gp.pitch_ref);
+  ui_drawer_.setGimbalJointAngYawFdb(gc_comm_ptr_->gimbal_data().gp.yaw_fdb);
+  ui_drawer_.setGimbalJointAngYawRef(gc_comm_ptr_->gimbal_data().gp.yaw_ref);
 
-  // ui_drawer_.setFeedAngFdb(shooter_fsm_ptr_->feed_ang_fdb());
-  // ui_drawer_.setFeedAngRef(shooter_fsm_ptr_->feed_ang_ref());
-  // ui_drawer_.setFeedStuckFlag(shooter_fsm_ptr_->is_feed_stuck());
-  // ui_drawer_.setFricSpdFdb(gc_comm_ptr_->shooter_data().fric_spd_fdb);
-  // ui_drawer_.setFricSpdRef(shooter_fsm_ptr_->fric_spd_ref());
-  // ui_drawer_.setFricStuckFlag(shooter_fsm_ptr_->is_fric_stuck());
+  // Shooter
+  HW_ASSERT(shooter_ptr_ != nullptr, "Shooter FSM pointer is null", shooter_ptr_);
+  ui_drawer_.setShooterWorkState(chassis_ptr_->getPwrState());
+  ui_drawer_.setShooterCtrlMode(feed_ptr_->getCtrlMode());
+  ui_drawer_.setShooterWorkingMode(shooter_ptr_->getWorkingMode());
+  // ui_drawer_.setShooterManualCtrlSrc(chassis_ptr_->ge);
+  // ui_drawer_.setHeat(gc_comm_ptr_->);
+  // ui_drawer_.setHeatLimit(shooter_ptr_->heat_limit());
 
-  // // MiniGimbal
-  // HW_ASSERT(mini_gimbal_fsm_ptr_ != nullptr, "MiniGimbal FSM pointer is null", mini_gimbal_fsm_ptr_);
-  // ui_drawer_.setMiniGimbalPwrState(mini_gimbal_fsm_ptr_->pwr_state());
-  // ui_drawer_.setMiniGimbalCtrlMode(mini_gimbal_fsm_ptr_->ctrl_mode());
-  // ui_drawer_.setMiniGimbalWorkingMode(mini_gimbal_fsm_ptr_->working_mode());
-  // ui_drawer_.setMiniGimbalManualCtrlSrc(mini_gimbal_fsm_ptr_->manual_ctrl_src());
-  // ui_drawer_.setMiniPitchAngNow(gc_comm_ptr_->gimbal_data().mini_pitch_);
-  // // ui_drawer_.setMiniPitchPreSet();
+  // ui_drawer_.setFeedAngFdb(gc_comm_ptr_->shooter_data().gp.feed_ang_fdb);
+  // ui_drawer_.setFeedAngRef(gc_comm_ptr_->shooter_data().gp.feed_ang_ref);
+  ui_drawer_.setFeedStuckFlag(gc_comm_ptr_->shooter_data().gp.feed_stuck_state);
+  ui_drawer_.setFricSpdFdb(gc_comm_ptr_->shooter_data().gp.fric_spd_fdb);
+  ui_drawer_.setFricSpdRef(gc_comm_ptr_->shooter_data().gp.fric_spd_ref);
+  ui_drawer_.setFricStuckFlag(gc_comm_ptr_->shooter_data().gp.is_fric_stuck_);
+
 
   // // Cap
   // HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
   // ui_drawer_.setCapPwrPercent(cap_ptr_->getRemainingPowerPercent());
 
-  // // vision
-  // HW_ASSERT(gc_comm_ptr_ != nullptr, "GimbalChassisComm pointer is null", gc_comm_ptr_);
-  // bool is_vision_valid = gc_comm_ptr_->vision_data().detected_targets != 0;
-  // ui_drawer_.setVisTgtX(gc_comm_ptr_->vision_data().vtm_x, is_vision_valid);
-  // ui_drawer_.setVisTgtY(gc_comm_ptr_->vision_data().vtm_y, is_vision_valid);
+  // vision
+  HW_ASSERT(gc_comm_ptr_ != nullptr, "GimbalChassisComm pointer is null", gc_comm_ptr_);
+  bool is_vision_valid =gc_comm_ptr_->vision_data().gp.is_enemy_detected != 0;
+  ui_drawer_.setVisTgtX(gc_comm_ptr_->vision_data().gp.vtm_x, is_vision_valid);
+  ui_drawer_.setVisTgtY(gc_comm_ptr_->vision_data().gp.vtm_y, is_vision_valid);
 
-  // if (rc_ptr_->key_V()) {
-  //   ui_drawer_.refresh();
-  // }
+  if (rc_ptr_->key_V()) {
+    ui_drawer_.refresh();
+  }
 
-  // ui_drawer_.setVisTgtX();
+  
 };
 
 #pragma endregion
@@ -611,12 +609,15 @@ void Robot::sendUsartData()
     sendRefereeData();
   }
 };
+uint32_t debug_tick[3] = {0};
 void Robot::sendRefereeData()
 {
-  // if (ui_drawer_.encode(rfr_tx_data_, rfr_tx_data_len_)) {
-  //   HAL_UART_Transmit_DMA(&huart6, rfr_tx_data_, rfr_tx_data_len_);
-  // }
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kReferee].setTransmitterNeedToTransmit();
+  debug_tick[0]++;
+  if (ui_drawer_.encode(rfr_tx_data_, rfr_tx_data_len_)) {
+    HAL_UART_Transmit_DMA(&huart6, rfr_tx_data_, rfr_tx_data_len_);
+    debug_tick[1] ++;
+  }
+  // tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kReferee].setTransmitterNeedToTransmit();
 };
 #pragma endregion
 

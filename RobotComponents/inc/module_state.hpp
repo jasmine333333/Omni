@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : module_state.hpp
+ * @file      :module_state.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -76,6 +76,11 @@ enum class ScopeWorkingMode : uint8_t {
   Normal,    ///< 正常模式
   Farshoot,  ///< 吊射模式
 };
+enum AutoCamSrc : uint8_t {
+  kAutoCamNormal,     ///< 普通相机
+  kAutoCamLongFocal,  ///< 长焦相机
+};
+
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/

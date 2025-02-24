@@ -262,7 +262,7 @@ void Chassis::revNormCmd()
       float theta_ref[1] = {0.0f};
       float theta_fdb[1] = {theta_i2r_};
       // 如果云台反转，期望值是PI
-      // theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
+      theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
       follow_omega_pid_ptr_->calc(theta_ref, theta_fdb, nullptr, &cmd.w);
       cmd.w = hello_world::Bound(cmd.w, -1.0f, 1.0f);
       static auto data = follow_omega_pid_ptr_->getDatasAt(0);

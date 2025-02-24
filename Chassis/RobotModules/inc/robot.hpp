@@ -34,8 +34,9 @@
 #include "uart_rx_mgr.hpp"
 #include "uart_tx_mgr.hpp"
 #include "usr_imu.hpp"
-/* Exported macro ------------------------------------------------------------*/
+#include "ui_drawer.hpp"  // Ensure this header file defines the UiDrawer class
 
+/* Exported macro ------------------------------------------------------------*/
 namespace robot
 {
 /* Exported constants --------------------------------------------------------*/
@@ -59,12 +60,12 @@ class Robot : public Fsm
   typedef hello_world::referee::RobotShooterPackage ShooterPkg;
   typedef hello_world::referee::Referee Referee;
   typedef hello_world::referee::ids::RobotId RobotId;
-
   typedef robot::Chassis Chassis;
   typedef robot::Gimbal Gimbal;
   typedef robot::Imu Imu;
   typedef robot::Shooter Shooter;
   typedef robot::Feed Feed;
+  typedef robot::UiDrawer UiDrawer;
 
   class TxDevMgrPair
   {
@@ -173,6 +174,11 @@ class Robot : public Fsm
   void sendRefereeData();
   void sendUsartData();
 
+  uint8_t rfr_tx_data_[255] = {0};  ///< 机器人交互数据包发送缓存
+  size_t rfr_tx_data_len_ = 0;      ///< 机器人交互数据包发送缓存长度
+
+  RobotId robot_id_ = RobotId::kRedStandard3;
+  
   void setManualCtrlSrc(ManualCtrlSrc src)
   {
     if (src != manual_ctrl_src_) {
@@ -181,12 +187,22 @@ class Robot : public Fsm
     }
   };
 
+  ManualCtrlSrc getManualCtrlSrc()
+  {
+    if (manual_ctrl_src_ == ManualCtrlSrc::Rc) {
+      return ManualCtrlSrc::Rc;
+    } else if (manual_ctrl_src_ == ManualCtrlSrc::Kb) {
+      return ManualCtrlSrc::Kb;
+    }
+  };
   // IMU 数据在 update 函数中更新
   bool is_imu_caled_offset_ = false;  ///< IMU 数据是否计算完零飘
 
   // RC 数据在 update 函数中更新
   ManualCtrlSrc manual_ctrl_src_ = ManualCtrlSrc::Rc;       ///< 手动控制源
   ManualCtrlSrc last_manual_ctrl_src_ = ManualCtrlSrc::Rc;  ///< 上一手动控制源
+
+  UiDrawer ui_drawer_ ;                                                   ///< UI 绘制器
 
   // 主要模块状态机组件指针
   Chassis *chassis_ptr_ = nullptr;  ///< 底盘模块指针
@@ -212,7 +228,6 @@ class Robot : public Fsm
   PerformancePkg *rfr_performance_pkg_ptr_ = nullptr;  ///< 裁判系统性能包指针 收发数据
   PowerHeatPkg *rfr_power_heat_pkg_ptr_ = nullptr;     ///< 裁判系统电源和热量包指针 收发数据
   ShooterPkg *rfr_shooter_pkg_ptr_ = nullptr;          ///< 裁判系统射击包指针 收发数据
-
   TxDevMgrPair tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kNum] = {{nullptr}};  ///< 发送设备管理器对数组
 };
 /* Exported variables --------------------------------------------------------*/

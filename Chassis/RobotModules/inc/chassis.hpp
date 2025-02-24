@@ -29,6 +29,7 @@
 #include "super_cap.hpp"
 #include "usr_imu.hpp"
 /* Exported macro ------------------------------------------------------------*/
+// namespace hw_rfr = hello_world::referee;
 
 namespace robot
 {
@@ -111,9 +112,18 @@ class Chassis : public Fsm
   typedef ChassisWorkingMode WorkingMode;
   typedef robot::Imu Imu;
 
+
   typedef ChassisCmd Cmd;
   typedef ChassisRfrData RfrData;
   typedef ChassisConfig Config;
+
+  static std::string WorkingModeToStr(WorkingMode mode)
+  {
+    if (mode == Chassis::WorkingMode::Depart) return "Depart";
+    if (mode == Chassis::WorkingMode::Follow) return "Follow";
+    if (mode == Chassis::WorkingMode::Gyro) return "Gyro";
+    return "ErrCWM";
+  };
 
   enum class GyroDir : int8_t {
     Clockwise = -1,     ///< 顺时针
@@ -220,6 +230,7 @@ class Chassis : public Fsm
 
   // 配置参数
   Config cfg_;
+
 
   // 由 robot 设置的数据
   bool use_cap_flag_ = false;              ///< 是否使用超级电容

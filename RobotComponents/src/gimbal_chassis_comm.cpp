@@ -77,13 +77,13 @@ struct __attribute__((packed)) G2CPkg1 {
   // vision
   uint8_t vision_vtm_x;
   uint8_t vision_vtm_y;
-
+  uint8_t vision_is_enemy_detected : 1;
   static void encode(GimbalChassisComm &gc_comm, uint8_t *tx_data);
 
   static void decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data);
 };
 
-static_assert(sizeof(G2CPkg1) <= 8, "Gimbal2ChassisPkg size error");
+static_assert(sizeof(G2CPkg1) <= 9, "Gimbal2ChassisPkg size error");
 struct __attribute__((packed)) G2CPkg2 {
   uint8_t pkg_type;
   // shooter
@@ -265,6 +265,7 @@ void G2CPkg1::encode(GimbalChassisComm &gc_comm, uint8_t *tx_data)
   // vision
   pkg_ptr->vision_vtm_x = gc_comm.vision_data().gp.vtm_x;
   pkg_ptr->vision_vtm_y = gc_comm.vision_data().gp.vtm_y;
+  pkg_ptr->vision_is_enemy_detected = gc_comm.vision_data().gp.is_enemy_detected;
 };
 
 void G2CPkg1::decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data)
@@ -282,6 +283,7 @@ void G2CPkg1::decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data)
   // vision
   gc_comm.vision_data().gp.vtm_x = pkg_ptr->vision_vtm_x;
   gc_comm.vision_data().gp.vtm_y = pkg_ptr->vision_vtm_y;
+  gc_comm.vision_data().gp.is_enemy_detected = pkg_ptr->vision_is_enemy_detected;
 };
 
 void G2CPkg2::encode(GimbalChassisComm &gc_comm, uint8_t *tx_data)

@@ -78,6 +78,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
       float pitch_ref = 0.0f;  ///< 云台的期望俯仰角度(关节空间)
     } gp;
   };
+// unique_gimbal_chassis_comm.gimbal_data().gp.gimbal_pwr_state = (uint8_t)gc_comm.gimbal_data().gp.pwr_state;
 
   struct ShooterData {
     // chassis to gimbal
@@ -140,6 +141,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
     struct GimbalPart {
       uint8_t vtm_x = 0;
       uint8_t vtm_y = 0;
+      bool is_enemy_detected = 0;
     } gp;
   };
 
