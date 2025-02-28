@@ -131,7 +131,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
       float shooter_heat = 0;
       float shooter_cooling = 0;
       float shooter_heat_limit = 0;
-      bool is_new_bullet_shot = 0;
+      uint8_t is_new_bullet_shot = 0;
     } cp;
     // gimbal to chassis
   };

@@ -273,10 +273,7 @@ class UiDrawer
   void genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_world::referee::FloatingNumber& g_num);
 
   void genVisTgt(hello_world::referee::Circle& g);
-  void genVisionbox1(hello_world::referee::StraightLine& g_rect);
-  void genVisionbox2(hello_world::referee::StraightLine& g_rect);
-  void genVisionbox3(hello_world::referee::StraightLine& g_rect);
-  void genVisionbox4(hello_world::referee::StraightLine& g_rect);
+  void genVisionbox(hello_world::referee::Rectangle& g_rect);
 
   // encode
   size_t ui_idx_ = 0;

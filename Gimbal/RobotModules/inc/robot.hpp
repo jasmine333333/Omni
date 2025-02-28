@@ -167,6 +167,8 @@ class Robot : public Fsm
   // IMU 数据在 update 函数中更新
   bool is_imu_caled_offset_ = false;  ///< IMU 数据是否计算完零飘
 
+  uint8_t last_is_new_bullet_shot_ = 0;
+
   // 主要模块状态机组件指针
   Gimbal *gimbal_ptr_ = nullptr;    ///< 云台模块指针
   Feed *feed_ptr_ = nullptr;        ///< 拨盘模块指针

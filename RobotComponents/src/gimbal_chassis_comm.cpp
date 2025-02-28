@@ -56,7 +56,7 @@ struct __attribute__((packed)) C2GPkg2 {
   uint16_t rfr_is_rfr_gimbal_power_on : 1;
   uint16_t rfr_is_rfr_shooter_power_on : 1;
   uint16_t rfr_is_rfr_on : 1;
-  uint16_t rfr_is_new_bullet_shot : 1;
+  uint16_t rfr_is_new_bullet_shot : 2;
   static void encode(GimbalChassisComm &gc_comm, uint8_t *tx_data);
 
   static void decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data);

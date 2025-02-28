@@ -199,6 +199,7 @@ void Chassis::runOnWorking()
 {
   revNormCmd();
   calcWheelSpeedRef();
+  calcwheelfeedbackRef();
   calcWheelLimitedSpeedRef();
   calcWheelCurrentRef();
   setCommData(true);
@@ -212,7 +213,7 @@ void Chassis::standby()
 #pragma endregion
 
 #pragma region 工作状态下，获取控制指令的函数
-
+uint32_t cnt[4] = {0};
 void Chassis::revNormCmd()
 {
   float smooth_factor = cfg_.cmd_smooth_factor;
@@ -230,17 +231,28 @@ void Chassis::revNormCmd()
       act_working_mode = WorkingMode::Gyro;
     }
   }
-
+  cnt[3]++;
   switch (act_working_mode) {
     case WorkingMode::Gyro: {
       // 陀螺模式下，如果外部没有设置陀螺旋转方向，
       // 则每次进入陀螺模式时，随机选择一个方向
       if (gyro_dir_ == GyroDir::Unspecified) {
-        if (rand() % 2 == 0) {
+        if (last_gyro_dir_ == GyroDir::AntiClockwise)
+        {
+          cnt[0]++;
           gyro_dir_ = GyroDir::Clockwise;
-        } else {
-          gyro_dir_ = GyroDir::AntiClockwise;
         }
+        else if (last_gyro_dir_ == GyroDir::Clockwise)
+        {
+          cnt[1]++;
+          gyro_dir_ = GyroDir::AntiClockwise;
+        }    
+        else
+        {
+          cnt[2]++;
+          gyro_dir_ = GyroDir::Clockwise;
+        }    
+        last_gyro_dir_ = gyro_dir_;
       }
       // 小陀螺模式下，旋转分量为定值
       // TODO(LKY) 之后可以优化为变速小陀螺
@@ -267,13 +279,6 @@ void Chassis::revNormCmd()
       cmd.w = hello_world::Bound(cmd.w, -1.0f, 1.0f);
       static auto data = follow_omega_pid_ptr_->getDatasAt(0);
       data = follow_omega_pid_ptr_->getDatasAt(0);
-      break;
-    }
-    case WorkingMode::Farshoot: {
-      gyro_dir_ = GyroDir::Unspecified;
-      // 吊射模式下，限制底盘移动灵敏度
-      cmd *= 0.1f;
-      is_high_spd_enabled_ = false;
       break;
     }
     case WorkingMode::dead : {
@@ -309,19 +314,17 @@ void Chassis::calcWheelSpeedRef()
   ik_solver_ptr_->getRotSpdAll(wheel_speed_ref_);
 };
 float feedbackspeed[4] = {0};
-uint32_t cnt = 0;
 float slope_ang = 0;
 void Chassis::calcwheelfeedbackRef() 
 {
   slope_ang = imu_ptr_->getSlopeAng();
   if (slope_ang > 0.2 && slope_ang < 0.5) {
-    cnt++;
     hello_world::chassis_ik_solver::MoveVec move_vec(imu_ptr_->getGx(), imu_ptr_->getGy(), 0);
     ik_solver_ptr_->solve(move_vec, 0, nullptr);
     ik_solver_ptr_->getRotSpdAll(feedbackspeed);
     for (size_t i = 0; i < 4; i++)
     {
-      feedbackspeed[i] = feedbackspeed[i] * 2.428;
+      feedbackspeed[i] = feedbackspeed[i] * 2.3;
     }
 }
 else {
@@ -336,11 +339,11 @@ void Chassis::calcWheelLimitedSpeedRef()
 {
 
   hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
-    .p_ref_max = 1.2f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
+    .p_ref_max = 1.5f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
     .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
     .p_ref_min = 0.8f * rfr_data_.pwr_limit,
     .remaining_energy = static_cast<float>(rfr_data_.pwr_buffer),
-    .energy_converge = 30.0f,
+    .energy_converge = 10.0f,
     .p_slope = 1.6f,
     .danger_energy = 5.0f,
   };
@@ -359,7 +362,7 @@ void Chassis::calcWheelLimitedSpeedRef()
   }
 
       pwr_limiter_ptr_->updateWheelModel(wheel_speed_ref_, wheel_speed_fdb_,
-nullptr, nullptr);
+        feedbackspeed, nullptr);
       pwr_limiter_ptr_->calc(runtime_params, wheel_speed_ref_limited_,nullptr); // 更新运行时参数
 };
 void Chassis::calcPwrLimitedCurrentRef() {};
@@ -373,7 +376,6 @@ void Chassis::calcWheelCurrentRef()
       kWheelPidIdxRightRear,
       kWheelPidIdxRightFront,
   };
-  calcwheelfeedbackRef();
   MultiNodesPid *pid_ptr = nullptr;
   for (size_t i = 0; i < 4; i++) {
     pid_ptr = wheel_pid_ptr_[wpis[i]];

@@ -53,22 +53,30 @@ namespace robot
     }
   };
 
+
   void Robot::updateGimbalChassisCommData()
   {
     GimbalChassisComm::RefereeData::ChassisPart &referee_data = gc_comm_ptr_->referee_data().cp;
 
     hello_world::module::Feed::RfrInputData feed_rfr_input_data;
+    hello_world::module::Fric::RfrInputData fric_rfr_input_data;
+    
     feed_rfr_input_data.is_rfr_on = referee_data.is_rfr_on;
     feed_rfr_input_data.is_power_on = referee_data.is_rfr_shooter_power_on;
-    feed_rfr_input_data.is_new_bullet_shot = referee_data.is_new_bullet_shot;
+    if (referee_data.is_new_bullet_shot != last_is_new_bullet_shot_){
+      feed_rfr_input_data.is_new_bullet_shot = true;
+      fric_rfr_input_data.is_new_bullet_shot = true;
+    } else {
+      feed_rfr_input_data.is_new_bullet_shot = false;
+      fric_rfr_input_data.is_new_bullet_shot = false;
+    }
+    last_is_new_bullet_shot_ = referee_data.is_new_bullet_shot;
     feed_rfr_input_data.heat_limit = referee_data.shooter_heat_limit;
     feed_rfr_input_data.heat = referee_data.shooter_heat;
     feed_rfr_input_data.heat_cooling_ps = referee_data.shooter_cooling;
     feed_ptr_->updateRfrData(feed_rfr_input_data);
-
-    hello_world::module::Fric::RfrInputData fric_rfr_input_data;
+    
     fric_rfr_input_data.bullet_spd = referee_data.bullet_speed;
-    fric_rfr_input_data.is_new_bullet_shot = referee_data.is_new_bullet_shot;
     fric_rfr_input_data.is_power_on = referee_data.is_rfr_shooter_power_on;
     fric_ptr_->updateRfrData(fric_rfr_input_data);
 
@@ -267,11 +275,13 @@ namespace robot
   {
     pwr_state_ = PwrState::Dead;      ///< 电源状态
     last_pwr_state_ = PwrState::Dead; ///< 上一电源状态
+    last_is_new_bullet_shot_ = 0;
   };
   void Robot::resetDataOnDead()
   {
     pwr_state_ = PwrState::Dead;      ///< 电源状态
     last_pwr_state_ = PwrState::Dead; ///< 上一电源状态
+    last_is_new_bullet_shot_ = 0;
   };
   void Robot::resetDataOnResurrection() {};
 

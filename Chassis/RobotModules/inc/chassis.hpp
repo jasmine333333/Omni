@@ -236,6 +236,7 @@ class Chassis : public Fsm
   bool use_cap_flag_ = false;              ///< 是否使用超级电容
   bool is_gyro2follow_handled_ = false;    ///< 小陀螺切跟随是否已经处理
   GyroDir gyro_dir_ = GyroDir::Unspecified;  ///< 小陀螺方向，正为绕 Z 轴逆时针，负为顺时针，
+  GyroDir last_gyro_dir_ = GyroDir::Unspecified;  ///< 上一次小陀螺方向
   Cmd norm_cmd_ = {0};                     ///< 原始控制指令，基于图传坐标系
   ChassisRfrData rfr_data_;                ///< 底盘 RFR 数据
 

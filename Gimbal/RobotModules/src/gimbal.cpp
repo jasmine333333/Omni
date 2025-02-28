@@ -419,10 +419,12 @@ void Gimbal::setCommDataMotors(bool working_flag)
     JointIdx joint_idx = joint_idxs[i];
     HW_ASSERT(motor_ptr_[joint_idx] != nullptr, "pointer to motor %d is nullptr", joint_idx);
     if (working_flag && (!motor_ptr_[joint_idx]->isOffline())) {
+      motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kTorq);
       motor_ptr_[joint_idx]->setInput(joint_tor_ref_[joint_idx]);
     } else {
       pid_ptr_[joint_idx]->reset();
-      motor_ptr_[joint_idx]->setInput(0);
+      motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kCmd);
+      motor_ptr_[joint_idx]->setInput(hello_world::motor::DaMiao::Cmd::kCmdDisable);
     }
   }
 };

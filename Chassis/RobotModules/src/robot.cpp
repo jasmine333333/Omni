@@ -37,9 +37,6 @@ const hello_world::referee::RobotPerformanceData kDefaultRobotPerformanceData = 
     .power_management_shooter_output = 1,  ///< 电源管理模块 shooter 口输出：0-关闭，1-开启
 };
 const hello_world::referee::RobotPowerHeatData kDefaultRobotPowerHeatData = {
-    .chassis_voltage = 24000,  ///< 电源管理模块的chassis口输出电压，单位：mV
-    .chassis_current = 0,      ///< 电源管理模块的chassis口输出电流，单位：mA
-    .chassis_power = 0,        ///< 底盘功率，单位：W
     .buffer_energy = 60,       ///< 缓冲能量，单位：J
 
     .shooter_17mm_1_barrel_heat = 0,  ///< 第一个17mm发射机构的枪口热量
@@ -110,7 +107,7 @@ void Robot::updateRfrData()
   PowerHeatPkg::Data rph_data = kDefaultRobotPowerHeatData;
   ShooterPkg::Data rsp_data = kDefaultRobotShooterData;
 
-  bool is_new_bullet_shot = false;
+  GimbalChassisComm::RefereeData::ChassisPart &gimbal_rfr_data = gc_comm_ptr_->referee_data().cp;
 
   if (!referee_ptr_->isOffline()) {
     rpp_data = rfr_performance_pkg_ptr_->getData();
@@ -118,7 +115,11 @@ void Robot::updateRfrData()
     rsp_data = rfr_shooter_pkg_ptr_->getData();
     if (!rfr_shooter_pkg_ptr_->isHandled()) {  // 检测到了一颗新的弹丸发射
       rfr_shooter_pkg_ptr_->setHandled();
-      is_new_bullet_shot = true;
+      gimbal_rfr_data.is_new_bullet_shot++;
+      if (gimbal_rfr_data.is_new_bullet_shot > 3)
+      {
+        gimbal_rfr_data.is_new_bullet_shot = 0;
+      }
     }
   }
 
@@ -132,14 +133,11 @@ void Robot::updateRfrData()
   chassis_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
   chassis_rfr_data.is_pwr_on = rpp_data.power_management_chassis_output;
   chassis_rfr_data.pwr_limit = rpp_data.chassis_power_limit;
-  chassis_rfr_data.voltage = rph_data.chassis_voltage;
   chassis_rfr_data.pwr_buffer = rph_data.buffer_energy;
-  chassis_rfr_data.pwr = rph_data.chassis_power;
   chassis_rfr_data.current_hp = rpp_data.current_hp;
   // chassis_rfr_data.current_hp = 0;
   chassis_ptr_->setRfrData(chassis_rfr_data);
 
-  GimbalChassisComm::RefereeData::ChassisPart &gimbal_rfr_data = gc_comm_ptr_->referee_data().cp;
   gimbal_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
   gimbal_rfr_data.is_rfr_shooter_power_on = rpp_data.power_management_shooter_output;
   gimbal_rfr_data.is_rfr_gimbal_power_on = rpp_data.power_management_gimbal_output;
@@ -150,7 +148,6 @@ void Robot::updateRfrData()
   gimbal_rfr_data.shooter_heat = rph_data.shooter_17mm_1_barrel_heat;
   gimbal_rfr_data.shooter_cooling = rpp_data.shooter_barrel_cooling_value;
   gimbal_rfr_data.shooter_heat_limit = rpp_data.shooter_barrel_heat_limit;
-  gimbal_rfr_data.is_new_bullet_shot = is_new_bullet_shot;
 };
 
 
@@ -315,13 +312,13 @@ void Robot::genModulesCmdFromRc()
     if (r_switch == RcSwitchState::kUp) {
       // * 左下右上
       use_cap_flag = true;
-      gyro_dir = Chassis::GyroDir::Clockwise;
+      // gyro_dir = Chassis::GyroDir::Clockwise;
     } else if (r_switch == RcSwitchState::kMid) {
       // * 左下右中
-      gyro_dir = Chassis::GyroDir::Clockwise;
+      // gyro_dir = Chassis::GyroDir::AntiClockwise;
     } else if (r_switch == RcSwitchState::kDown) {
       // * 左下右下
-      gyro_dir = Chassis::GyroDir::AntiClockwise;
+      // gyro_dir = Chassis::GyroDir::AntiClockwise;
     }
   }
   }

@@ -39,9 +39,9 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsWheel = {
 const hw_pid::MultiNodesPid::ParamsList kPidParamsFollowOmega = {
     {
      .auto_reset = true,
-     .kp = 1.5f,
+     .kp = 1.48f,
      .ki = 0,
-     .kd = 0,
+     .kd = 50,
      .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 1.0, 0.1),
      .period_sub = hw_pid::PeriodSub(true, 2 * PI),
      .out_limit = kOutLimitFollowOmega,

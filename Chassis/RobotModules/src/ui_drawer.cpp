@@ -69,10 +69,10 @@ const uint8_t kuiNameChassisPassLineLeft[3] = {0x00, 0x00, 0x08};   ///< 底盘�
 const uint8_t kuiNameChassisPassLineRight[3] = {0x00, 0x00, 0x09};  ///< 底盘通行线右侧
 const uint8_t kUiNamePassSafe[3] = {0x00, 0x00, 0x0A}; ///< 底盘通行线中间
 // gimbal
-const uint16_t kPixelCenterXVisionBox = 1920 / 2;  //todo 云台视觉状态位置
-const uint16_t kPixelCenterYVisionBox =600;
-const uint16_t kPixelVisionBoxWidth = 500; //todo 云台视觉状态外框
-const uint16_t kPixelVisionBoxHeight = 500;
+const uint16_t kPixelCenterXVisionBox = 1704.5 / 2;  //todo 云台视觉状态位置
+const uint16_t kPixelCenterYVisionBox =1198.3/2;
+const uint16_t kPixelVisionBoxWidth = 592.5; //状态外框 云台视觉
+const uint16_t kPixelVisionBoxHeight = 315.3;
 
 const uint8_t kUiNameGimbalWorkStateTitle[3] = {0x00, 0x00, 0x40};    ///< 云台工作状态标题
 const uint8_t kUiNameGimbalWorkStateContent[3] = {0x00, 0x00, 0x41};  ///< 云台工作状态内容
@@ -126,10 +126,7 @@ const uint8_t kUiNameScopeAngPreSet[3] = {0x00, 0x00, 0xC3};  ///< 当前小云�
 const uint8_t kUiNameScopeAngNow[3] = {0x00, 0x00, 0xC4};     ///< 当前小云台俯仰额外俯仰角
 
 // vision
-const uint8_t kUiNameVisionBox1[3] = {0x00, 0x00, 0xE0};  ///< 视觉相机视场框
-const uint8_t kUiNameVisionBox2[3] = {0x00, 0x00, 0xE1};  ///< 视觉相机目标框 
-const uint8_t kUiNameVisionBox3[3] = {0x00, 0x00, 0xE2};  ///< 视觉相机目标框
-const uint8_t kUiNameVisionBox4[3] = {0x00, 0x00, 0xE3};  ///< 视觉相机目标框
+const uint8_t kUiNameVisionBox[3] = {0x00, 0x00, 0xE0};  ///< 视觉相机视场框
 const uint8_t kUiNameVisionTgt[3] = {0x00, 0x00, 0xE1};  ///< 视觉相机目标框
 
 // 安全过洞参数
@@ -335,24 +332,15 @@ bool UiDrawer::encodeStaticPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
   // g_pass_line_right.setOperation(opt);
 
   //新增视觉框
-  hello_world::referee::StraightLine g_vision_box1,g_vision_box2,g_vision_box3,g_vision_box4;
-  genVisionbox1(g_vision_box1);
-  genVisionbox2(g_vision_box2);
-  genVisionbox3(g_vision_box3);
-  genVisionbox4(g_vision_box4);
-  g_vision_box1.setOperation(opt);
-  g_vision_box2.setOperation(opt);
-  g_vision_box3.setOperation(opt);
-  g_vision_box4.setOperation(opt);
+  hello_world::referee::Rectangle g_vision_box;
+  genVisionbox(g_vision_box);
+  g_vision_box.setOperation(opt);
 
-  hello_world::referee::InterGraphic5Package pkg;
+  hello_world::referee::InterGraphic1Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
   // pkg.setStraightLineAt(g_pass_line_left, 0);
   // pkg.setStraightLineAt(g_pass_line_right, 1);
-  pkg.setStraightLineAt(g_vision_box1, 0);
-  pkg.setStraightLineAt(g_vision_box2, 1);
-  pkg.setStraightLineAt(g_vision_box3, 2);
-  pkg.setStraightLineAt(g_vision_box4, 3);
+  pkg.setRectangle(g_vision_box);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
@@ -587,7 +575,7 @@ void UiDrawer::genChassisPassLineRight(hello_world::referee::StraightLine& g)
   uint16_t start_posX = 0;
   uint16_t end_posY = 0;
   start_posX = gimbal_joint_ang_pitch_fdb_ * (-801.84) + 1277.1;
-  // end_posX = gimbal_joint_ang_pitch_fdb_*;
+  end_posX = gimbal_joint_ang_pitch_fdb_*96.48 + 1077;
   end_posY = gimbal_joint_ang_pitch_fdb_ * (-927.28) + 334.39;
   g.setName(kuiNameChassisPassLineRight);
   g.setLayer(kDynamicUiLayer);
@@ -817,7 +805,7 @@ void UiDrawer::genVisTgt(hello_world::referee::Circle& g)
   g.setLayer(hello_world::referee::GraphicLayer::k1);
   g.setLineWidth(2);
 };
-void UiDrawer::genVisionbox1(hello_world::referee::StraightLine& g_rect)
+void UiDrawer::genVisionbox(hello_world::referee::Rectangle& g_rect)
 {
   uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
   uint16_t end_x = start_x + kPixelVisionBoxWidth ;
@@ -829,62 +817,8 @@ void UiDrawer::genVisionbox1(hello_world::referee::StraightLine& g_rect)
     g_rect.setColor(hello_world::referee::String::Color::kWhite);
   }
 
-  g_rect.setName(kUiNameVisionBox1);
+  g_rect.setName(kUiNameVisionBox);
   g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setEndPos(start_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
-  g_rect.setLayer(kStaticUiLayer);
-  g_rect.setLineWidth(1.5);
-};
-void UiDrawer::genVisionbox2(hello_world::referee::StraightLine& g_rect)
-{
-  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
-  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
-
-  if (is_vision_valid_) {
-    g_rect.setColor(hello_world::referee::String::Color::kPurple);
-  }
-  else {
-    g_rect.setColor(hello_world::referee::String::Color::kWhite);
-  }
-
-  g_rect.setName(kUiNameVisionBox2);
-  g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setEndPos(end_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setLayer(kStaticUiLayer);
-  g_rect.setLineWidth(1.5);
-};
-void UiDrawer::genVisionbox3(hello_world::referee::StraightLine& g_rect)
-{
-  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
-  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
-
-  if (is_vision_valid_) {
-    g_rect.setColor(hello_world::referee::String::Color::kPurple);
-  }
-  else {
-    g_rect.setColor(hello_world::referee::String::Color::kWhite);
-  }
-
-  g_rect.setName(kUiNameVisionBox3);
-  g_rect.setStartPos(end_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
-  g_rect.setLayer(kStaticUiLayer);
-  g_rect.setLineWidth(1.5);
-};
-void UiDrawer::genVisionbox4(hello_world::referee::StraightLine& g_rect)
-{
-  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
-  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
-
-  if (is_vision_valid_) {
-    g_rect.setColor(hello_world::referee::String::Color::kPurple);
-  }
-  else {
-    g_rect.setColor(hello_world::referee::String::Color::kWhite);
-  }
-
-  g_rect.setName(kUiNameVisionBox4);
-  g_rect.setStartPos(start_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
   g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
   g_rect.setLayer(kStaticUiLayer);
   g_rect.setLineWidth(1.5);
