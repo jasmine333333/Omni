@@ -67,8 +67,13 @@ const uint8_t kUiNameChassisCapPercentNum[3] = {0x00, 0x00, 0x07};  ///< 超级�
 // 行车线
 const uint8_t kuiNameChassisPassLineLeft[3] = {0x00, 0x00, 0x08};   ///< 底盘通行线左侧
 const uint8_t kuiNameChassisPassLineRight[3] = {0x00, 0x00, 0x09};  ///< 底盘通行线右侧
-
+const uint8_t kUiNamePassSafe[3] = {0x00, 0x00, 0x0A}; ///< 底盘通行线中间
 // gimbal
+const uint16_t kPixelCenterXVisionBox = 1920 / 2;  //todo 云台视觉状态位置
+const uint16_t kPixelCenterYVisionBox =600;
+const uint16_t kPixelVisionBoxWidth = 500; //todo 云台视觉状态外框
+const uint16_t kPixelVisionBoxHeight = 500;
+
 const uint8_t kUiNameGimbalWorkStateTitle[3] = {0x00, 0x00, 0x40};    ///< 云台工作状态标题
 const uint8_t kUiNameGimbalWorkStateContent[3] = {0x00, 0x00, 0x41};  ///< 云台工作状态内容
 
@@ -121,9 +126,15 @@ const uint8_t kUiNameScopeAngPreSet[3] = {0x00, 0x00, 0xC3};  ///< 当前小云�
 const uint8_t kUiNameScopeAngNow[3] = {0x00, 0x00, 0xC4};     ///< 当前小云台俯仰额外俯仰角
 
 // vision
-const uint8_t kUiNameVisionBox[3] = {0x00, 0x00, 0xE0};  ///< 视觉相机视场框
+const uint8_t kUiNameVisionBox1[3] = {0x00, 0x00, 0xE0};  ///< 视觉相机视场框
+const uint8_t kUiNameVisionBox2[3] = {0x00, 0x00, 0xE1};  ///< 视觉相机目标框 
+const uint8_t kUiNameVisionBox3[3] = {0x00, 0x00, 0xE2};  ///< 视觉相机目标框
+const uint8_t kUiNameVisionBox4[3] = {0x00, 0x00, 0xE3};  ///< 视觉相机目标框
 const uint8_t kUiNameVisionTgt[3] = {0x00, 0x00, 0xE1};  ///< 视觉相机目标框
 
+// 安全过洞参数
+const float ksafepitchmin = 0.0;//todo
+const float ksafepitchmax = 0.1;//todo
 #pragma endregion names of graphics
 
 /* Private types -------------------------------------------------------------*/
@@ -177,27 +188,27 @@ bool UiDrawer::encodeStaticUi(uint8_t* data_ptr, size_t& data_len, GraphicOperat
     case kSuiPassLinePkgGroup2:
       return encodeStaticPkgGroup2(data_ptr, data_len, opt);
       break;
-    case kSuiChassisTitle:
-      return encodeChassisWorkStateTitle(data_ptr, data_len, opt);
-      break;
+    // case kSuiChassisTitle:
+    //   return encodeChassisWorkStateTitle(data_ptr, data_len, opt);
+    //   break;
     case kSuiGimbalTitle:
       return encodeGimbalWorkStateTitle(data_ptr, data_len, opt);
       break;
-    case kSuiShooterTitle:
-      return encodeShooterWorkStateTitle(data_ptr, data_len, opt);
-      break;
-    case kSuiFeedAngTitle:
-      return encodeFeedTitle(data_ptr, data_len, opt);
-      break;
-    case kSuiFricSpdTitle:
-      return encodeFricTitle(data_ptr, data_len, opt);
-      break;
-    case kSuiPitchAngTitle:
-      return encodeGimbalPitchTitle(data_ptr, data_len, opt);
-      break;
-    case kSuiYawAngTitle:
-      return encodeGimbalYawTitle(data_ptr, data_len, opt);
-      break;
+    // case kSuiShooterTitle:
+    //   return encodeShooterWorkStateTitle(data_ptr, data_len, opt);
+    //   break;
+    // case kSuiFeedAngTitle:
+    //   return encodeFeedTitle(data_ptr, data_len, opt);
+    //   break;
+    // case kSuiFricSpdTitle:
+    //   return encodeFricTitle(data_ptr, data_len, opt);
+    //   break;
+    // case kSuiPitchAngTitle:
+    //   return encodeGimbalPitchTitle(data_ptr, data_len, opt);
+    //   break;
+    // case kSuiYawAngTitle:
+    //   return encodeGimbalYawTitle(data_ptr, data_len, opt);
+    //   break;
     default:
       break;
   }
@@ -218,7 +229,7 @@ bool UiDrawer::encodeDynamicUi(uint8_t* data_ptr, size_t& data_len, GraphicOpera
         return true;
       }
 
-      res = encodeChassisWorkStateContent(data_ptr, data_len, opt);
+      // res = encodeChassisWorkStateContent(data_ptr, data_len, opt);
       if (res == true) {
         last_chassis_work_state_ = chassis_work_state_;
         last_chassis_working_mode_ = chassis_working_mode_;
@@ -237,7 +248,7 @@ bool UiDrawer::encodeDynamicUi(uint8_t* data_ptr, size_t& data_len, GraphicOpera
       } else {
         return true;
       }
-      res = encodeGimbalWorkStateContent(data_ptr, data_len, opt);
+      // res = encodeGimbalWorkStateContent(data_ptr, data_len, opt);
       if (res == true) {
         last_gimbal_work_state_ = gimbal_work_state_;
         last_gimbal_working_mode_ = gimbal_working_mode_;
@@ -256,7 +267,7 @@ bool UiDrawer::encodeDynamicUi(uint8_t* data_ptr, size_t& data_len, GraphicOpera
       } else {
         return true;
       }
-      res = encodeShooterWorkStateContent(data_ptr, data_len, opt);
+      // res = encodeShooterWorkStateContent(data_ptr, data_len, opt);
       if (res == true) {
         last_shooter_work_state_ = shooter_work_state_;
         last_shooter_working_mode_ = shooter_working_mode_;
@@ -316,51 +327,67 @@ bool UiDrawer::encodeDelAll(uint8_t* data_ptr, size_t& data_len)
 // };
 bool UiDrawer::encodeStaticPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
 {
-  hello_world::referee::StraightLine g_pass_line_left, g_pass_line_right;
-  genChassisPassLineLeft(g_pass_line_left);
-  g_pass_line_left.setOperation(opt);
-  genChassisPassLineRight(g_pass_line_right);
-  g_pass_line_right.setOperation(opt);
+  //为满足过洞需求，将行车线修改为动态
+  // hello_world::referee::StraightLine g_pass_line_left, g_pass_line_right;
+  // genChassisPassLineLeft(g_pass_line_left);
+  // g_pass_line_left.setOperation(opt);
+  // genChassisPassLineRight(g_pass_line_right);
+  // g_pass_line_right.setOperation(opt);
 
-  hello_world::referee::InterGraphic2Package pkg;
+  //新增视觉框
+  hello_world::referee::StraightLine g_vision_box1,g_vision_box2,g_vision_box3,g_vision_box4;
+  genVisionbox1(g_vision_box1);
+  genVisionbox2(g_vision_box2);
+  genVisionbox3(g_vision_box3);
+  genVisionbox4(g_vision_box4);
+  g_vision_box1.setOperation(opt);
+  g_vision_box2.setOperation(opt);
+  g_vision_box3.setOperation(opt);
+  g_vision_box4.setOperation(opt);
+
+  hello_world::referee::InterGraphic5Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
-  pkg.setStraightLineAt(g_pass_line_left, 0);
-  pkg.setStraightLineAt(g_pass_line_right, 1);
+  // pkg.setStraightLineAt(g_pass_line_left, 0);
+  // pkg.setStraightLineAt(g_pass_line_right, 1);
+  pkg.setStraightLineAt(g_vision_box1, 0);
+  pkg.setStraightLineAt(g_vision_box2, 1);
+  pkg.setStraightLineAt(g_vision_box3, 2);
+  pkg.setStraightLineAt(g_vision_box4, 3);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
 {
-  hello_world::referee::FloatingNumber g_pitch_fdb, g_yaw_fdb;
-  hello_world::referee::Integer g_feed_fdb, g_fric_fdb;
-  hello_world::referee::FloatingNumber g_mini_pitch_preset;
+  // hello_world::referee::FloatingNumber g_pitch_fdb, g_yaw_fdb;
+  // hello_world::referee::Integer g_feed_fdb, g_fric_fdb;
+  // hello_world::referee::FloatingNumber g_mini_pitch_preset;
   hello_world::referee::Arc g_chassis_status_head, g_chassis_status_other;
 
-  genGimbalJointAngPitchFdb(g_pitch_fdb);
-  g_pitch_fdb.setOperation(opt);
+  // genGimbalJointAngPitchFdb(g_pitch_fdb);
+  // g_pitch_fdb.setOperation(opt);
 
-  genGimbalJointAngYawFdb(g_yaw_fdb);
-  g_yaw_fdb.setOperation(opt);
+  // genGimbalJointAngYawFdb(g_yaw_fdb);
+  // g_yaw_fdb.setOperation(opt);
 
-  genShooterFeedAngFdb(g_feed_fdb);
-  g_feed_fdb.setOperation(opt);
+  // genShooterFeedAngFdb(g_feed_fdb);
+  // g_feed_fdb.setOperation(opt);
 
-  genShooterFricSpdFdb(g_fric_fdb);
-  g_fric_fdb.setOperation(opt);
+  // genShooterFricSpdFdb(g_fric_fdb);
+  // g_fric_fdb.setOperation(opt);
 
 
   genChassisStatus(g_chassis_status_head, g_chassis_status_other);
   g_chassis_status_head.setOperation(opt);
   g_chassis_status_other.setOperation(opt);
 
-  hello_world::referee::InterGraphic7Package pkg;
+  hello_world::referee::InterGraphic2Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
-  pkg.setFloatingNumberAt(g_pitch_fdb, 0);
-  pkg.setFloatingNumberAt(g_yaw_fdb, 1);
-  pkg.setIntegerAt(g_feed_fdb, 2);
-  pkg.setIntegerAt(g_fric_fdb, 3);
-  pkg.setFloatingNumberAt(g_mini_pitch_preset, 4);
-  pkg.setArcAt(g_chassis_status_head, 5);
-  pkg.setArcAt(g_chassis_status_other, 6);
+  // pkg.setFloatingNumberAt(g_pitch_fdb, 0);
+  // pkg.setFloatingNumberAt(g_yaw_fdb, 1);
+  // pkg.setIntegerAt(g_feed_fdb, 2);
+  // pkg.setIntegerAt(g_fric_fdb, 3);
+  // pkg.setFloatingNumberAt(g_mini_pitch_preset, 4);
+  pkg.setArcAt(g_chassis_status_head, 0);
+  pkg.setArcAt(g_chassis_status_other, 1);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
@@ -370,32 +397,55 @@ bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
   hello_world::referee::FloatingNumber g_mini_Pitch_now;
   hello_world::referee::Rectangle g_cap_pwr_percent_rect;
   hello_world::referee::FloatingNumber g_cap_pwr_percent_num;
-  genGimbalJointAngPitchRef(g_pitch_ref);
-  g_pitch_ref.setOperation(opt);
+  // genGimbalJointAngPitchRef(g_pitch_ref);
+  // g_pitch_ref.setOperation(opt);
 
-  genGimbalJointAngYawRef(g_yaw_ref);
-  g_yaw_ref.setOperation(opt);
+  // genGimbalJointAngYawRef(g_yaw_ref);
+  // g_yaw_ref.setOperation(opt);
 
-  genShooterFeedAngRef(g_feed_ref);
-  g_feed_ref.setOperation(opt);
+  // genShooterFeedAngRef(g_feed_ref);
+  // g_feed_ref.setOperation(opt);
 
-  genShooterFricSpdRef(g_fric_ref);
-  g_fric_ref.setOperation(opt);
+  // genShooterFricSpdRef(g_fric_ref);
+  // g_fric_ref.setOperation(opt);
 
 
   genCapPwrPercent(g_cap_pwr_percent_rect, g_cap_pwr_percent_num);
   g_cap_pwr_percent_rect.setOperation(opt);
   g_cap_pwr_percent_num.setOperation(opt);
 
-  hello_world::referee::InterGraphic7Package pkg;
+  hello_world::referee::StraightLine g_pass_line_left, g_pass_line_right;
+  genChassisPassLineLeft(g_pass_line_left);
+  g_pass_line_left.setOperation(opt);
+  genChassisPassLineRight(g_pass_line_right);
+  g_pass_line_right.setOperation(opt);
+
+  //显示过洞角度是否安全
+  hello_world::referee::Circle g_pass_hole;
+  bool is_safe = false;
+  if (gimbal_joint_ang_pitch_fdb_ > ksafepitchmin && gimbal_joint_ang_pitch_fdb_ < ksafepitchmax)
+  {
+    is_safe = true;
+  }
+  else
+  {
+    is_safe = false;
+  }
+  genPassSafe(g_pass_hole, is_safe);
+  g_pass_hole.setOperation(opt);
+
+  hello_world::referee::InterGraphic5Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
-  pkg.setFloatingNumberAt(g_pitch_ref, 0);
-  pkg.setFloatingNumberAt(g_yaw_ref, 1);
-  pkg.setIntegerAt(g_feed_ref, 2);
-  pkg.setIntegerAt(g_fric_ref, 3);
-  pkg.setFloatingNumberAt(g_mini_Pitch_now, 4);
-  pkg.setRectangleAt(g_cap_pwr_percent_rect, 5);
-  pkg.setFloatingNumberAt(g_cap_pwr_percent_num, 6);
+  // pkg.setFloatingNumberAt(g_pitch_ref, 0);
+  // pkg.setFloatingNumberAt(g_yaw_ref, 1);
+  // pkg.setIntegerAt(g_feed_ref, 2);
+  // pkg.setIntegerAt(g_fric_ref, 3);
+  // pkg.setFloatingNumberAt(g_mini_Pitch_now, 4);
+  pkg.setRectangleAt(g_cap_pwr_percent_rect, 0);
+  pkg.setFloatingNumberAt(g_cap_pwr_percent_num, 1);
+  pkg.setStraightLineAt(g_pass_line_left, 2);
+  pkg.setStraightLineAt(g_pass_line_right, 3);
+  pkg.setCircleAt(g_pass_hole, 4);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
@@ -415,11 +465,11 @@ bool UiDrawer::encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, Graphi
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
   pkg.setArcAt(g_heat, 0);
   pkg.setCircleAt(g_vision, 1);
-  pkg.setArcAt(g_heat, 3);
-  pkg.setCircleAt(g_vision, 4);
+  pkg.setArcAt(g_heat, 2);
+  pkg.setCircleAt(g_vision, 3);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
-#pragma endregion
+  #pragma endregion
 
 #pragma region 底盘相关 UI
 
@@ -512,25 +562,37 @@ void UiDrawer::genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_w
   g_num.setStartPos(start_x - 100, kPixelCenterYCapBox);
   g_num.setColor(color);
   g_num.setLayer(kDynamicUiLayer);
-  g_num.setFontSize(kUiModuleStateFontSize);//调整超电剩余电量的数字大小
+  g_num.setFontSize(20);//调整超电剩余电量的数字大小
   g_num.setLineWidth(kUiModuleStateLineWidth);
 };
 
 void UiDrawer::genChassisPassLineLeft(hello_world::referee::StraightLine& g)
 {
+  uint16_t end_posX = 0;
+  uint16_t start_posX = 0;
+  uint16_t end_posY = 0;
   g.setName(kuiNameChassisPassLineLeft);
-  g.setLayer(kStaticUiLayer);
-  g.setStartPos(737, 0);//todo
-  g.setEndPos(923, 397);
+  end_posX = gimbal_joint_ang_pitch_fdb_ *-81.75 + 814.7;
+  start_posX = gimbal_joint_ang_pitch_fdb_ * 660.4 +577.15;
+  end_posY = gimbal_joint_ang_pitch_fdb_ * -927.28 + 334.39;
+  g.setLayer(kDynamicUiLayer);
+  g.setStartPos(start_posX, 0);
+  g.setEndPos(end_posX, end_posY);
   g.setColor(kUiModuleStateColor);
   g.setLineWidth(3);
 };
 void UiDrawer::genChassisPassLineRight(hello_world::referee::StraightLine& g)
 {
+  uint16_t end_posX = 0;
+  uint16_t start_posX = 0;
+  uint16_t end_posY = 0;
+  start_posX = gimbal_joint_ang_pitch_fdb_ * (-801.84) + 1277.1;
+  // end_posX = gimbal_joint_ang_pitch_fdb_*;
+  end_posY = gimbal_joint_ang_pitch_fdb_ * (-927.28) + 334.39;
   g.setName(kuiNameChassisPassLineRight);
-  g.setLayer(kStaticUiLayer);
-  g.setStartPos(1240, 0);//todo
-  g.setEndPos(1051, 397);
+  g.setLayer(kDynamicUiLayer);
+  g.setStartPos(start_posX, 0);
+  g.setEndPos(end_posX, end_posY);
   g.setColor(kUiModuleStateColor);
   g.setLineWidth(3);
 };
@@ -620,7 +682,15 @@ void UiDrawer::genGimbalJointAngYawRef(hello_world::referee::FloatingNumber& g)
   g.setFontSize(kUiModuleStateFontSize);
   g.setLineWidth(kUiModuleStateLineWidth);
 };
-
+void UiDrawer::genPassSafe(hello_world::referee::Circle& g, bool is_safe)
+{
+  g.setName(kUiNamePassSafe);
+  g.setCenterPos(kUiModuleStateAreaX3, kUiModuleStateAreaY1 + kUiModuleStateAreaYDelta);//todo确认该指示显示位置
+  g.setRadius(25);
+  g.setColor(is_safe ? hello_world::referee::Circle::Color::kGreen : hello_world::referee::Circle::Color::kPurple);
+  g.setLayer(kDynamicUiLayer);
+  g.setLineWidth(3);
+};
 #pragma endregion
 
 #pragma region 发射机构相关 UI
@@ -741,11 +811,83 @@ bool UiDrawer::encodeShooterWorkStateContent(uint8_t* data_ptr, size_t& data_len
 void UiDrawer::genVisTgt(hello_world::referee::Circle& g)
 {
   g.setName(kUiNameVisionTgt);
-  g.setCenterPos(vis_tgt_x_ * 100, 1080 - vis_tgt_y_ * 100);
+  g.setCenterPos(vis_tgt_x_ , 1080 - vis_tgt_y_ );
   g.setRadius(35);
   g.setColor(hello_world::referee::String::Color::kGreen);
   g.setLayer(hello_world::referee::GraphicLayer::k1);
   g.setLineWidth(2);
+};
+void UiDrawer::genVisionbox1(hello_world::referee::StraightLine& g_rect)
+{
+  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
+  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
+
+  if (is_vision_valid_) {
+    g_rect.setColor(hello_world::referee::String::Color::kPurple);
+  }
+  else {
+    g_rect.setColor(hello_world::referee::String::Color::kWhite);
+  }
+
+  g_rect.setName(kUiNameVisionBox1);
+  g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(start_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setLayer(kStaticUiLayer);
+  g_rect.setLineWidth(1.5);
+};
+void UiDrawer::genVisionbox2(hello_world::referee::StraightLine& g_rect)
+{
+  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
+  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
+
+  if (is_vision_valid_) {
+    g_rect.setColor(hello_world::referee::String::Color::kPurple);
+  }
+  else {
+    g_rect.setColor(hello_world::referee::String::Color::kWhite);
+  }
+
+  g_rect.setName(kUiNameVisionBox2);
+  g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(end_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
+  g_rect.setLayer(kStaticUiLayer);
+  g_rect.setLineWidth(1.5);
+};
+void UiDrawer::genVisionbox3(hello_world::referee::StraightLine& g_rect)
+{
+  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
+  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
+
+  if (is_vision_valid_) {
+    g_rect.setColor(hello_world::referee::String::Color::kPurple);
+  }
+  else {
+    g_rect.setColor(hello_world::referee::String::Color::kWhite);
+  }
+
+  g_rect.setName(kUiNameVisionBox3);
+  g_rect.setStartPos(end_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setLayer(kStaticUiLayer);
+  g_rect.setLineWidth(1.5);
+};
+void UiDrawer::genVisionbox4(hello_world::referee::StraightLine& g_rect)
+{
+  uint16_t start_x = kPixelCenterXVisionBox - kPixelVisionBoxWidth / 2;
+  uint16_t end_x = start_x + kPixelVisionBoxWidth ;
+
+  if (is_vision_valid_) {
+    g_rect.setColor(hello_world::referee::String::Color::kPurple);
+  }
+  else {
+    g_rect.setColor(hello_world::referee::String::Color::kWhite);
+  }
+
+  g_rect.setName(kUiNameVisionBox4);
+  g_rect.setStartPos(start_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setLayer(kStaticUiLayer);
+  g_rect.setLineWidth(1.5);
 };
 
 #pragma endregion

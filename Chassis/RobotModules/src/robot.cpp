@@ -501,9 +501,9 @@ void Robot::setUiDrawerData() {
   ui_drawer_.setGimbalWorkingMode(gimbal_ptr_->getWorkingMode());
   // ui_drawer_.setGimbalManualCtrlSrc(manual_ctrl_src_);
   ui_drawer_.setGimbalJointAngPitchFdb(gc_comm_ptr_->gimbal_data().gp.pitch_fdb);
-  ui_drawer_.setGimbalJointAngPitchRef(gc_comm_ptr_->gimbal_data().gp.pitch_ref);
-  ui_drawer_.setGimbalJointAngYawFdb(gc_comm_ptr_->gimbal_data().gp.yaw_fdb);
-  ui_drawer_.setGimbalJointAngYawRef(gc_comm_ptr_->gimbal_data().gp.yaw_ref);
+  // ui_drawer_.setGimbalJointAngPitchRef(gc_comm_ptr_->gimbal_data().gp.pitch_ref);
+  // ui_drawer_.setGimbalJointAngYawFdb(gc_comm_ptr_->gimbal_data().gp.yaw_fdb);
+  // ui_drawer_.setGimbalJointAngYawRef(gc_comm_ptr_->gimbal_data().gp.yaw_ref);
 
   // Shooter
   HW_ASSERT(shooter_ptr_ != nullptr, "Shooter FSM pointer is null", shooter_ptr_);
@@ -511,26 +511,27 @@ void Robot::setUiDrawerData() {
   ui_drawer_.setShooterCtrlMode(feed_ptr_->getCtrlMode());
   ui_drawer_.setShooterWorkingMode(shooter_ptr_->getWorkingMode());
   // ui_drawer_.setShooterManualCtrlSrc(chassis_ptr_->ge);
-  // ui_drawer_.setHeat(gc_comm_ptr_->);
-  // ui_drawer_.setHeatLimit(shooter_ptr_->heat_limit());
+  ui_drawer_.setHeat(gc_comm_ptr_->referee_data().cp.shooter_heat);
+  ui_drawer_.setHeatLimit(gc_comm_ptr_->referee_data().cp.shooter_heat_limit);
 
   // ui_drawer_.setFeedAngFdb(gc_comm_ptr_->shooter_data().gp.feed_ang_fdb);
   // ui_drawer_.setFeedAngRef(gc_comm_ptr_->shooter_data().gp.feed_ang_ref);
   ui_drawer_.setFeedStuckFlag(gc_comm_ptr_->shooter_data().gp.feed_stuck_state);
-  ui_drawer_.setFricSpdFdb(gc_comm_ptr_->shooter_data().gp.fric_spd_fdb);
-  ui_drawer_.setFricSpdRef(gc_comm_ptr_->shooter_data().gp.fric_spd_ref);
+  // ui_drawer_.setFricSpdFdb(gc_comm_ptr_->shooter_data().gp.fric_spd_fdb);
+  // ui_drawer_.setFricSpdRef(gc_comm_ptr_->shooter_data().gp.fric_spd_ref);
   ui_drawer_.setFricStuckFlag(gc_comm_ptr_->shooter_data().gp.is_fric_stuck_);
 
 
-  // // Cap
-  // HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
-  // ui_drawer_.setCapPwrPercent(cap_ptr_->getRemainingPowerPercent());
+  // Cap
+  HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
+  ui_drawer_.setCapPwrPercent(cap_ptr_->getRemainingPower());
 
   // vision
   HW_ASSERT(gc_comm_ptr_ != nullptr, "GimbalChassisComm pointer is null", gc_comm_ptr_);
-  bool is_vision_valid =gc_comm_ptr_->vision_data().gp.is_enemy_detected != 0;
+  bool is_vision_valid =gc_comm_ptr_->vision_data().gp.is_enemy_detected ;
   ui_drawer_.setVisTgtX(gc_comm_ptr_->vision_data().gp.vtm_x, is_vision_valid);
   ui_drawer_.setVisTgtY(gc_comm_ptr_->vision_data().gp.vtm_y, is_vision_valid);
+  ui_drawer_.setisvisionvalid(is_vision_valid);
 
   if (rc_ptr_->key_V()) {
     ui_drawer_.refresh();

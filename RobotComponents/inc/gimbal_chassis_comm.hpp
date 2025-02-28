@@ -139,9 +139,9 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
   struct VisoinData {
     // Gimbal to Chassis
     struct GimbalPart {
-      uint8_t vtm_x = 0;
-      uint8_t vtm_y = 0;
-      bool is_enemy_detected = 0;
+      uint16_t vtm_x = 0;
+      uint16_t vtm_y = 0;
+      uint8_t is_enemy_detected = 0;
     } gp;
   };
 

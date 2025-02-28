@@ -69,21 +69,23 @@ struct __attribute__((packed)) G2CPkg1 {
   uint8_t gimbal_board_is_imu_ready : 1;
   // gimbal
   uint8_t gimbal_pwr_state : 2;
+  uint8_t vision_is_enemy_detected : 1 ;
+
   int8_t gimbal_pitch_ref;  ///< [-PI, PI]
   int8_t gimbal_pitch_fdb;  ///< [-PI, PI]
-  int8_t gimbal_yaw_ref;    ///< [-PI, PI]
-  int8_t gimbal_yaw_fdb;    ///< [-PI, PI]
+  // int8_t gimbal_yaw_ref;    ///< [-PI, PI]
+  // int8_t gimbal_yaw_fdb;    ///< [-PI, PI]
 
   // vision
-  uint8_t vision_vtm_x;
-  uint8_t vision_vtm_y;
-  uint8_t vision_is_enemy_detected : 1;
+  
+  uint16_t vision_vtm_x;
+  uint16_t vision_vtm_y;
   static void encode(GimbalChassisComm &gc_comm, uint8_t *tx_data);
 
   static void decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data);
 };
 
-static_assert(sizeof(G2CPkg1) <= 9, "Gimbal2ChassisPkg size error");
+static_assert(sizeof(G2CPkg1) <= 8, "Gimbal2ChassisPkg size error");
 struct __attribute__((packed)) G2CPkg2 {
   uint8_t pkg_type;
   // shooter
@@ -260,8 +262,8 @@ void G2CPkg1::encode(GimbalChassisComm &gc_comm, uint8_t *tx_data)
   // 都是周期数据，溢出不影响取值
   pkg_ptr->gimbal_pitch_ref = gc_comm.gimbal_data().gp.pitch_ref * 127.0f / M_PI;
   pkg_ptr->gimbal_pitch_fdb = gc_comm.gimbal_data().gp.pitch_fdb * 127.0f / M_PI;
-  pkg_ptr->gimbal_yaw_ref = gc_comm.gimbal_data().gp.yaw_ref * 127.0f / M_PI;
-  pkg_ptr->gimbal_yaw_fdb = gc_comm.gimbal_data().gp.yaw_fdb * 127.0f / M_PI;
+  // pkg_ptr->gimbal_yaw_ref = gc_comm.gimbal_data().gp.yaw_ref * 127.0f / M_PI;
+  // pkg_ptr->gimbal_yaw_fdb = gc_comm.gimbal_data().gp.yaw_fdb * 127.0f / M_PI;
   // vision
   pkg_ptr->vision_vtm_x = gc_comm.vision_data().gp.vtm_x;
   pkg_ptr->vision_vtm_y = gc_comm.vision_data().gp.vtm_y;
@@ -278,8 +280,8 @@ void G2CPkg1::decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data)
   // 都是周期数据，溢出不影响取值
   gc_comm.gimbal_data().gp.pitch_ref = pkg_ptr->gimbal_pitch_ref * M_PI / 127.0f;
   gc_comm.gimbal_data().gp.pitch_fdb = pkg_ptr->gimbal_pitch_fdb * M_PI / 127.0f;
-  gc_comm.gimbal_data().gp.yaw_ref = pkg_ptr->gimbal_yaw_ref * M_PI / 127.0f;
-  gc_comm.gimbal_data().gp.yaw_fdb = pkg_ptr->gimbal_yaw_fdb * M_PI / 127.0f;
+  // gc_comm.gimbal_data().gp.yaw_ref = pkg_ptr->gimbal_yaw_ref * M_PI / 127.0f;
+  // gc_comm.gimbal_data().gp.yaw_fdb = pkg_ptr->gimbal_yaw_fdb * M_PI / 127.0f;
   // vision
   gc_comm.vision_data().gp.vtm_x = pkg_ptr->vision_vtm_x;
   gc_comm.vision_data().gp.vtm_y = pkg_ptr->vision_vtm_y;

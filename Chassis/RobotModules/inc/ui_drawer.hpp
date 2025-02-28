@@ -69,6 +69,7 @@ class UiDrawer
     kDuiPkgGroup1,  ///< 云台 pitch yaw 角度反馈，拨盘角度反馈，摩擦轮转速反馈，超电，底盘朝向(2)
     kDuiPkgGroup2,  ///< 云台 pitch yaw 角度期望，拨盘角度期望，摩擦轮转速期望，小云台预设值，小云台当前俯仰角度
     kDuiPkgGroup3,
+    kDuiPkgGroup4,
     kDuiPkgNum,
   };
 
@@ -205,6 +206,7 @@ class UiDrawer
   void setVisTgtX(uint16_t x, bool valid) { vis_tgt_x_ = valid ? x : -1; }
   void setVisTgtY(uint16_t y, bool valid) { vis_tgt_y_ = valid ? y : -1; }
 
+  void setisvisionvalid(bool isvisionvalid) { is_vision_valid_ = isvisionvalid; }
 #pragma endregion
  private:
   template <typename T>
@@ -244,6 +246,7 @@ class UiDrawer
   bool encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
+  bool encodeDynaUiPkgGroup4(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
 
   void genChassisStatus(hello_world::referee::Arc& g_head, hello_world::referee::Arc& g_other);
   void genChassisPassLineLeft(hello_world::referee::StraightLine& g);
@@ -253,6 +256,7 @@ class UiDrawer
   void genGimbalJointAngPitchRef(hello_world::referee::FloatingNumber& g);
   void genGimbalJointAngYawFdb(hello_world::referee::FloatingNumber& g);
   void genGimbalJointAngYawRef(hello_world::referee::FloatingNumber& g);
+  void genPassSafe(hello_world::referee::Circle& g, bool is_safe);
 
   void genShooterHeat(hello_world::referee::Arc& g);
   void genShooterFeedAngFdb(hello_world::referee::FloatingNumber& g);
@@ -263,18 +267,16 @@ class UiDrawer
   void genShooterFricSpdFdb(hello_world::referee::Integer& g);
   void genShooterFricSpdRef(hello_world::referee::FloatingNumber& g);
   void genShooterFricSpdRef(hello_world::referee::Integer& g);
-  void genAimLineV(hello_world::referee::StraightLine& g);
-  void genAimLineH5m(hello_world::referee::StraightLine& g);
-  void genAimLineH8m(hello_world::referee::StraightLine& g);
-  void genAimLineH10m(hello_world::referee::StraightLine& g);
-  void genAimLineH15m(hello_world::referee::StraightLine& g);
 
 
 
   void genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_world::referee::FloatingNumber& g_num);
 
   void genVisTgt(hello_world::referee::Circle& g);
-  void genBalenceNumber(hello_world::referee::Integer& g);
+  void genVisionbox1(hello_world::referee::StraightLine& g_rect);
+  void genVisionbox2(hello_world::referee::StraightLine& g_rect);
+  void genVisionbox3(hello_world::referee::StraightLine& g_rect);
+  void genVisionbox4(hello_world::referee::StraightLine& g_rect);
 
   // encode
   size_t ui_idx_ = 0;
@@ -328,6 +330,7 @@ class UiDrawer
   // var for vision
   int16_t vis_tgt_x_ = 0;  ///< 视觉瞄准目标的 x 坐标，单位为像素，负数为无效值
   int16_t vis_tgt_y_ = 0;  ///< 视觉瞄准目标的 y 坐标，单位为像素，负数为无效值
+  bool is_vision_valid_ = false;//视觉是否瞄到
 };
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/

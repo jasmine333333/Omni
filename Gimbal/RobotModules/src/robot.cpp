@@ -245,7 +245,6 @@ namespace robot
     {
       feed_ptr_->setCtrlMode(hello_world::module::CtrlMode::kAuto);
     }
-    gc_comm_ptr_->vision_data().gp.is_enemy_detected = vision_ptr_->getIsEnemyDetected();
 
     if (shooter_data.working_mode == ShooterWorkingMode::Normal)
     {
@@ -316,11 +315,11 @@ namespace robot
 
     if (hello_world::referee::ids::GetTeamColor(rfr_id) == hello_world::referee::ids::TeamColor::kRed)
     {
-      vision_ptr_->setTargetColor(Vision::TargetColor::kRed);
+      vision_ptr_->setTargetColor(Vision::TargetColor::kBlue);
     }
     else if (hello_world::referee::ids::GetTeamColor(rfr_id) == hello_world::referee::ids::TeamColor::kBlue)
     {
-      vision_ptr_->setTargetColor(Vision::TargetColor::kBlue);
+      vision_ptr_->setTargetColor(Vision::TargetColor::kRed);
     }
     else
     {
@@ -346,6 +345,10 @@ namespace robot
 
     // gimbal
     GimbalChassisComm::GimbalData::GimbalPart &gimbal_data = gc_comm_ptr_->gimbal_data().gp;
+    gc_comm_ptr_->vision_data().gp.is_enemy_detected = vision_ptr_->getIsEnemyDetected();
+    gc_comm_ptr_->vision_data().gp.vtm_x = vision_ptr_->getVtmX();
+    gc_comm_ptr_->vision_data().gp.vtm_y = vision_ptr_->getVtmY();
+    gc_comm_ptr_->gimbal_data().gp.pitch_fdb = gimbal_ptr_->getJointPitchAngFdb();
 
     // shooter
     GimbalChassisComm::ShooterData::GimbalPart &shooter_data = gc_comm_ptr_->shooter_data().gp;
