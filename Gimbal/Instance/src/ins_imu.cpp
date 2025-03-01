@@ -17,6 +17,7 @@
 /* Private constants ---------------------------------------------------------*/
 const float kImuRotMatFlatten[9] = {0, 1, 0, 1, 0, 0, 0, 0, -1};
 const robot::Imu::Config kImuInitParams = {
+    .kp = 1.0,
     .rot_mat_ptr = kImuRotMatFlatten,
 };
 /* Private macro -------------------------------------------------------------*/

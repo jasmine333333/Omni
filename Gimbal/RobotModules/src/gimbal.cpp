@@ -164,11 +164,13 @@ void Gimbal::runOnWorking()
   {
     // laser_ptr_->disable();
     JointIdx joint_idxs[2] = {kJointYaw, kJointPitch};
-    for (size_t i = 0; i < 2; i++) {
+    for (size_t i = 0; i < 2; i++) 
+    {
       JointIdx joint_idx = joint_idxs[i];
       pid_ptr_[joint_idx]->reset();
-      motor_ptr_[joint_idx]->setInput(0);}
-      
+      motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kCmd);
+      motor_ptr_[joint_idx]->setInput(hello_world::motor::DaMiao::Cmd::kCmdDisable);
+    }
   }
   else{
   calcCtrlAngBased();
@@ -195,10 +197,11 @@ void Gimbal::calcCtrlAngBased()
   last_ctrl_ang_based_[kJointYaw] = ctrl_ang_based_[kJointYaw];
   last_ctrl_ang_based_[kJointPitch] = ctrl_ang_based_[kJointPitch];
 
-  if (working_mode_ == WorkingMode::Normal) {
+  if (ctrl_mode_ == CtrlMode::Manual) {
     ctrl_ang_based_[kJointYaw] = CtrlAngBased::Imu;
-    ctrl_ang_based_[kJointPitch] = CtrlAngBased::Motor;
-  } else {
+    ctrl_ang_based_[kJointPitch] = CtrlAngBased::Motor;//todotodo
+  } else if (ctrl_mode_ == CtrlMode::Auto)
+  {
     ctrl_ang_based_[kJointYaw] = CtrlAngBased::Imu;
     ctrl_ang_based_[kJointPitch] = CtrlAngBased::Imu;
   }
@@ -301,18 +304,17 @@ void Gimbal::calcJointAngRef()
 void Gimbal::calcJointTorRef()
 {
   JointIdx joint_idxs[kJointNum] = {kJointYaw, kJointPitch};
-  float pitch_ffd = calcJointFfdResistance(kJointPitch) +
+  joint_tor_ffd_[kJointPitch] = calcJointFfdResistance(kJointPitch) +
                     cfg_.max_pitch_torq * arm_cos_f32(joint_ang_fdb_[kJointPitch] + cfg_.pitch_center_offset);
-  float yaw_ffd = calcJointFfdResistance(kJointYaw);
-  float *ffd_list[2] = {&yaw_ffd, &pitch_ffd};
+  joint_tor_ffd_[kJointYaw] = calcJointFfdResistance(kJointYaw);
   for (uint8_t i = 0; i < kJointNum; i++) {
     JointIdx joint_idx = joint_idxs[i];
     float ref[2] = {joint_ang_ref_[joint_idx], 0.0f};
     float fdb[2] = {joint_ang_fdb_[joint_idx], imu_spd_fdb_[joint_idx]};
-    float *ffd = ffd_list[i];
+    float ffd = joint_tor_ffd_[joint_idx];
     Pid *pid_ptr = pid_ptr_[joint_idx];
     HW_ASSERT(pid_ptr != nullptr, "pointer to PID %d is nullptr", joint_idx);
-    pid_ptr->calc(ref, fdb, ffd, &joint_tor_ref_[joint_idx]);
+    pid_ptr->calc(ref, fdb, &ffd, &joint_tor_ref_[joint_idx]);
   }
   
 }
@@ -409,7 +411,6 @@ void Gimbal::resetPids()
 #pragma endregion
 
 #pragma region 通信数据设置
-
 void Gimbal::setCommDataMotors(bool working_flag)
 {
   // 机器人工作时
@@ -420,7 +421,14 @@ void Gimbal::setCommDataMotors(bool working_flag)
     HW_ASSERT(motor_ptr_[joint_idx] != nullptr, "pointer to motor %d is nullptr", joint_idx);
     if (working_flag && (!motor_ptr_[joint_idx]->isOffline())) {
       motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kTorq);
-      motor_ptr_[joint_idx]->setInput(joint_tor_ref_[joint_idx]);
+      // if(joint_idx == kJointPitch){
+      // pitch_spd_ref_ = pid_ptr_[joint_idx]->getDatasAt(0).out;
+      //   ((hello_world::motor::DaMiao*)motor_ptr_[joint_idx])->setMitInput(0,pitch_spd_ref_,0,2.0,joint_tor_ffd_[kJointPitch]);
+      // } else {
+      //   motor_ptr_[joint_idx]->setInput(joint_tor_ref_[joint_idx]);
+      // }
+     motor_ptr_[joint_idx]->setInput(joint_tor_ref_[joint_idx]);
+
     } else {
       pid_ptr_[joint_idx]->reset();
       motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kCmd);
@@ -455,11 +463,6 @@ void Gimbal::registerTd(Td *ptr, size_t idx)
   HW_ASSERT(idx >= 0 && idx < kJointNum, "index of Td out of range", idx);
   motor_spd_td_ptr_[idx] = ptr;
 }
-// void Gimbal::registerLaser(Laser *ptr)
-// {
-//   HW_ASSERT(ptr != nullptr, "pointer to laser is nullptr", ptr);
-//   laser_ptr_ = ptr;
-// }
 
 #pragma endregion
 

@@ -166,7 +166,6 @@ class Gimbal : public Fsm
   void registerPid(Pid *ptr, JointIdx idx);
   void registerTd(Td *ptr, size_t idx);
   void registerImu(Imu *ptr);
-  // void registerLaser(Laser *ptr);
 
  private:
   //  数据更新
@@ -224,6 +223,8 @@ class Gimbal : public Fsm
   float joint_ang_fdb_[kJointNum] = {0.0f};       ///< 关节角度反馈值
   float joint_spd_fdb_[kJointNum] = {0.0f};       ///< 关节角速度反馈值
   float joint_tor_ref_[kJointNum] = {0.0f};       ///< 关节扭矩期望值
+  float joint_tor_ffd_[kJointNum] = {0.0f};       ///< 关节扭矩前馈值
+  float pitch_spd_ref_ = 0.0;
 
   // 从电机中拿到的数据
   bool is_any_motor_pwron_ = false;  ///< 是否有电机上电

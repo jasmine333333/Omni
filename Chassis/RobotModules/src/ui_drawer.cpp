@@ -185,9 +185,9 @@ bool UiDrawer::encodeStaticUi(uint8_t* data_ptr, size_t& data_len, GraphicOperat
     case kSuiPassLinePkgGroup2:
       return encodeStaticPkgGroup2(data_ptr, data_len, opt);
       break;
-    // case kSuiChassisTitle:
-    //   return encodeChassisWorkStateTitle(data_ptr, data_len, opt);
-    //   break;
+    case kSuiChassisTitle:
+      return encodeChassisWorkStateTitle(data_ptr, data_len, opt);
+      break;
     case kSuiGimbalTitle:
       return encodeGimbalWorkStateTitle(data_ptr, data_len, opt);
       break;
@@ -226,7 +226,7 @@ bool UiDrawer::encodeDynamicUi(uint8_t* data_ptr, size_t& data_len, GraphicOpera
         return true;
       }
 
-      // res = encodeChassisWorkStateContent(data_ptr, data_len, opt);
+      res = encodeChassisWorkStateContent(data_ptr, data_len, opt);
       if (res == true) {
         last_chassis_work_state_ = chassis_work_state_;
         last_chassis_working_mode_ = chassis_working_mode_;
@@ -479,6 +479,11 @@ bool UiDrawer::encodeChassisWorkStateTitle(uint8_t* data_ptr, size_t& data_len, 
 bool UiDrawer::encodeChassisWorkStateContent(uint8_t* data_ptr, size_t& data_len, UiDrawer::GraphicOperation opt)
 {
   std::string str = "Unkown";
+  // if ()
+  // {
+  //   /* code */
+  // }
+  
   if (chassis_work_state_ != robot::PwrState::Working) {
     str = Chassis::WorkStateToStr(chassis_work_state_);
 

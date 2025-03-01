@@ -82,12 +82,6 @@ class Fsm : public hello_world::MemMgr
     return "ErrMCS";
   };
 
-  static std::string AutoCamSrcToStr(AutoCamSrc src)
-  {
-    if (src == kAutoCamNormal) return "Normal";
-    if (src == kAutoCamLongFocal) return "LongFocal";
-    return "ErrACS";
-  };
 
   static std::string CtrlModeSrcToStr(CtrlMode mode, ManualCtrlSrc src)
   {

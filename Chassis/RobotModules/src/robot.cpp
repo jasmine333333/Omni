@@ -486,7 +486,7 @@ void Robot::setUiDrawerData() {
   // Chassis
   HW_ASSERT(chassis_ptr_ != nullptr, "Chassis FSM pointer is null", chassis_ptr_);
   ui_drawer_.setChassisWorkState(chassis_ptr_->getPwrState());
-  // ui_drawer_.setChassisCtrlMode();
+  // ui_drawer_.setChassisCtrlMode(chassis_ptr_->);
   ui_drawer_.setChassisWorkingMode(chassis_ptr_->getWorkingMode());
   // ui_drawer_.setChassisManualCtrlSrc(chassis_ptr_->getManualCtrlSrc());
   ui_drawer_.setChassisHeadDir(chassis_ptr_->getThetaI2r());

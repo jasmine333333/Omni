@@ -61,24 +61,13 @@ enum class ChassisWorkingMode : uint8_t {
 /** 云台工作模式 */
 enum class GimbalWorkingMode {
   Normal,    ///< 正常模式
-  Farshoot,  ///< 吊射模式
   dead,      ///急停
 };
 /** 发射机构工作模式 */
 enum class ShooterWorkingMode : uint8_t {
   Normal,        ///< 正常模式
-  Crazy,         ///< 嗜血模式
   FricBackward,  ///< 摩擦轮倒转模式
   Stop,          ///< 摩擦轮停转模式
-};
-/** 倍镜云台工作模式 */
-enum class ScopeWorkingMode : uint8_t {
-  Normal,    ///< 正常模式
-  Farshoot,  ///< 吊射模式
-};
-enum AutoCamSrc : uint8_t {
-  kAutoCamNormal,     ///< 普通相机
-  kAutoCamLongFocal,  ///< 长焦相机
 };
 
 
@@ -126,23 +115,15 @@ inline std::string ChassisWorkingModeToStr(ChassisWorkingMode mode)
 inline std::string GimbalWorkingModeToStr(GimbalWorkingMode mode)
 {
   if (mode == GimbalWorkingMode::Normal) return "Normal";
-  if (mode == GimbalWorkingMode::Farshoot) return "Farshoot";
   return "ErrGWM";
 };
 
 inline std::string ShooterWorkingModeToStr(ShooterWorkingMode mode)
 {
   if (mode == ShooterWorkingMode::Normal) return "Normal";
-  if (mode == ShooterWorkingMode::Crazy) return "Crazy";
   if (mode == ShooterWorkingMode::FricBackward) return "FricBackward";
   return "ErrSWM";
 };
 
-inline std::string ScopeWorkingModeToStr(ScopeWorkingMode mode)
-{
-  if (mode == ScopeWorkingMode::Normal) return "Normal";
-  if (mode == ScopeWorkingMode::Farshoot) return "Farshoot";
-  return "ErrSGWM";
-}
 }  // namespace robot
 #endif /* MODULE_STATE_HPP_ */

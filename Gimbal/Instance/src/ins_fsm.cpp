@@ -68,7 +68,6 @@ robot::Gimbal* CreateGimbal()
 
     unique_gimbal.registerTd(CreateTdYaw(), robot::Gimbal::kJointYaw);
     unique_gimbal.registerTd(CreateTdPitch(), robot::Gimbal::kJointPitch);
-    // unique_robot.registerLaser(CreateLaser());
 
     // 只接收数据的组件指针
     unique_gimbal.registerImu(CreateImu());
@@ -134,6 +133,7 @@ robot::Robot* CreateRobot()
     unique_robot.registerImu(CreateImu());
 
     // 有通信功能的组件指针
+    unique_robot.registerLaser(CreateLaser());
 
     hello_world::comm::CanTxMgr* can_tx_mgr_ptr;
     can_tx_mgr_ptr = CreateCan1TxMgr();

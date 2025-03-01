@@ -76,8 +76,6 @@ const hw_motor::OptionalParams kMotorParamsYaw = {
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
     .angle_offset = -1.0f ,
-    /** 电机外置减速器的减速比（额外） */
-    // .ex_redu_rat = 14,
 };
 
 const hw_motor::OptionalParams kMotorParamsFeed = {

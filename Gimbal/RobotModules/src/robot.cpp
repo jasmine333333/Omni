@@ -160,21 +160,21 @@ namespace robot
 
   void Robot::runOnDead()
   {
-    // laser_ptr_->disable();
+    laser_ptr_->disable();
     resetDataOnDead();
     standby();
   };
 
   void Robot::runOnResurrection()
   {
-    // laser_ptr_->disable();
+    laser_ptr_->disable();
     resetDataOnResurrection();
     standby();
   };
 
   void Robot::runOnWorking()
   {
-    // laser_ptr_->disable();
+    laser_ptr_->disable();
     genModulesCmd();
 
     HW_ASSERT(gimbal_ptr_ != nullptr, "Gimbal FSM pointer is null", gimbal_ptr_);
@@ -190,7 +190,7 @@ namespace robot
     HW_ASSERT(feed_ptr_ != nullptr, "Feed FSM pointer is null", feed_ptr_);
     feed_ptr_->update();
     feed_ptr_->run();
-    feed_ptr_->setTriggerLimit(true, true, 5, 90);
+    feed_ptr_->setTriggerLimit(true, true, 5, 50);
   };
 
   void Robot::standby()
@@ -229,14 +229,14 @@ namespace robot
 
     if (gimbal_ctrl_mode == CtrlMode::Manual)
     {
-      // laser_ptr_->enable();
+      laser_ptr_->enable();
       gimbal_ptr_->setCtrlMode(CtrlMode::Manual);
       gimbal_ptr_->setRevHeadFlag(gimbal_data.turn_back_flag);
       gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
     }
     else if (gimbal_ctrl_mode == CtrlMode::Auto)
     {
-      // laser_ptr_->disable();
+      laser_ptr_->disable();
       gimbal_ptr_->setCtrlMode(CtrlMode::Auto);
       gimbal_ptr_->setVisionCmd(vision_ptr_->getPoseRefYaw(), vision_ptr_->getPoseRefPitch());
       // gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
@@ -316,7 +316,6 @@ namespace robot
     }
     else
     {
-
       vision_ptr_->setBulletSpeed(referee_data.bullet_speed);
     }
 
@@ -358,6 +357,7 @@ namespace robot
     gc_comm_ptr_->vision_data().gp.is_enemy_detected = vision_ptr_->getIsEnemyDetected();
     gc_comm_ptr_->vision_data().gp.vtm_x = vision_ptr_->getVtmX();
     gc_comm_ptr_->vision_data().gp.vtm_y = vision_ptr_->getVtmY();
+    // gc_comm_ptr_->gimbal_data().gp.pitch_fdb = gimbal_ptr_->getJointPitchAngFdb();
     gc_comm_ptr_->gimbal_data().gp.pitch_fdb = gimbal_ptr_->getJointPitchAngFdb();
 
     // shooter
