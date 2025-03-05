@@ -19,7 +19,7 @@
 #include "fric_2motor.hpp"
 /* Private macro -------------------------------------------------------------*/
 hello_world::module::Fric::Config kFricConfig = {
-    .default_spd_ref = 697.5f,            ///< 摩擦轮期望速度预设值 rad/s
+    .default_spd_ref = 662.5f,     //697.5f       ///< 摩擦轮期望速度预设值 rad/s
     .default_spd_ref_backward = -100.0f,  ///< 摩擦轮反转目标速度
 
     .stuck_curr_thre = 14.0f,  ///< 用于判断摩擦轮堵转的电流阈值
@@ -29,11 +29,11 @@ hello_world::module::Fric::Config kFricConfig = {
     .opt_spd_same_pid_enabled = true,
    .opt_blt_spd_cl = {
         .is_enabled = true,
-        .min_reasonable_blt_spd = 20.0f,
-        .max_reasonable_blt_spd = 28.0f,
-        .min_target_blt_spd = 23.2f,
-        .max_target_blt_spd = 24.25f,
-        .spd_gradient = 1.8f
+        .min_reasonable_blt_spd = 20.0f, //20.0f
+        .max_reasonable_blt_spd = 28.0f,//28.0f
+        .min_target_blt_spd = 23.35f,//23.2f
+        .max_target_blt_spd = 24.25f,//24.25f
+        .spd_gradient = 1.0f   //1.8f
     }    
 };
 Fric unique_fric = Fric(kFricConfig);

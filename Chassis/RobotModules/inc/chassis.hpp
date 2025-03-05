@@ -253,7 +253,10 @@ class Chassis : public Fsm
   float wheel_speed_ref_limited_[4] = {0};  ///< 轮电机的速度参考值(限幅后) 单位 rad/s
   float wheel_current_ref_[4] = {0};        ///< 轮电机的电流参考值 单位 A [-20, 20]
   bool rev_head_flag_ = false;              ///< 转向后退标志
+  float last_rev_head_angle_ = 0.0f;         ///< 上一次转向后退的标志
   uint32_t last_rev_head_tick_ = 0;         ///< 上一次转向后退的时间戳
+  bool rev_chassis_flag_ = false;           ///< 底盘后退标志
+  uint32_t last_rev_chassis_tick_ = 0;      ///< 上一次转向后退的时间戳
 
   // gimbal board fdb data  在 update 函数中更新
   bool is_gimbal_imu_ready_ = false;  ///< 云台主控板的IMU是否准备完毕

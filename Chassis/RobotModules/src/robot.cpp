@@ -357,7 +357,8 @@ void Robot::genModulesCmdFromKb()
   CtrlMode gimbal_ctrl_mode = CtrlMode::Manual;
   Gimbal::WorkingMode gimbal_working_mode = Gimbal::WorkingMode::Normal;
   bool rev_head_flag = false;
-
+  bool rev_chassis_flag = false;
+  bool auto_shoot_flag = false;
   CtrlMode feed_ctrl_mode = CtrlMode::Manual;
   Shooter::WorkingMode shooter_working_mode = Shooter::WorkingMode::Normal;
   Feed::WorkingMode feed_working_mode = Feed::WorkingMode::Normal;
@@ -375,16 +376,19 @@ void Robot::genModulesCmdFromKb()
       chassis_working_mode = Chassis::WorkingMode::Follow;
     }
   }
-  if (rc_ptr_->key_B()) {
+  if (rc_ptr_->key_C()) {
     rev_head_flag = true;
   }
+  if (rc_ptr_->key_B() )
+  {
+    rev_chassis_flag = true;
+  }
+  
   if (rc_ptr_->key_CTRL()) {
     
   }
   if (rc_ptr_->key_Z()) {
     shooter_working_mode = Shooter::WorkingMode::FricBackward;
-  }
-  if (rc_ptr_->key_R()) {
   }
   if (rc_ptr_->key_F()) {
   }
@@ -393,9 +397,31 @@ void Robot::genModulesCmdFromKb()
     shoot_flag = true;
   }
   if (rc_ptr_->mouse_r_btn()) {
-    feed_ctrl_mode = CtrlMode::Auto;
     gimbal_ctrl_mode = CtrlMode::Auto;
+    feed_ctrl_mode = CtrlMode::Manual;
   }
+  if (rc_ptr_->key_R()) {
+    auto_shoot_flag = !auto_shoot_flag;
+    if (auto_shoot_flag)
+    {
+      gimbal_ctrl_mode = CtrlMode::Auto;
+      feed_ctrl_mode = CtrlMode::Auto;
+    }
+    else
+    {
+      gimbal_ctrl_mode = CtrlMode::Manual;
+      feed_ctrl_mode = CtrlMode::Manual;
+      }
+  }
+  
+
+  GimbalCmd gimbal_cmd;
+  gimbal_cmd.pitch = hello_world::Bound(-0.01 * rc_ptr_->mouse_y(), -1, 1);
+  gimbal_cmd.yaw = hello_world::Bound(-0.01 * rc_ptr_->mouse_x(), -1, 1);
+  gimbal_ptr_->setNormCmdDelta(gimbal_cmd);
+  gimbal_ptr_->setCtrlMode(gimbal_ctrl_mode);
+  gimbal_ptr_->setWorkingMode(gimbal_working_mode);
+  gimbal_ptr_->setRevHeadFlag(rev_head_flag);
 
   ChassisCmd chassis_cmd = {0};
   chassis_cmd.v_x = (int8_t)rc_ptr_->key_W() - (int8_t)rc_ptr_->key_S();
@@ -405,14 +431,7 @@ void Robot::genModulesCmdFromKb()
   chassis_ptr_->setWorkingMode(chassis_working_mode);
   chassis_ptr_->setUseCapFlag(rc_ptr_->key_SHIFT());
   if (rev_head_flag) chassis_ptr_->revHead();
-
-  GimbalCmd gimbal_cmd;
-  gimbal_cmd.pitch = hello_world::Bound(-0.01 * rc_ptr_->mouse_y(), -1, 1);
-  gimbal_cmd.yaw = hello_world::Bound(-0.01 * rc_ptr_->mouse_x(), -1, 1);
-  gimbal_ptr_->setNormCmdDelta(gimbal_cmd);
-  gimbal_ptr_->setCtrlMode(gimbal_ctrl_mode);
-  gimbal_ptr_->setWorkingMode(gimbal_working_mode);
-  gimbal_ptr_->setRevHeadFlag(rev_head_flag);
+  if (rev_chassis_flag) chassis_ptr_->revHead();
 
   feed_ptr_->setCtrlMode(feed_ctrl_mode);
   feed_ptr_->setWorkingMode(feed_working_mode);
@@ -530,6 +549,11 @@ void Robot::setUiDrawerData() {
   ui_drawer_.setVisTgtY(gc_comm_ptr_->vision_data().gp.vtm_y, is_vision_valid);
   ui_drawer_.setisvisionvalid(is_vision_valid);
 
+  if (work_tick_ % 100 == 0)
+  {
+    ui_drawer_.refresh();
+  }
+  
   if (rc_ptr_->key_V()) {
     ui_drawer_.refresh();
   }

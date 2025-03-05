@@ -201,11 +201,7 @@ void C2GPkg1::encode(GimbalChassisComm &gc_comm, uint8_t *tx_data)
   pkg_ptr->shoot_flag = gc_comm.shooter_data().cp.shoot_flag(true);
   pkg_ptr->shooter_ctrl_mode = (uint32_t)gc_comm.shooter_data().cp.ctrl_mode;
   pkg_ptr->shooter_working_mode = (uint32_t)gc_comm.shooter_data().cp.working_mode;
-/*   // scope
-  pkg_ptr->scope_switch_flag = gc_comm.scope_data().cp.switch_flag;
-  pkg_ptr->scope_ctrl_ang_flag = gc_comm.scope_data().cp.ctrl_angle_flag;
-  pkg_ptr->scope_working_mode = (uint32_t)gc_comm.scope_data().cp.working_mode;
- */};
+ };
 
 void C2GPkg1::decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data)
 {

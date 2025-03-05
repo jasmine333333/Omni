@@ -71,6 +71,10 @@ class Gimbal : public hello_world::MemMgr
   void setRevHeadFlag(bool flag) { rev_head_flag_ = flag; }
   bool getRevHeadFlag() const { return rev_head_flag_; }
 
+  void setRevChassisFlag(bool flag) { rev_chassis_flag_ = flag; }
+  bool getRevChassisFlag() const { return rev_chassis_flag_; }
+
+
   void setNormCmdDelta(const Cmd &cmd) { norm_cmd_delta_ = cmd; }
   const Cmd &getNormCmdDelta() const { return norm_cmd_delta_; }
 
@@ -108,6 +112,9 @@ class Gimbal : public hello_world::MemMgr
 
   bool rev_head_flag_ = false;       ///< 翻转头部朝向标志位
   uint32_t last_rev_head_tick_ = 0;  ///< 上一次翻转头部朝向的时间戳
+
+  bool rev_chassis_flag_ = false;  ///< 翻转底盘朝向标志位
+  uint32_t last_rev_chassis_tick_ = 0;  ///< 上一次翻转底盘朝向的时间戳
 };
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/

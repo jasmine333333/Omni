@@ -258,9 +258,10 @@ void Gimbal::calcJointAngRef()
     float sensitivity_yaw = cfg_.sensitivity_yaw;      // yaw角度灵敏度，单位 rad/ms
     float sensitivity_pitch = cfg_.sensitivity_pitch;  // pitch角度灵敏度，单位 rad/ms
     // 如果翻转头部朝向标志位为真，且距离上一次翻转头部朝向的时间超过200ms
-    if (rev_head_flag_ && work_tick_ - last_rev_head_tick_ > 200) {
+    if (rev_head_flag_ && ((work_tick_ - last_rev_head_tick_) > 200)) {
       tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + PI;
       last_rev_head_tick_ = work_tick_;
+      last_joint_ang_ref_[kJointYaw] += PI;
     }
 
     tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;

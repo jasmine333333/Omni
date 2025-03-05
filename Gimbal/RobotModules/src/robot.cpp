@@ -190,7 +190,7 @@ namespace robot
     HW_ASSERT(feed_ptr_ != nullptr, "Feed FSM pointer is null", feed_ptr_);
     feed_ptr_->update();
     feed_ptr_->run();
-    feed_ptr_->setTriggerLimit(true, true, 5, 50);
+    feed_ptr_->setTriggerLimit(true, true, 3, 50);//todo
   };
 
   void Robot::standby()
