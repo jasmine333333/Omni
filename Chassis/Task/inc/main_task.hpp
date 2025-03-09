@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : main_task.hpp
+ * @file      :main_task.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -30,5 +30,6 @@ void MainTask(void);
 
 #ifdef __cplusplus
 }
+
 #endif
 #endif /* MAIN_TASK_HPP_ */

@@ -79,20 +79,7 @@ const uint8_t kUiNameGimbalWorkStateContent[3] = {0x00, 0x00, 0x41};  ///< 云�
 
 
 // shooter
-// const uint8_t kUiNameShooterWorkStateTitle[3] = {0x00, 0x00, 0x80};    ///< 发射机构工作状态标题
-// const uint8_t kUiNameShooterWorkStateContent[3] = {0x00, 0x00, 0x81};  ///< 发射机构工作状态内容
-
-// const uint8_t kUiNameFeedAngTitle[3] = {0x00, 0x00, 0x82};  ///< 拨盘角度标题
-// const uint8_t kUiNameFeedAngFdb[3] = {0x00, 0x00, 0x83};    ///< 拨盘角度反馈
-// const uint8_t kUiNameFeedAngRef[3] = {0x00, 0x00, 0x84};    ///< 拨盘角度期望
-// const uint8_t kUiNameFeedStuck[3] = {0x00, 0x00, 0x85};     ///< 拨盘堵转提示
-
-// const uint8_t kUiNameFricSpdTitle[3] = {0x00, 0x00, 0x86};    ///< 摩擦轮转速标题
-// const uint8_t kUiNameFricSpdContent[3] = {0x00, 0x00, 0x87};  ///< 摩擦轮转速反馈
-// const uint8_t kUiNameFricSpdRef[3] = {0x00, 0x00, 0x88};      ///< 摩擦轮转速期望
-// const uint8_t kUiNameFricStuck[3] = {0x00, 0x00, 0x89};       ///< 摩擦轮堵转提示
-
-const uint8_t kUiNameShooterHeat[3] = {0x00, 0x00, 0x8A};  ///< 发射机构热量
+const uint8_t kUiNameShooterHeat[3] = {0x00, 0x00, 0x80};  ///< 发射机构热量
 
 
 // vision
@@ -149,9 +136,6 @@ bool UiDrawer::encodeStaticUi(uint8_t* data_ptr, size_t& data_len, GraphicOperat
     case kSuiDelAll:
       return encodeDelAll(data_ptr, data_len);
       break;
-    // case kSuiPassLinePkgGroup1:
-    //   return encodeStaticPkgGroup1(data_ptr, data_len, opt);
-    //   break;
     case kSuiPassLinePkgGroup2:
       return encodeStaticPkgGroup2(data_ptr, data_len, opt);
       break;
@@ -161,21 +145,6 @@ bool UiDrawer::encodeStaticUi(uint8_t* data_ptr, size_t& data_len, GraphicOperat
     case kSuiGimbalTitle:
       return encodeGimbalWorkStateTitle(data_ptr, data_len, opt);
       break;
-    // case kSuiShooterTitle:
-    //   return encodeShooterWorkStateTitle(data_ptr, data_len, opt);
-    //   break;
-    // case kSuiFeedAngTitle:
-    //   return encodeFeedTitle(data_ptr, data_len, opt);
-    //   break;
-    // case kSuiFricSpdTitle:
-    //   return encodeFricTitle(data_ptr, data_len, opt);
-    //   break;
-    // case kSuiPitchAngTitle:
-    //   return encodeGimbalPitchTitle(data_ptr, data_len, opt);
-    //   break;
-    // case kSuiYawAngTitle:
-    //   return encodeGimbalYawTitle(data_ptr, data_len, opt);
-    //   break;
     default:
       break;
   }
@@ -408,7 +377,7 @@ void UiDrawer::genChassisStatus(hello_world::referee::Arc& g_head, hello_world::
 void UiDrawer::genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_world::referee::FloatingNumber& g_num)
 {
   uint16_t start_x = kPixelCenterXCapBox - kPixelCapBoxWidth / 2;
-  float percent = hello_world::Bound(cap_pwr_percent_, 0, 1);
+  float percent = hello_world::Bound(cap_pwr_percent_/100.0f, 0, 1);
   uint16_t end_x = start_x + kPixelCapBoxWidth * percent;
 
   hello_world::referee::GraphicColor color = hello_world::referee::Rectangle::Color::kGreen;
@@ -539,7 +508,7 @@ void UiDrawer::genShooterHeat(hello_world::referee::Arc& g)
 void UiDrawer::genVisTgt(hello_world::referee::Circle& g)
 {
   g.setName(kUiNameVisionTgt);
-  g.setCenterPos(vis_tgt_x_ , 1080 - vis_tgt_y_ );
+  g.setCenterPos(vis_tgt_x_ + 77, 1080 - vis_tgt_y_ - 36);
   g.setRadius(35);
   g.setColor(hello_world::referee::String::Color::kGreen);
   g.setLayer(hello_world::referee::GraphicLayer::k1);
@@ -558,8 +527,10 @@ void UiDrawer::genVisionbox(hello_world::referee::Rectangle& g_rect)
   }
 
   g_rect.setName(kUiNameVisionBox);
-  g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  // g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
+  g_rect.setStartPos(start_x, 250);
+  // g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(1269, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
   g_rect.setLayer(kStaticUiLayer);
   g_rect.setLineWidth(1.5);
 };

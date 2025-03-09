@@ -21,6 +21,7 @@ static const hw_pwr_limiter::PowerLimiter::StaticParams kMotorStaticParamsList =
         },
         .p_bias = 2.6f,         ///< 底盘静息功率
         .p_steering_ratio = 0.0f,  ///< 舵轮功率比例
+        
 
 };
 

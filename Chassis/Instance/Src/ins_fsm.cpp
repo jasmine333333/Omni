@@ -17,7 +17,7 @@
 /* Private constants ---------------------------------------------------------*/
 const robot::Chassis::Config kChassisConfig = {
     .normal_trans_vel = 4.0f,   ///< 正常平移速度
-    .normal_rot_spd = 13,   ///< 正常旋转速度
+    .normal_rot_spd = 13.0f,   ///< 正常旋转速度
     .max_trans_vel = 5.0f,      ///< 最大平移速度
     .max_rot_spd = 15,      ///< 最大旋转速度
     .cmd_smooth_factor = 0.8f,  ///< 运动指令平滑系数, 值域[0,1], 启用超电时默认为1

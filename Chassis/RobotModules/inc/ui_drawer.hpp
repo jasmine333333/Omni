@@ -51,21 +51,12 @@ class UiDrawer
     kSuiPassLinePkgGroup2,
     kSuiChassisTitle,
     kSuiGimbalTitle,
-    kSuiShooterTitle,
-    kSuiScopeTitle,
-    kSuiFeedAngTitle,
-    kSuiFricSpdTitle,
-    kSuiScopeAngTitle,
-    kSuiPitchAngTitle,
-    kSuiYawAngTitle,
     kSuiPkgNum,
   };
 
   enum DynamicUiIdx {
     kDuiChassisContent,
     kDuiGimbalContent,
-    kDuiShooterContent,
-    kDuiScopeContent,
     kDuiPkgGroup1,  ///< 云台 pitch yaw 角度反馈，拨盘角度反馈，摩擦轮转速反馈，超电，底盘朝向(2)
     kDuiPkgGroup2,  ///< 云台 pitch yaw 角度期望，拨盘角度期望，摩擦轮转速期望，小云台预设值，小云台当前俯仰角度
     kDuiPkgGroup3,
@@ -132,13 +123,6 @@ class UiDrawer
       gimbal_ctrl_mode_ = mode;
     }
   }
-  void setGimbalManualCtrlSrc(FsmManualCtrlSrc src)
-  {
-    if (src != gimbal_manual_ctrl_src_) {
-      last_gimbal_manual_ctrl_src_ = gimbal_manual_ctrl_src_;
-      gimbal_manual_ctrl_src_ = src;
-    }
-  }
   void setGimbalWorkingMode(GimbalWorkingMode mode)
   {
     if (mode != gimbal_working_mode_) {
@@ -151,38 +135,8 @@ class UiDrawer
   void setGimbalJointAngYawFdb(float yaw) { gimbal_joint_ang_yaw_fdb_ = yaw; }
   void setGimbalJointAngYawRef(float yaw) { gimbal_joint_ang_yaw_ref_ = yaw; }
 
-  void setShooterWorkState(FsmWorkState state)
-  {
-    if (state != shooter_work_state_) {
-      last_shooter_work_state_ = shooter_work_state_;
-      shooter_work_state_ = state;
-    }
-  }
-  void setShooterCtrlMode(FsmCtrlMode mode)
-  {
-    if (mode != shooter_ctrl_mode_) {
-      last_shooter_ctrl_mode_ = shooter_ctrl_mode_;
-      shooter_ctrl_mode_ = mode;
-    }
-  }
-  void setShooterManualCtrlSrc(FsmManualCtrlSrc src)
-  {
-    if (src != shooter_manual_ctrl_src_) {
-      last_shooter_manual_ctrl_src_ = shooter_manual_ctrl_src_;
-      shooter_manual_ctrl_src_ = src;
-    }
-  }
-  void setShooterWorkingMode(ShooterWorkingMode mode)
-  {
-    if (mode != shooter_working_mode_) {
-      last_shooter_working_mode_ = shooter_working_mode_;
-      shooter_working_mode_ = mode;
-    }
-  }
   void setHeat(float heat) { heat_ = heat; }
   void setHeatLimit(float limit) { heat_limit_ = limit; }
-  void setFeedAngFdb(float ang) { feed_ang_fdb_ = ang; }
-  void setFeedAngRef(float ang) { feed_ang_ref_ = ang; }
   void setFeedStuckFlag(bool flag)
   {
     if (flag != feed_stuck_flag_) {
@@ -190,8 +144,6 @@ class UiDrawer
       feed_stuck_flag_ = flag;
     }
   }
-  void setFricSpdFdb(float spd) { fric_spd_fdb_ = spd; }
-  void setFricSpdRef(float spd) { fric_spd_ref_ = spd; }
   void setFricStuckFlag(bool flag)
   {
     if (flag != fric_stuck_flag_) {
@@ -232,41 +184,20 @@ class UiDrawer
   bool encodeChassisWorkStateContent(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeGimbalWorkStateTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeGimbalWorkStateContent(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeShooterWorkStateTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeShooterWorkStateContent(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
 
-  bool encodeFeedTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeFricTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeGimbalPitchTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeGimbalYawTitle(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-
-  bool encodeStaticPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeStaticPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
 
   bool encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
-  bool encodeDynaUiPkgGroup4(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
 
   void genChassisStatus(hello_world::referee::Arc& g_head, hello_world::referee::Arc& g_other);
   void genChassisPassLineLeft(hello_world::referee::StraightLine& g);
   void genChassisPassLineRight(hello_world::referee::StraightLine& g);
 
-  void genGimbalJointAngPitchFdb(hello_world::referee::FloatingNumber& g);
-  void genGimbalJointAngPitchRef(hello_world::referee::FloatingNumber& g);
-  void genGimbalJointAngYawFdb(hello_world::referee::FloatingNumber& g);
-  void genGimbalJointAngYawRef(hello_world::referee::FloatingNumber& g);
   void genPassSafe(hello_world::referee::Circle& g, bool is_safe);
 
   void genShooterHeat(hello_world::referee::Arc& g);
-  void genShooterFeedAngFdb(hello_world::referee::FloatingNumber& g);
-  void genShooterFeedAngFdb(hello_world::referee::Integer& g);
-  void genShooterFeedAngRef(hello_world::referee::FloatingNumber& g);
-  void genShooterFeedAngRef(hello_world::referee::Integer& g);
-  void genShooterFricSpdFdb(hello_world::referee::FloatingNumber& g);
-  void genShooterFricSpdFdb(hello_world::referee::Integer& g);
-  void genShooterFricSpdRef(hello_world::referee::FloatingNumber& g);
-  void genShooterFricSpdRef(hello_world::referee::Integer& g);
 
 
 
@@ -305,20 +236,10 @@ class UiDrawer
   float gimbal_joint_ang_yaw_fdb_ = 0.0f, gimbal_joint_ang_yaw_ref_ = 0.0f;
 
   // var for shooter
-  FsmWorkState shooter_work_state_ = FsmWorkState::Dead;
-  FsmWorkState last_shooter_work_state_ = FsmWorkState::Dead;
-  FsmCtrlMode shooter_ctrl_mode_ = FsmCtrlMode::Manual;
-  FsmCtrlMode last_shooter_ctrl_mode_ = FsmCtrlMode::Manual;
-  FsmManualCtrlSrc shooter_manual_ctrl_src_ = FsmManualCtrlSrc::Rc;
-  FsmManualCtrlSrc last_shooter_manual_ctrl_src_ = FsmManualCtrlSrc::Rc;
-  ShooterWorkingMode shooter_working_mode_ = ShooterWorkingMode::Normal;
-  ShooterWorkingMode last_shooter_working_mode_ = ShooterWorkingMode::Normal;
   bool feed_stuck_flag_ = false, last_feed_stuck_flag_ = false;
   bool fric_stuck_flag_ = false, last_fric_stuck_flag_ = false;
   float heat_ = 0;
   float heat_limit_ = 100;
-  float feed_ang_fdb_ = 0.0f, feed_ang_ref_ = 0.0f;
-  float fric_spd_fdb_ = 0.0f, fric_spd_ref_ = 0.0f;
 
 
   // var for super capacitor

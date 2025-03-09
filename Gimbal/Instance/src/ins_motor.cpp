@@ -35,7 +35,7 @@ const hw_motor::OptionalParams kMotorParamsPitch = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = -0.0086f - 0.0106f ,
+    .angle_offset = -0.0086f - 0.0106f+0.038f,
 };
 
 const hw_motor::OptionalParams kMotorParamsFricLeft = {

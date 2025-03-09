@@ -21,7 +21,7 @@ const robot::Gimbal::Config kGimbalConfig = {
     .sensitivity_yaw = 300 / 1000.0 * PI / 180.0,           ///< yaw角度灵敏度，单位 rad/ms
     .sensitivity_pitch = 300 / 1000.0 * PI / 180.0,  ///< pitch角度灵敏度，单位 rad/ms
     .max_pitch_ang = 0.4f,                                  ///< 最大俯仰角度，单位 rad
-    .min_pitch_ang = -0.4f,                                 ///< 最小俯仰角度，单位 rad
+    .min_pitch_ang = -0.35f,                                 ///< 最小俯仰角度，单位 rad
     .max_pitch_torq = 0.92f,  //0.92f                               ///< 云台水平时的重力矩，单位 N·m
     .pitch_center_offset = test_angle, //0.31f                           ///??< 云台水平时，重心和pitch轴的连线与水平轴的夹角，单位 rad
     .resist_ffd_torq = 0.0f,                                ///< 云台摩擦力矩，单位 N·m.
@@ -133,7 +133,7 @@ robot::Robot* CreateRobot()
     unique_robot.registerImu(CreateImu());
 
     // 有通信功能的组件指针
-    unique_robot.registerLaser(CreateLaser());
+    // unique_robot.registerLaser(CreateLaser());
 
     hello_world::comm::CanTxMgr* can_tx_mgr_ptr;
     can_tx_mgr_ptr = CreateCan1TxMgr();

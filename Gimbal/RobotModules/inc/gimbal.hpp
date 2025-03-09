@@ -214,6 +214,7 @@ class Gimbal : public Fsm
 
   uint32_t last_rev_head_tick_ = 0;  ///< 上一次翻转头部朝向的时间戳
 
+  bool is_rotating_ = false;  // 新增正在转头标志位
   // 控制电机的 PID 所需数据
   CtrlAngBased ctrl_ang_based_[kJointNum] = {CtrlAngBased::Imu, CtrlAngBased::Imu};       ///< 角度控制方式
   CtrlAngBased last_ctrl_ang_based_[kJointNum] = {CtrlAngBased::Imu, CtrlAngBased::Imu};  ///< 上一控制周期的角度控制方式

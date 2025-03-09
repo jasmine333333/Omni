@@ -74,11 +74,12 @@ void CommTask(void)
 {
   HW_ASSERT(can1_tx_mgr_ptr != nullptr, "can1_tx_mgr_ptr is nullptr", can1_tx_mgr_ptr);
   HW_ASSERT(can2_tx_mgr_ptr != nullptr, "can2_tx_mgr_ptr is nullptr", can2_tx_mgr_ptr);
-  if (can1_tx_mgr_ptr == nullptr || can2_tx_mgr_ptr == nullptr) {
+  if (can1_tx_mgr_ptr == nullptr || can2_tx_mgr_ptr == nullptr ) {
     return;
   }
   can1_tx_mgr_ptr->startTransmit();
   can2_tx_mgr_ptr->startTransmit();
+  // rfr_tx_mgr_ptr->startTransmit();
   
 };
 

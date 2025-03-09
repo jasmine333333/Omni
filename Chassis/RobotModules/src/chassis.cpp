@@ -105,7 +105,6 @@ void Chassis::updateGimbalBoard()
     is_gimbal_imu_ready_ = gc_comm_ptr_->main_board_data().gp.is_gimbal_imu_ready;
   }
 };
-bool watch;
 
 void Chassis::updateMotor()
 {
@@ -144,7 +143,6 @@ void Chassis::updateMotor()
   } else {
     theta_i2r_ = -yaw_motor_ptr_->angle();
   }
-  watch = is_any_wheel_online;
 };
 
 void Chassis::updateCap()
@@ -239,17 +237,14 @@ void Chassis::revNormCmd()
       if (gyro_dir_ == GyroDir::Unspecified) {
         if (last_gyro_dir_ == GyroDir::AntiClockwise)
         {
-          cnt[0]++;
           gyro_dir_ = GyroDir::Clockwise;
         }
         else if (last_gyro_dir_ == GyroDir::Clockwise)
         {
-          cnt[1]++;
           gyro_dir_ = GyroDir::AntiClockwise;
         }    
         else
         {
-          cnt[2]++;
           gyro_dir_ = GyroDir::Clockwise;
         }    
         last_gyro_dir_ = gyro_dir_;
@@ -257,6 +252,9 @@ void Chassis::revNormCmd()
       // 小陀螺模式下，旋转分量为定值
       // TODO(LKY) 之后可以优化为变速小陀螺
       cmd.w = 1.0f * (int8_t)gyro_dir_;
+      if (cmd.v_x > fabs(0.1) || cmd.v_y > fabs(0.1)) {
+        cmd.w *= 0.8f ;
+        }// 是否需要根据底盘速度调整小陀螺速度
       break;
     }
     case WorkingMode::Depart: {
@@ -337,30 +335,43 @@ else {
 };
 void Chassis::calcWheelLimitedSpeedRef()
 {
-
+  float up_ref = 120.0f;
+  if (working_mode_ == WorkingMode::Gyro)
+  {
+    up_ref = 60.0f;
+  }
+  else
+  {
+    up_ref = 120.0f;
+  }
   hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
-    .p_ref_max = 1.5f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
+    .p_ref_max =  up_ref + static_cast<float>(rfr_data_.pwr_limit), // 60.0f,//1.2f * rfr_data_.pwr_limit
     .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
     .p_ref_min = 0.8f * rfr_data_.pwr_limit,
     .remaining_energy = static_cast<float>(rfr_data_.pwr_buffer),
-    .energy_converge = 10.0f,
-    .p_slope = 1.6f,
+    .energy_converge = 50.0f,
+    .p_slope = 2.0f,
     .danger_energy = 5.0f,
   };
-  // hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
-  //   .p_ref_max = 2.0f * rfr_data_.pwr_limit, // 60.0f,//1.2f * rfr_data_.pwr_limit
-  //   .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
-  //   .p_ref_min = 0.8f * rfr_data_.pwr_limit,
-  //   .remaining_energy = 60,
-  //   .energy_converge = 10.0f,
-  //   .p_slope = 4.0f,
-  //   .danger_energy = 5.0f,
-  // };
 
   if (!cap_ptr_->isOffline()) {
-    runtime_params.remaining_energy = cap_ptr_->getRemainingPower();
+    if (use_cap_flag_ == true)
+    {
+      runtime_params.remaining_energy = cap_ptr_->getRemainingPower();
+      runtime_params.energy_converge = 30.0f;
+      }
+    else
+    {
+      runtime_params.remaining_energy = cap_ptr_->getRemainingPower();
+      runtime_params.energy_converge = 50.0f;
+      }
   }
-
+  else
+  {
+    runtime_params.remaining_energy = static_cast<float>(rfr_data_.pwr_buffer);
+    runtime_params.energy_converge = 10.0f;
+  }
+  
       pwr_limiter_ptr_->updateWheelModel(wheel_speed_ref_, wheel_speed_fdb_,
         feedbackspeed, nullptr);
       pwr_limiter_ptr_->calc(runtime_params, wheel_speed_ref_limited_,nullptr); // 更新运行时参数
@@ -545,13 +556,11 @@ void Chassis::setCommDataCap(bool working_flag)
 {
   // 电容根据电容充电状态发送数据
   HW_ASSERT(cap_ptr_ != nullptr, "pointer to Capacitor is nullptr", cap_ptr_);
-  if (working_flag && use_cap_flag_) {
-    cap_ptr_->enable();
+  if (rfr_data_.is_rfr_on && rfr_data_.is_pwr_on) {
+    cap_ptr_->setRfrData(rfr_data_.pwr_buffer, rfr_data_.pwr_limit, rfr_data_.current_hp);
   } else {
-    cap_ptr_->disable();
+    cap_ptr_->setRfrData(rfr_data_.pwr_buffer, rfr_data_.pwr_limit, 0);
   }
-  cap_ptr_->setRfrData(rfr_data_.pwr_buffer, 60, rfr_data_.current_hp);
-  // cap_ptr_->setRequestedPower(0);
 };
 
 #pragma endregion
