@@ -67,9 +67,8 @@ void Chassis::updatePwrState()
   PwrState next_state = current_state;
   if (current_state == PwrState::Dead) {
     // 死亡状态下，如果上电，则切到复活状态
-    if (is_power_on_) {
       next_state = PwrState::Resurrection;
-    }
+      resurrection_time_ = 0;
   } else if (current_state == PwrState::Resurrection) {
     // 复活状态下，如果有轮电机上电完毕（底盘已经准备完毕），且云台板准备就绪，则切到工作状态
     // 1. 为什么要判断云台板准备就绪？
@@ -82,7 +81,14 @@ void Chassis::updatePwrState()
     // 因为 yaw 轴电机的状态不影响底盘的运动解算
     // 当 yaw 轴电机离线时，底盘会按照底盘坐标系进行解算（yaw 电机离线后数据清空，默认返回 0，能跑但是疯了，但总比不能跑强）
     // 当 yaw 轴电机上电时，底盘会按照图传坐标系进行解算
+
     if (is_gimbal_imu_ready_ && is_any_wheel_online_) {
+      resurrection_time_++;
+    } else {
+      resurrection_time_ = 0;
+    }
+    if (resurrection_time_ > 2000)
+    {
       next_state = PwrState::Working;
     }
   } else if (current_state == PwrState::Working) {

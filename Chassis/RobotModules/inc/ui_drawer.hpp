@@ -152,6 +152,7 @@ class UiDrawer
     }
   }
 
+  void setBulletNum(uint16_t num) { bullet_num_ = num; }
 
   void setCapPwrPercent(float percent) { cap_pwr_percent_ = percent; }
 
@@ -199,8 +200,7 @@ class UiDrawer
 
   void genShooterHeat(hello_world::referee::Arc& g);
 
-
-
+  void genBulletNum(hello_world::referee::FloatingNumber& g);
   void genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_world::referee::FloatingNumber& g_num);
 
   void genVisTgt(hello_world::referee::Circle& g);
@@ -240,7 +240,7 @@ class UiDrawer
   bool fric_stuck_flag_ = false, last_fric_stuck_flag_ = false;
   float heat_ = 0;
   float heat_limit_ = 100;
-
+  float bullet_num_ = 0;
 
   // var for super capacitor
   float cap_pwr_percent_ = 0;

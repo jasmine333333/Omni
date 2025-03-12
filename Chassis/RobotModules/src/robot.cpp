@@ -116,6 +116,7 @@ void Robot::updateRfrData()
     if (!rfr_shooter_pkg_ptr_->isHandled()) {  // 检测到了一颗新的弹丸发射
       rfr_shooter_pkg_ptr_->setHandled();
       gimbal_rfr_data.is_new_bullet_shot++;
+      bullet_num_ ++;
       if (gimbal_rfr_data.is_new_bullet_shot > 3)
       {
         gimbal_rfr_data.is_new_bullet_shot = 0;
@@ -521,7 +522,7 @@ void Robot::setUiDrawerData() {
   ui_drawer_.setFeedStuckFlag(gc_comm_ptr_->shooter_data().gp.feed_stuck_state);
   ui_drawer_.setFricStuckFlag(gc_comm_ptr_->shooter_data().gp.is_fric_stuck_);
 
-
+  ui_drawer_.setBulletNum(bullet_num_);
   // Cap
   HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
   ui_drawer_.setCapPwrPercent(cap_ptr_->getRemainingPower());

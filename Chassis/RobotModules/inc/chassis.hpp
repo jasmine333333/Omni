@@ -246,7 +246,7 @@ class Chassis : public Fsm
   // 在 update 函数中更新的数据
   bool is_power_on_ = false;        ///< 底盘电源是否开启
   uint32_t last_pwr_off_tick_ = 0;  ///< 上一次底盘电源处于关闭状态的时间戳，单位为 ms，实际上是作为上电瞬间的记录
-
+  uint32_t resurrection_time_ = 0;  ///< 底盘复活时间，单位为 ms
   // 在 runOnWorking 函数中更新的数据
   Cmd cmd_ = {0}, last_cmd_ = {0};          ///< 控制指令，基于图传坐标系
   float wheel_speed_ref_[4] = {0};          ///< 轮电机的速度参考值 单位 rad/s

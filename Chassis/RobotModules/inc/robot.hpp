@@ -204,6 +204,7 @@ class Robot : public Fsm
 
   UiDrawer ui_drawer_ ;                                                   ///< UI 绘制器
 
+  uint16_t bullet_num_ = 0;  ///< 子弹数量
   // 主要模块状态机组件指针
   Chassis *chassis_ptr_ = nullptr;  ///< 底盘模块指针
   Gimbal *gimbal_ptr_ = nullptr;    ///< 云台模块指针

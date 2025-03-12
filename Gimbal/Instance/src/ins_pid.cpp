@@ -114,7 +114,7 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsFeed = {
     {
           // 角度环
           .auto_reset = true,  ///< 是否自动清零
-          .kp = 17.0f,
+          .kp = 53.3f,
           .ki = 0.0f,
           .kd = 0.0f,
           .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),
@@ -125,7 +125,7 @@ const hw_pid::MultiNodesPid::ParamsList kPidParamsFeed = {
       {
           // 速度环
           .auto_reset = true,  ///< 是否自动清零
-          .kp = 1.0f,
+          .kp = 5.575f,
           .ki = 0.0f,
           .kd = 0.0f,
           .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1f, 0.1f, 0.1f),

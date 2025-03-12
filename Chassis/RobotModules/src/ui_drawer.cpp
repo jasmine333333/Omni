@@ -68,6 +68,7 @@ const uint8_t kUiNameChassisCapPercentNum[3] = {0x00, 0x00, 0x07};  ///< 超级�
 const uint8_t kuiNameChassisPassLineLeft[3] = {0x00, 0x00, 0x08};   ///< 底盘通行线左侧
 const uint8_t kuiNameChassisPassLineRight[3] = {0x00, 0x00, 0x09};  ///< 底盘通行线右侧
 const uint8_t kUiNamePassSafe[3] = {0x00, 0x00, 0x0A}; ///< 底盘通行线中间
+const uint8_t kUiBulletnum[3] = {0x00, 0x00, 0x0B};  ///< 发弹数量
 // gimbal
 const uint16_t kPixelCenterXVisionBox = 1704.5 / 2;  //todo 云台视觉状态位置
 const uint16_t kPixelCenterYVisionBox =1198.3/2;
@@ -87,8 +88,8 @@ const uint8_t kUiNameVisionBox[3] = {0x00, 0x00, 0xE0};  ///< 视觉相机视场
 const uint8_t kUiNameVisionTgt[3] = {0x00, 0x00, 0xE1};  ///< 视觉相机目标框
 
 // 安全过洞参数
-const float ksafepitchmin = 0.0;//todo
-const float ksafepitchmax = 0.1;//todo
+const float ksafepitchmin = -0.1;//todo
+const float ksafepitchmax = 0.2;//todo
 #pragma endregion names of graphics
 
 /* Private types -------------------------------------------------------------*/
@@ -255,6 +256,10 @@ bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
   g_cap_pwr_percent_rect.setOperation(opt);
   g_cap_pwr_percent_num.setOperation(opt);
 
+  hello_world::referee::FloatingNumber bullet_num;
+  genBulletNum(bullet_num);
+  bullet_num.setOperation(opt);
+
   hello_world::referee::StraightLine g_pass_line_left, g_pass_line_right;
   genChassisPassLineLeft(g_pass_line_left);
   g_pass_line_left.setOperation(opt);
@@ -275,13 +280,14 @@ bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
   genPassSafe(g_pass_hole, is_safe);
   g_pass_hole.setOperation(opt);
 
-  hello_world::referee::InterGraphic5Package pkg;
+  hello_world::referee::InterGraphic7Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
   pkg.setRectangleAt(g_cap_pwr_percent_rect, 0);
   pkg.setFloatingNumberAt(g_cap_pwr_percent_num, 1);
   pkg.setStraightLineAt(g_pass_line_left, 2);
   pkg.setStraightLineAt(g_pass_line_right, 3);
   pkg.setCircleAt(g_pass_hole, 4);
+  pkg.setFloatingNumberAt(bullet_num, 5);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
@@ -373,7 +379,16 @@ void UiDrawer::genChassisStatus(hello_world::referee::Arc& g_head, hello_world::
   g_other.setLineWidth(3);
   g_head.setLayer(kDynamicUiLayer);
 };
-
+void UiDrawer::genBulletNum(hello_world::referee::FloatingNumber& g)
+{
+  g.setName(kUiBulletnum);
+  g.setDisplayValue(bullet_num_);
+  g.setStartPos(165, 540);
+  g.setColor(hello_world::referee::FloatingNumber::Color::kPurple);
+  g.setLayer(kDynamicUiLayer);
+  g.setFontSize(30);
+  g.setLineWidth(kUiModuleStateLineWidth);
+};
 void UiDrawer::genCapPwrPercent(hello_world::referee::Rectangle& g_rect, hello_world::referee::FloatingNumber& g_num)
 {
   uint16_t start_x = kPixelCenterXCapBox - kPixelCapBoxWidth / 2;
@@ -528,9 +543,9 @@ void UiDrawer::genVisionbox(hello_world::referee::Rectangle& g_rect)
 
   g_rect.setName(kUiNameVisionBox);
   // g_rect.setStartPos(start_x, kPixelCenterYVisionBox - kPixelVisionBoxHeight / 2);
-  g_rect.setStartPos(start_x, 250);
+  g_rect.setStartPos(655, 250);
   // g_rect.setEndPos(end_x, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
-  g_rect.setEndPos(1269, kPixelCenterYVisionBox + kPixelVisionBoxHeight / 2);
+  g_rect.setEndPos(1269, 651);
   g_rect.setLayer(kStaticUiLayer);
   g_rect.setLineWidth(1.5);
 };

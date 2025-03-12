@@ -253,7 +253,6 @@ void Gimbal::calcJointAngRef()
       fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.30543f) 
       {
         tmp_ang_ref = vis_data_.cmd;
-        is_rotating_ = false;
       } 
   else  {
     // 否则，根据上一控制周期的关节角度参考值计算当前控制周期的关节角度参考值
@@ -264,12 +263,9 @@ void Gimbal::calcJointAngRef()
       tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + PI;
       last_rev_head_tick_ = work_tick_;
       last_joint_ang_ref_[kJointYaw] += PI;
-      is_rotating_ = true;  // 标记正在转头
     }
 
-    if (!is_rotating_) {
-      tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;
-    }
+    tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;
     tmp_ang_ref.pitch = last_joint_ang_ref_[kJointPitch];
     // 当 PItch 轴角度到达限位危险值时，不再进行增减，防止在限位附近震荡
     // 此种方法略有改善，震荡问题依然存在，原因可能为IMU反馈值没有及时更新或者更新速度慢导致的
@@ -305,9 +301,6 @@ void Gimbal::calcJointAngRef()
   joint_ang_ref_[kJointPitch] = tmp_ang_ref.pitch;
   // joint_ang_ref_[kJointPitch] = debug_pitch;
   // joint_ang_ref_[kJointYaw] = debug_yaw;
-  if (is_rotating_ && (work_tick_ - last_rev_head_tick_ > 500)) {
-    is_rotating_ = false;
-  }
 };
 
 void Gimbal::calcJointTorRef()
