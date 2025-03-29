@@ -344,7 +344,7 @@ void Chassis::calcWheelLimitedSpeedRef()
   float up_ref = 120.0f;
   if (working_mode_ == WorkingMode::Gyro)
   {
-    up_ref = 60.0f;
+    up_ref = 60.0f;//todo
   }
   else
   {
@@ -358,6 +358,15 @@ void Chassis::calcWheelLimitedSpeedRef()
     .energy_converge = 50.0f,
     .p_slope = 2.0f,
     .danger_energy = 5.0f,
+  // hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
+  //   .p_ref_max =  55.0f, // 60.0f,//1.2f * rfr_data_.pwr_limit
+  //   .p_referee_max = 55.0f,
+  //   .p_ref_min = 55.0f,
+  //   .remaining_energy = static_cast<float>(rfr_data_.pwr_buffer),
+  //   .energy_converge = 50.0f,
+  //   .p_slope = 2.0f,
+  //   .danger_energy = 5.0f,
+
   };
 
   if (!cap_ptr_->isOffline()) {
@@ -564,6 +573,7 @@ void Chassis::setCommDataCap(bool working_flag)
   HW_ASSERT(cap_ptr_ != nullptr, "pointer to Capacitor is nullptr", cap_ptr_);
   if (rfr_data_.is_rfr_on && rfr_data_.is_pwr_on) {
     cap_ptr_->setRfrData(rfr_data_.pwr_buffer, rfr_data_.pwr_limit, rfr_data_.current_hp);
+    // cap_ptr_->setRfrData(rfr_data_.pwr_buffer, rfr_data_.pwr_limit, 0);
   } else {
     cap_ptr_->setRfrData(rfr_data_.pwr_buffer, rfr_data_.pwr_limit, 0);
   }

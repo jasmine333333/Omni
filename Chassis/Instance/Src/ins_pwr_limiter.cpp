@@ -12,8 +12,8 @@
 
 static const hw_pwr_limiter::PowerLimiter::StaticParams kMotorStaticParamsList = {
         .wheel_motor_params = {
-            .k1 = 0.265f,      ///< 电机铜损
-            .k2 = 0.11f,      ///< 电机加速度系数
+            .k1 = 0.285f,      ///< 
+            .k2 = 0.11f,      ///< 
             .k3 = 0.15f,         ///< 电机转速系数
             .kp = 2.15f,       ///< 
             .out_limit = 20.0f, ///< 输出限幅，单位：A
