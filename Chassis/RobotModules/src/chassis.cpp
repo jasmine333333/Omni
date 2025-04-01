@@ -217,6 +217,28 @@ void Chassis::standby()
 #pragma endregion
 
 #pragma region 工作状态下，获取控制指令的函数
+float Chassis::variable_gyro()
+{
+  float amplitude = 0.17f;    // 振幅（最大速度变化范围）
+  float base_speed = 1.0f;   // 基础转速
+  float angular_freq = 2.0f * M_PI / 7.0f; // 角频率（周期为 5 秒）
+  float phase_shift = 0.0f;  // 相位偏移
+  // 获取当前时间（假设以毫秒为单位）
+  static uint32_t start_time = 0;
+  uint32_t current_time = work_tick_; // 获取当前时间
+  if (start_time == 0) {
+    start_time = current_time; // 初始化开始时间
+  }
+
+  // 计算经过的时间（秒）
+  float elapsed_time = (current_time - start_time) / 1000.0f;
+
+  // 使用正弦函数计算速度变化
+  float speed_variation = amplitude * sin(angular_freq * elapsed_time + phase_shift);
+
+  return speed_variation;
+}
+
 uint32_t cnt[4] = {0};
 void Chassis::revNormCmd()
 {
@@ -256,8 +278,8 @@ void Chassis::revNormCmd()
         last_gyro_dir_ = gyro_dir_;
       }
       // 小陀螺模式下，旋转分量为定值
-      // TODO(LKY) 之后可以优化为变速小陀螺
-      cmd.w = 1.0f * (int8_t)gyro_dir_;
+      cmd.w = 0.8f * (int8_t)gyro_dir_;
+      cmd.w += variable_gyro();
       if (cmd.v_x > fabs(0.1) || cmd.v_y > fabs(0.1)) {
         cmd.w *= 0.8f ;
         }// 是否需要根据底盘速度调整小陀螺速度

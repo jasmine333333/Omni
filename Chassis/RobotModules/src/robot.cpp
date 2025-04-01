@@ -349,6 +349,7 @@ void Robot::genModulesCmdFromRc()
   feed_ptr_->setShootFlag(shoot_flag);
 };
 
+bool navigate_flag = 0; //巡航模式
 void Robot::genModulesCmdFromKb()
 {
   // TODO: 这里应该生成各个模块的指令，包括底盘指令、云台指令、底盘状态等等
@@ -364,13 +365,28 @@ void Robot::genModulesCmdFromKb()
   Shooter::WorkingMode shooter_working_mode = Shooter::WorkingMode::Normal;
   Feed::WorkingMode feed_working_mode = Feed::WorkingMode::Normal;
   bool shoot_flag = false;
-
-
+  
+  // 检测CTRL是否按下
+  bool is_CTRL_pressed = rc_ptr_->key_CTRL();
+  if (is_CTRL_pressed) {
+    navigate_flag = true; // 启用巡航模式标志
+    } 
+    else {
+        navigate_flag = false; // 关闭巡航模式标志 
+}
+  if (navigate_flag == true) {
+    chassis_working_mode = Chassis::WorkingMode::Gyro; // 设置底盘为小陀螺模式
+  }  else 
+  {
+    chassis_working_mode = Chassis::WorkingMode::Follow; // 默认底盘跟随模式
+  }
+  
   if (rc_ptr_->key_Q()) {
     chassis_working_mode = Chassis::WorkingMode::Gyro;
   } else if (rc_ptr_->key_E()) {
     chassis_working_mode = Chassis::WorkingMode::Follow;
-  }  else {
+  } 
+  else {
     if (chassis_working_mode == Chassis::WorkingMode::Depart) {
       chassis_working_mode = Chassis::WorkingMode::Follow;
     }
@@ -383,9 +399,6 @@ void Robot::genModulesCmdFromKb()
     rev_chassis_flag = true;
   }
   
-  if (rc_ptr_->key_CTRL()) {
-    
-  }
   if (rc_ptr_->key_Z()) {
     shooter_working_mode = Shooter::WorkingMode::FricBackward;
   }
@@ -421,7 +434,9 @@ void Robot::genModulesCmdFromKb()
   gimbal_ptr_->setCtrlMode(gimbal_ctrl_mode);
   gimbal_ptr_->setWorkingMode(gimbal_working_mode);
   gimbal_ptr_->setRevHeadFlag(rev_head_flag);
-
+  gimbal_ptr_->setRevChassisFlag(rev_chassis_flag);
+  gimbal_ptr_->setnavigateFlag(navigate_flag);
+  
   ChassisCmd chassis_cmd = {0};
   chassis_cmd.v_x = (int8_t)rc_ptr_->key_W() - (int8_t)rc_ptr_->key_S();
   chassis_cmd.v_y = (int8_t)rc_ptr_->key_A() - (int8_t)rc_ptr_->key_D();
@@ -489,7 +504,7 @@ void Robot::setGimbalChassisCommData()
   gimbal_data.pitch_delta = gimbal_ptr_->getNormCmdDelta().pitch;
   gimbal_data.ctrl_mode = gimbal_ptr_->getCtrlMode();
   gimbal_data.working_mode = gimbal_ptr_->getWorkingMode();
-
+  gimbal_data.navigation_flag = gimbal_ptr_->getnavigateFlag();
 
   // shooter
   GimbalChassisComm::ShooterData::ChassisPart &shooter_data = gc_comm_ptr_->shooter_data().cp;

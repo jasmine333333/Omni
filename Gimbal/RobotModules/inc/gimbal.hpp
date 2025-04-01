@@ -130,6 +130,9 @@ class Gimbal : public Fsm
   }
   bool getRevHeadFlag() const { return rev_head_flag_; }
 
+  void setNavigationFlag(bool flag) {navigation_flag_ = flag;}
+  bool getNavigationFlag() const {return navigation_flag_;}
+
   void setVisionTargetDetected(bool flag) { vis_data_.is_target_detected = flag; }
   void updateIsRfrPwrOn(bool flag) { is_rfr_pwr_on_ = flag; }
 
@@ -182,6 +185,7 @@ class Gimbal : public Fsm
 
   void calcCtrlAngBased();
   void adjustJointFdb();
+  void calcCruiseMode(Cmd &tmp_ang_ref);
   void adjustLastJointAngRef();
   void calcJointAngRef();
   void calcJointTorRef();
@@ -198,6 +202,7 @@ class Gimbal : public Fsm
 
   // 由 robot 设置的数据
   bool rev_head_flag_ = false;  ///< 翻转头部朝向标志位
+  bool navigation_flag_ = false;  ///< 云台巡航标志位
   bool is_rfr_pwr_on_ = false;  ///< 裁判系统电源管理 gimbal 是否输出
 
   Cmd norm_cmd_delta_ = {0.0, 0.0};  ///< 控制指令的增量

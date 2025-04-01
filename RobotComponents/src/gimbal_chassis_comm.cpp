@@ -28,6 +28,7 @@ struct __attribute__((packed)) C2GPkg1 {
   int8_t gimbal_yaw_delta;
   int8_t gimbal_pitch_delta;
   uint8_t gimbal_turn_back_flag : 1;
+  uint8_t gimbal_navigate_flag : 1;
   uint32_t gimbal_ctrl_mode : 1;
   uint32_t gimbal_working_mode : 2;
   // shooter
@@ -195,6 +196,7 @@ void C2GPkg1::encode(GimbalChassisComm &gc_comm, uint8_t *tx_data)
   pkg_ptr->gimbal_yaw_delta = hello_world::Bound(gc_comm.gimbal_data().cp.yaw_delta, -1.0f, 1.0f) * 127;
   pkg_ptr->gimbal_pitch_delta = hello_world::Bound(gc_comm.gimbal_data().cp.pitch_delta, -1.0f, 1.0f) * 127;
   pkg_ptr->gimbal_turn_back_flag = gc_comm.gimbal_data().cp.turn_back_flag;
+  pkg_ptr->gimbal_navigate_flag = gc_comm.gimbal_data().cp.navigation_flag;
   pkg_ptr->gimbal_ctrl_mode = (uint32_t)gc_comm.gimbal_data().cp.ctrl_mode;
   pkg_ptr->gimbal_working_mode = (uint32_t)gc_comm.gimbal_data().cp.working_mode;
   // shooter
@@ -210,6 +212,7 @@ void C2GPkg1::decode(GimbalChassisComm &gc_comm, const uint8_t *rx_data)
   gc_comm.gimbal_data().cp.yaw_delta = hello_world::Bound(pkg_ptr->gimbal_yaw_delta / 127.0f, -1.0f, 1.0f);
   gc_comm.gimbal_data().cp.pitch_delta = hello_world::Bound(pkg_ptr->gimbal_pitch_delta / 127.0f, -1.0f, 1.0f);
   gc_comm.gimbal_data().cp.turn_back_flag = pkg_ptr->gimbal_turn_back_flag;
+  gc_comm.gimbal_data().cp.navigation_flag = pkg_ptr->gimbal_navigate_flag;
   gc_comm.gimbal_data().cp.ctrl_mode = (CtrlMode)pkg_ptr->gimbal_ctrl_mode;
   gc_comm.gimbal_data().cp.working_mode = (GimbalWorkingMode)pkg_ptr->gimbal_working_mode;
   // shooter

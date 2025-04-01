@@ -170,6 +170,7 @@ class Chassis : public Fsm
   }
   void setGyroDir(GyroDir dir);
   void setUseCapFlag(bool flag) { use_cap_flag_ = flag; }
+  bool setnavigateFlag(bool flag) { navigate_flag_ = flag; }
   bool getUseCapFlag() const { return use_cap_flag_; }
 
   void registerIkSolver(ChassisIkSolver *ptr);
@@ -196,6 +197,7 @@ class Chassis : public Fsm
   void runOnWorking();
 
   // 工作状态下，获取控制指令的函数
+  float variable_gyro();
   void revNormCmd();
   void calcWheelSpeedRef();
   void calcwheelfeedbackRef();
@@ -235,6 +237,7 @@ class Chassis : public Fsm
   // 由 robot 设置的数据
   bool use_cap_flag_ = false;              ///< 是否使用超级电容
   bool is_gyro2follow_handled_ = false;    ///< 小陀螺切跟随是否已经处理
+  bool navigate_flag_ = false;             ///< 是否导航模式
   GyroDir gyro_dir_ = GyroDir::Unspecified;  ///< 小陀螺方向，正为绕 Z 轴逆时针，负为顺时针，
   GyroDir last_gyro_dir_ = GyroDir::Unspecified;  ///< 上一次小陀螺方向
   Cmd norm_cmd_ = {0};                     ///< 原始控制指令，基于图传坐标系

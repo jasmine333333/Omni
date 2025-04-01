@@ -30,12 +30,21 @@ hello_world::module::Feed::Config kFeedConfig = {
   .ang_ref_offset           = 0.0f,  
   .ang_per_blt              = PI / 5.0f,   
   .heat_per_blt             = 10, 
-  .stuck_curr_thre          = 13.5f,          
   .resurrection_pos_err     = 5.0f / 180 * PI,  
-  .stuck_duration_thre      = 200,           
   .hold_duration_thre       = 100,  
   .default_trigger_interval = 200,
   .default_safe_num_blt     = 1.5f,
+  .stuck_detection={
+    .detection_by = hello_world::module::feed_impl::FeedStuckDetectionBy::kAngle,
+    .ang_diff_thre = 0.65f, 
+    .curr_thre = 13.5f, 
+    .time_thre = 100}, 
+    .stuck_handle={
+    .method = hello_world::module::feed_impl::FeedStuckBackMethod::kToLastAng,
+    .back_ang = 0.0f},
+  .stuck_prevent={ 
+    .enabled = false,
+    .back_ang = 0.0f},
 };
 hello_world::module::Feed unique_feed = hello_world::module::Feed(kFeedConfig);
 hello_world::module::Feed* CreateFeed()

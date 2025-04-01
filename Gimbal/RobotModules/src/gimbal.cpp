@@ -241,6 +241,38 @@ void Gimbal::adjustLastJointAngRef()
     }
   }
 }
+void Gimbal::calcCruiseMode(Cmd &tmp_ang_ref) {
+  float sensitivity_yaw = cfg_.sensitivity_yaw*0.5f;//todo
+  float sensitivity_pitch = cfg_.sensitivity_pitch*0.3f;//todo
+
+  // Yaw 轴 360° 旋转
+  tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + sensitivity_yaw;
+  tmp_ang_ref.yaw = hello_world::AngleNormRad(tmp_ang_ref.yaw);
+
+  // Pitch 轴上下摆动
+  static float pitch_direction = 1.0f; // 初始方向：向上运动
+
+  // 方向切换逻辑
+  const float pitch_upper_limit = 0.15f; // 上限缓冲区
+  const float pitch_lower_limit = -0.35f; // 下限缓冲区//todo
+
+  // 更新 Pitch 角度
+  tmp_ang_ref.pitch =last_joint_ang_ref_[kJointPitch]+ pitch_direction * sensitivity_pitch;
+
+  if (tmp_ang_ref.pitch >= pitch_upper_limit) {
+      pitch_direction = -1.0f; // 向下运动
+  } else if (tmp_ang_ref.pitch <= pitch_lower_limit) {
+      pitch_direction = 1.0f; // 向上运动
+  }
+
+
+  // 确保 Pitch 角度始终在 [-0.35, 0.15] 范围内
+  tmp_ang_ref.pitch = hello_world::Bound(tmp_ang_ref.pitch, -0.35f, 0.15f);
+
+  // 更新参考值
+  last_joint_ang_ref_[kJointYaw] = tmp_ang_ref.yaw;
+  last_joint_ang_ref_[kJointPitch] = tmp_ang_ref.pitch;
+}
 bool debug_enemydetected ;
 float debug_pitch = 0.0f;
 float debug_yaw = 0.0f;
@@ -259,6 +291,16 @@ void Gimbal::calcJointAngRef()
     float sensitivity_yaw = cfg_.sensitivity_yaw;      // yaw角度灵敏度，单位 rad/ms
     float sensitivity_pitch = cfg_.sensitivity_pitch;  // pitch角度灵敏度，单位 rad/ms
     // 如果翻转头部朝向标志位为真，且距离上一次翻转头部朝向的时间超过200ms
+    if (navigation_flag_) {
+      // static bool is_initialized = false;
+      // if (!is_initialized) {
+      //     tmp_ang_ref.pitch = hello_world::Bound(last_joint_ang_ref_[kJointPitch], -0.35f, 0.15f);
+      //     is_initialized = true;
+      // }
+      tmp_ang_ref.pitch = hello_world::Bound(last_joint_ang_ref_[kJointPitch], -0.35f, 0.15f);
+      calcCruiseMode(tmp_ang_ref);
+    }
+    else{    
     if (rev_head_flag_ && ((work_tick_ - last_rev_head_tick_) > 200)) {
       tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + PI;
       last_rev_head_tick_ = work_tick_;
@@ -267,10 +309,6 @@ void Gimbal::calcJointAngRef()
 
     tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;
     tmp_ang_ref.pitch = last_joint_ang_ref_[kJointPitch];
-    // 当 PItch 轴角度到达限位危险值时，不再进行增减，防止在限位附近震荡
-    // 此种方法略有改善，震荡问题依然存在，原因可能为IMU反馈值没有及时更新或者更新速度慢导致的
-    // 此时的现象为，电机角度反馈值震荡，导致ref值的动态限制值震荡，导致控制角度震荡
-    // 但此时 IMU 反馈值的震荡较小
     //  Pitch轴限位
     bool is_pitch_ang_too_large = motor_ang_fdb_[kJointPitch] > cfg_.max_pitch_ang - 0.05f;
     bool is_pitch_ang_too_small = motor_ang_fdb_[kJointPitch] < cfg_.min_pitch_ang + 0.05f;
@@ -280,7 +318,7 @@ void Gimbal::calcJointAngRef()
       tmp_ang_ref.pitch += norm_cmd_delta_.pitch * sensitivity_pitch;
     }
   }
-
+}
   // 角度归一化到[-pi, pi)
   tmp_ang_ref.yaw = hello_world::AngleNormRad(tmp_ang_ref.yaw);
   tmp_ang_ref.pitch = hello_world::AngleNormRad(tmp_ang_ref.pitch);

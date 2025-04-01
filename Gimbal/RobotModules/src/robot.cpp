@@ -232,6 +232,7 @@ namespace robot
       laser_ptr_->enable();
       gimbal_ptr_->setCtrlMode(CtrlMode::Manual);
       gimbal_ptr_->setRevHeadFlag(gimbal_data.turn_back_flag);
+      gimbal_ptr_->setNavigationFlag(gimbal_data.navigation_flag);
       gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
     }
     else if (gimbal_ctrl_mode == CtrlMode::Auto)
