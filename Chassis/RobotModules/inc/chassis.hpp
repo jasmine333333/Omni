@@ -27,7 +27,7 @@
 #include "pid.hpp"
 #include "power_limiter.hpp"
 #include "super_cap.hpp"
-#include "usr_imu.hpp"
+#include "imu.hpp"
 /* Exported macro ------------------------------------------------------------*/
 // namespace hw_rfr = hello_world::referee;
 
@@ -110,7 +110,7 @@ class Chassis : public Fsm
 
   typedef robot::GimbalChassisComm GimbalChassisComm;
   typedef ChassisWorkingMode WorkingMode;
-  typedef robot::Imu Imu;
+  typedef hello_world::imu::Imu Imu;
 
 
   typedef ChassisCmd Cmd;
@@ -170,7 +170,7 @@ class Chassis : public Fsm
   }
   void setGyroDir(GyroDir dir);
   void setUseCapFlag(bool flag) { use_cap_flag_ = flag; }
-  bool setnavigateFlag(bool flag) { navigate_flag_ = flag; }
+  void setnavigateFlag(bool flag) { navigate_flag_ = flag; }
   bool getUseCapFlag() const { return use_cap_flag_; }
 
   void registerIkSolver(ChassisIkSolver *ptr);
@@ -200,6 +200,7 @@ class Chassis : public Fsm
   float variable_gyro();
   void revNormCmd();
   void calcWheelSpeedRef();
+  void updateSlopeAng();
   void calcwheelfeedbackRef();
   void calcWheelLimitedSpeedRef();
   void calcPwrLimitedCurrentRef();
@@ -232,7 +233,11 @@ class Chassis : public Fsm
 
   // 配置参数
   Config cfg_;
-
+  float slope_ang_ = 0;     /// IMU XY面与地面夹角，用于判断上坡
+  float g_x_ = 0;           /// 重力在X轴上的分量,[0, 1]
+  float g_y_ = 0;           /// 重力在Y轴上的分量,[0, 1]
+  float getGx() {return g_x_; }
+  float getGy() {return g_y_; }
 
   // 由 robot 设置的数据
   bool use_cap_flag_ = false;              ///< 是否使用超级电容
@@ -258,8 +263,6 @@ class Chassis : public Fsm
   bool rev_head_flag_ = false;              ///< 转向后退标志
   float last_rev_head_angle_ = 0.0f;         ///< 上一次转向后退的标志
   uint32_t last_rev_head_tick_ = 0;         ///< 上一次转向后退的时间戳
-  bool rev_chassis_flag_ = false;           ///< 底盘后退标志
-  uint32_t last_rev_chassis_tick_ = 0;      ///< 上一次转向后退的时间戳
 
   // gimbal board fdb data  在 update 函数中更新
   bool is_gimbal_imu_ready_ = false;  ///< 云台主控板的IMU是否准备完毕

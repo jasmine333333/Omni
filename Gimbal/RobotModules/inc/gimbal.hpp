@@ -21,7 +21,7 @@
 #include "module_state.hpp"
 #include "motor.hpp"
 #include "pid.hpp"
-#include "usr_imu.hpp"
+#include "imu.hpp"
 #include "feed.hpp"
 #include "laser.hpp"
 
@@ -71,11 +71,11 @@ class Gimbal : public Fsm
 {
  public:
   typedef hello_world::filter::Td Td;
-  typedef hello_world::motor::Motor Motor;
+  typedef hello_world::motor::DM_J4310 Motor;
   typedef hello_world::PeriodAngle2ContAngleRad p2c;
   typedef hello_world::pid::MultiNodesPid Pid;
 
-  typedef robot::Imu Imu;
+  typedef hello_world::imu::Imu Imu;
   typedef hello_world::laser::Laser Laser;
   typedef GimbalWorkingMode WorkingMode;
   typedef GimbalCmd Cmd;
@@ -122,11 +122,12 @@ class Gimbal : public Fsm
 
   void setRevHeadFlag(bool flag)
   {
-    if (flag) {
+    rev_command_flag_ = flag;
+    if (rev_command_flag_ != last_rev_command_flag_) {
       rev_head_flag_ = (work_tick_ - last_rev_head_tick_ > 200);
-    } else {
-      rev_head_flag_ = flag;
+      last_rev_head_tick_ = work_tick_;
     }
+    last_rev_command_flag_ = rev_command_flag_;
   }
   bool getRevHeadFlag() const { return rev_head_flag_; }
 
@@ -156,7 +157,7 @@ class Gimbal : public Fsm
   float getJointRollAngFdb() const
   {
     HW_ASSERT(imu_ptr_ != nullptr, "IMU pointer is nullptr", imu_ptr_);
-    return imu_ptr_->getAngRoll();
+    return imu_ptr_->roll();
   }
 
   void setCtrlMode(CtrlMode mode) { ctrl_mode_ = mode; }
@@ -201,7 +202,10 @@ class Gimbal : public Fsm
   void setCommDataMotors(bool working_flag);
 
   // 由 robot 设置的数据
+  bool rev_command_flag_ = false;  ///< 云台是否接收到翻转头部的指令
+  bool last_rev_command_flag_ = false;  ///< 上一翻转头部指令
   bool rev_head_flag_ = false;  ///< 翻转头部朝向标志位
+  bool last_rev_head_flag_ = false;  ///< 上一翻转头部朝向标志位
   bool navigation_flag_ = false;  ///< 云台巡航标志位
   bool is_rfr_pwr_on_ = false;  ///< 裁判系统电源管理 gimbal 是否输出
 
@@ -215,11 +219,12 @@ class Gimbal : public Fsm
   // 由 Gimbal 内部维护的数据
   Config cfg_;  ///< 配置参数
 
+  bool is_rotating_ = false;  // 新增正在转头标志位
+
   bool is_pwr_on_ = false;  ///< 电源是否开启
 
   uint32_t last_rev_head_tick_ = 0;  ///< 上一次翻转头部朝向的时间戳
 
-  bool is_rotating_ = false;  // 新增正在转头标志位
   // 控制电机的 PID 所需数据
   CtrlAngBased ctrl_ang_based_[kJointNum] = {CtrlAngBased::Imu, CtrlAngBased::Imu};       ///< 角度控制方式
   CtrlAngBased last_ctrl_ang_based_[kJointNum] = {CtrlAngBased::Imu, CtrlAngBased::Imu};  ///< 上一控制周期的角度控制方式

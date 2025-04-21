@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_motor.hpp
+ * @file      :ins_motor.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note

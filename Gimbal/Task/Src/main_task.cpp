@@ -26,16 +26,30 @@
 /* Private variables ---------------------------------------------------------*/
 
 static robot::Robot* robot_ptr = nullptr;
-static robot::Imu* imu_ptr = nullptr;
+static hello_world::imu::Imu* imu_ptr = nullptr;
+uint32_t chipid;
 
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 
 static void PrivatePointerInit(void);
 static void HardWareInit(void);
+static void ChipInit(void)
+{
+  chipid=*(uint32_t*)0x1FFF7A10;
+  if (chipid == kxiao_omni)
+  {
+    car_version = version_kxiao_omni;
+  }
+  else if (chipid = kxiaoxiao_omni)
+  {
+    car_version = version_kxiaoxiao_omni;
+  }
+};
 
 void MainTaskInit(void)
 {
+  ChipInit();
   PrivatePointerInit();
   HardWareInit();
   

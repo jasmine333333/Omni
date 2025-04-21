@@ -111,7 +111,7 @@ static_assert(sizeof(G2CPkg2) <= 8, "Gimbal2ChassisPkg size error");
 /* Private function prototypes -----------------------------------------------*/
 /* Exported function definitions ---------------------------------------------*/
 
-bool GimbalChassisComm::decode(size_t len, const uint8_t* data)
+bool GimbalChassisComm::decode(size_t len, const uint8_t* data, uint32_t rx_id)
 {
   if (data == nullptr || len != 8) {
     return false;

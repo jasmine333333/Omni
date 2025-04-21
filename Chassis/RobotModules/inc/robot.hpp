@@ -33,7 +33,7 @@
 #include "transmitter.hpp"
 #include "uart_rx_mgr.hpp"
 #include "uart_tx_mgr.hpp"
-#include "usr_imu.hpp"
+#include "imu.hpp"
 #include "ui_drawer.hpp"  // Ensure this header file defines the UiDrawer class
 
 /* Exported macro ------------------------------------------------------------*/
@@ -59,58 +59,17 @@ class Robot : public Fsm
   typedef hello_world::referee::RobotPowerHeatPackage PowerHeatPkg;
   typedef hello_world::referee::RobotShooterPackage ShooterPkg;
   typedef hello_world::referee::Referee Referee;
+  typedef hello_world::referee::CompRobotsHpPackage CompRobotsHpPkg;
+  typedef hello_world::referee::RobotHurtPackage RobotHurtPkg;
+  typedef hello_world::referee::HpDeductionReason HurtReason;
+
   typedef hello_world::referee::ids::RobotId RobotId;
   typedef robot::Chassis Chassis;
   typedef robot::Gimbal Gimbal;
-  typedef robot::Imu Imu;
+  typedef hello_world::imu::Imu Imu;
   typedef robot::Shooter Shooter;
   typedef robot::Feed Feed;
   typedef robot::UiDrawer UiDrawer;
-
-  class TxDevMgrPair
-  {
-   public:
-    TxDevMgrPair(Transmitter *transmitter_ptr = nullptr, TxMgr *tx_mgr_ptr = nullptr) : transmitter_ptr_(transmitter_ptr), tx_mgr_ptr_(tx_mgr_ptr) {};
-    TxDevMgrPair(const TxDevMgrPair &other) = default;
-    TxDevMgrPair &operator=(const TxDevMgrPair &other) = default;
-    TxDevMgrPair(TxDevMgrPair &&other) = default;
-    TxDevMgrPair &operator=(TxDevMgrPair &&other) = default;
-
-    ~TxDevMgrPair() = default;
-
-    void setTransmitterNeedToTransmit(void)
-    {
-      if (transmitter_ptr_ == nullptr || tx_mgr_ptr_ == nullptr) {
-        return;
-      }
-
-      tx_mgr_ptr_->setTransmitterNeedToTransmit(transmitter_ptr_);
-    }
-
-   private:
-    friend class Robot;
-    Transmitter *transmitter_ptr_ = nullptr;
-    TxMgr *tx_mgr_ptr_ = nullptr;
-  };
-
-  enum class TxDevIdx : uint8_t {
-    kGimbalChassis,         ///< 云台与底盘通信开关
-    kMotorWheelLeftFront,   ///< 左前轮电机通信开关
-    kMotorWheelLeftRear,    ///< 左后轮电机通信开关
-    kMotorWheelRightRear,   ///< 右后轮电机通信开关
-    kMotorWheelRightFront,  ///< 右前轮电机通信开关
-    kCap,                   ///< 超级电容通信开关
-    kReferee,               ///< 裁判系统通信开关
-    kNum,                   ///< 通信开关数量
-  };
-
-  enum WheelMotorIdx : uint8_t {
-    kWheelMotorIdxLeftFront,   ///< 左前轮电机下标
-    kWheelMotorIdxLeftRear,    ///< 左后轮电机下标
-    kWheelMotorIdxRightRear,   ///< 右后轮电机下标
-    kWheelMotorIdxRightFront,  ///< 右前轮电机下标
-    kWheelMotorNum,            ///< 轮电机数量
-  };
 
  public:
   Robot() {};
@@ -128,17 +87,18 @@ class Robot : public Fsm
   void registerShooter(Shooter *ptr);
   void registerBuzzer(Buzzer *ptr);
   void registerImu(Imu *ptr);
-  void registerMotorWheels(Motor *motor_ptr, uint8_t idx, CanTxMgr *tx_mgr_ptr);
-  void registerCap(Cap *ptr, CanTxMgr *tx_mgr_ptr);
-  void registerGimbalChassisComm(GimbalChassisComm *ptr, CanTxMgr *tx_mgr_ptr);
-  void registerReferee(Referee *ptr, UartTxMgr *tx_mgr_ptr);
+  void registerMotorWheels(Motor *motor_ptr, uint8_t idx);
+  void registerCap(Cap *ptr);
+  void registerGimbalChassisComm(GimbalChassisComm *ptr);
+  void registerReferee(Referee *ptr);
   void registerRc(DT7 *ptr);
 
   void registerPerformancePkg(PerformancePkg *ptr);
   void registerPowerHeatPkg(PowerHeatPkg *ptr);
   void registerShooterPkg(ShooterPkg *ptr);
-
- private:
+  void registerCompRobotsHpPkg(CompRobotsHpPkg *ptr);
+  void registerRobotHurtPkg(RobotHurtPkg *ptr);
+  private:
   //  数据更新和工作状态更新，由 update 函数调用
   void updateData();
   void updateImuData();
@@ -178,6 +138,14 @@ class Robot : public Fsm
   size_t rfr_tx_data_len_ = 0;      ///< 机器人交互数据包发送缓存长度
 
   RobotId robot_id_ = RobotId::kRedStandard3;
+  uint16_t base_hp = 5000;  ///< 基地血量
+  uint16_t last_base_hp = 5000;  ///< 上一次基地血量
+  bool base_attack_flag = false;  ///< 基地受攻击标志位
+  uint32_t last_base_attack_tick = 0;  ///< 上一次基地受攻击的时间戳
+  uint32_t base_attack_tick = 0;  ///< 基地受攻击的时间戳
+
+  uint8_t hurt_module_id = 0;  ///< 受伤模块ID
+  uint8_t hurt_reason = 6;    ///< 扣血原因
   
   void setManualCtrlSrc(ManualCtrlSrc src)
   {
@@ -205,6 +173,11 @@ class Robot : public Fsm
   UiDrawer ui_drawer_ ;                                                   ///< UI 绘制器
 
   uint16_t bullet_num_ = 0;  ///< 子弹数量
+
+  uint32_t last_rev_work_tick_ = 0;
+  bool navigate_flag = 0; //巡航模式
+  bool last_navigate_flag = 0; //上一个巡航flag
+
   // 主要模块状态机组件指针
   Chassis *chassis_ptr_ = nullptr;  ///< 底盘模块指针
   Gimbal *gimbal_ptr_ = nullptr;    ///< 云台模块指针
@@ -221,7 +194,7 @@ class Robot : public Fsm
   // 只发送数据的组件指针
   Cap *cap_ptr_ = nullptr;  ///< 底盘超级电容指针 只发送数据
 
-  Motor *motor_wheels_ptr_[kWheelMotorNum] = {nullptr};  ///< 四轮电机指针 只发送数据
+  Motor *motor_wheels_ptr_[Chassis::kWheelMotorNum] = {nullptr};  ///< 四轮电机指针 只发送数据
 
   // 收发数据的组件指针
   GimbalChassisComm *gc_comm_ptr_ = nullptr;           ///< 云台底盘通信模块指针 收发数据
@@ -229,7 +202,8 @@ class Robot : public Fsm
   PerformancePkg *rfr_performance_pkg_ptr_ = nullptr;  ///< 裁判系统性能包指针 收发数据
   PowerHeatPkg *rfr_power_heat_pkg_ptr_ = nullptr;     ///< 裁判系统电源和热量包指针 收发数据
   ShooterPkg *rfr_shooter_pkg_ptr_ = nullptr;          ///< 裁判系统射击包指针 收发数据
-  TxDevMgrPair tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kNum] = {{nullptr}};  ///< 发送设备管理器对数组
+  CompRobotsHpPkg *rfr_comp_robots_hp_pkg_ptr_ = nullptr;  ///< 裁判系统机器人血量包指针 收发数据
+  RobotHurtPkg *rfr_robot_hurt_pkg_ptr_ = nullptr;  ///< 裁判系统机器人受伤包指针 收发数据
 };
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/

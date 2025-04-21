@@ -50,7 +50,6 @@ const hello_world::referee::Pixel kUiModuleStateLineWidth = 3;
 // chassis
 const uint8_t kUiNameChassisWorkStateTitle[3] = {0x00, 0x00, 0x01};    ///< 底盘工作状态标题
 const uint8_t kUiNameChassisWorkStateContent[3] = {0x00, 0x00, 0x02};  ///< 底盘工作状态内容
-
 const uint16_t kUiChassisDirCircleX = 960;//灯条中心位置
 const uint16_t kUiChassisDirCircleY = 540;
 const uint8_t kUiNameChassisDirHead[3] = {0x00, 0x00, 0x03};  ///< 底盘朝向示意（底盘头部）
@@ -69,15 +68,17 @@ const uint8_t kuiNameChassisPassLineLeft[3] = {0x00, 0x00, 0x08};   ///< 底盘�
 const uint8_t kuiNameChassisPassLineRight[3] = {0x00, 0x00, 0x09};  ///< 底盘通行线右侧
 const uint8_t kUiNamePassSafe[3] = {0x00, 0x00, 0x0A}; ///< 底盘通行线中间
 const uint8_t kUiBulletnum[3] = {0x00, 0x00, 0x0B};  ///< 发弹数量
+const uint8_t kUiNameNavigateTitle[3] = {0x00, 0x00, 0x0C};    ///< 底盘工作状态标题颜色
+const uint8_t kUiNameHurtModuleid[3] = {0x00, 0x00, 0x0D};  ///< 底盘工作状态内容颜色
 // gimbal
-const uint16_t kPixelCenterXVisionBox = 1704.5 / 2;  //todo 云台视觉状态位置
-const uint16_t kPixelCenterYVisionBox =1198.3/2;
+const uint16_t kPixelCenterXVisionBox = 967;  //todo 云台视觉状态位置
+const uint16_t kPixelCenterYVisionBox =450;
 const uint16_t kPixelVisionBoxWidth = 592.5; //状态外框 云台视觉
 const uint16_t kPixelVisionBoxHeight = 315.3;
 
 const uint8_t kUiNameGimbalWorkStateTitle[3] = {0x00, 0x00, 0x40};    ///< 云台工作状态标题
 const uint8_t kUiNameGimbalWorkStateContent[3] = {0x00, 0x00, 0x41};  ///< 云台工作状态内容
-
+const uint8_t kUiBaseAttack[3] = {0x00, 0x00, 0x42};         ///< 基地受到攻击
 
 // shooter
 const uint8_t kUiNameShooterHeat[3] = {0x00, 0x00, 0x80};  ///< 发射机构热量
@@ -203,6 +204,12 @@ bool UiDrawer::encodeDynamicUi(uint8_t* data_ptr, size_t& data_len, GraphicOpera
     case kDuiPkgGroup3:
       res = encodeDynaUiPkgGroup3(data_ptr, data_len, opt);
       break;
+    case kDuiPkgGroup4:
+      res = encodeDynaUiPkgGroup4(data_ptr, data_len, opt);
+      break;
+    case kDuiPkgGroup5:
+      res = encodeDynaUiPkgGroup5(data_ptr, data_len, opt);
+      break;
     default:
       break;
   }
@@ -236,15 +243,21 @@ bool UiDrawer::encodeStaticPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
 bool UiDrawer::encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
 {
   hello_world::referee::Arc g_chassis_status_head, g_chassis_status_other;
+  hello_world::referee::Arc g_armor_hit;
 
   genChassisStatus(g_chassis_status_head, g_chassis_status_other);
   g_chassis_status_head.setOperation(opt);
   g_chassis_status_other.setOperation(opt);
 
-  hello_world::referee::InterGraphic2Package pkg;
+  genArmorHit(g_armor_hit);
+  g_armor_hit.setOperation(opt);
+
+  hello_world::referee::InterGraphic5Package pkg;
   pkg.setSenderId(static_cast<uint16_t>(sender_id_));
   pkg.setArcAt(g_chassis_status_head, 0);
   pkg.setArcAt(g_chassis_status_other, 1);
+  pkg.setArcAt(g_armor_hit, 2);
+
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
 bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
@@ -252,6 +265,7 @@ bool UiDrawer::encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, Graphi
   hello_world::referee::Rectangle g_cap_pwr_percent_rect;
   hello_world::referee::FloatingNumber g_cap_pwr_percent_num;
 
+  //超电能量余量外框
   genCapPwrPercent(g_cap_pwr_percent_rect, g_cap_pwr_percent_num);
   g_cap_pwr_percent_rect.setOperation(opt);
   g_cap_pwr_percent_num.setOperation(opt);
@@ -294,7 +308,6 @@ bool UiDrawer::encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, Graphi
 {
   hello_world::referee::Arc g_heat;
   hello_world::referee::Circle g_vision;
-  hello_world::referee::Integer g_balence_number;
 
   genShooterHeat(g_heat);
   g_heat.setOperation(opt);
@@ -311,6 +324,50 @@ bool UiDrawer::encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, Graphi
   pkg.setCircleAt(g_vision, 3);
   return encodePkg(data_ptr, data_len, opt, pkg);
 };
+bool UiDrawer::encodeDynaUiPkgGroup4(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
+{
+  std::string str = "AUTO";
+  hello_world::referee::Pixel linewidth= 6;
+  if (is_navigating_==true)
+  {
+    linewidth = 6;
+  }
+  else
+  {
+    linewidth = 0;
+  }
+  
+  //位置todo
+  hello_world::referee::String navigation_flag = hello_world::referee::String(kUiNameNavigateTitle, opt, kDynamicUiLayer, 
+                                                  hello_world::referee::GraphicColor::kGreen, 
+                                                   kUiModuleStateAreaX2, kUiModuleStateAreaY2,
+                                                    20, str.length(), linewidth);
+
+  return encodeString(data_ptr, data_len, opt, navigation_flag, str);
+}
+bool UiDrawer::encodeDynaUiPkgGroup5(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt)
+{
+  std::string str = "BASE!!";
+  hello_world::referee::Pixel linewidth = 6;
+  uint8_t count = 0;
+
+  if (is_base_attack_==true)
+  {
+    linewidth = 6;
+  }
+  else
+  {
+    linewidth = 0;
+  }
+  last_base_attack_ = is_base_attack_;
+  
+  //位置todo
+  hello_world::referee::String Base_Attack_flag = hello_world::referee::String(kUiBaseAttack, opt, kDynamicUiLayer, hello_world::referee::String::Color::kPurple, 960, kUiModuleStateAreaY1,
+                                    50, str.length(), linewidth);
+
+  return encodeString(data_ptr, data_len, opt, Base_Attack_flag, str);
+
+}
   #pragma endregion
 
 #pragma region 底盘相关 UI
@@ -383,7 +440,7 @@ void UiDrawer::genBulletNum(hello_world::referee::FloatingNumber& g)
 {
   g.setName(kUiBulletnum);
   g.setDisplayValue(bullet_num_);
-  g.setStartPos(165, 540);
+  g.setStartPos(1260, 740);
   g.setColor(hello_world::referee::FloatingNumber::Color::kPurple);
   g.setLayer(kDynamicUiLayer);
   g.setFontSize(30);
@@ -442,8 +499,8 @@ void UiDrawer::genChassisPassLineRight(hello_world::referee::StraightLine& g)
   uint16_t end_posX = 0;
   uint16_t start_posX = 0;
   uint16_t end_posY = 0;
-  start_posX = gimbal_joint_ang_pitch_fdb_ * (-801.84) + 1277.1;
-  end_posX = gimbal_joint_ang_pitch_fdb_*96.48 + 1077;
+  start_posX = gimbal_joint_ang_pitch_fdb_ * (-801.84) + 1277.1+47;
+  end_posX = gimbal_joint_ang_pitch_fdb_*96.48 + 1077+47;
   end_posY = gimbal_joint_ang_pitch_fdb_ * (-927.28) + 334.39;
   g.setName(kuiNameChassisPassLineRight);
   g.setLayer(kDynamicUiLayer);
@@ -452,6 +509,51 @@ void UiDrawer::genChassisPassLineRight(hello_world::referee::StraightLine& g)
   g.setColor(kUiModuleStateColor);
   g.setLineWidth(3);
 };
+void UiDrawer::genArmorHit(hello_world::referee::Arc &g_hit) {
+  const float kHitArcAngleRangeGyro = 65.0f;
+  const float kHitArcAngleBiasGyro = 7.0f;
+  const float kHitArcAngleRangeFollow = 60.0f;
+
+  if (is_armor_hit_) {
+    g_hit.setLineWidth(4);
+  } else {
+    g_hit.setLineWidth(0);
+  }
+
+  // 跟随模式前向对应的装甲板应设置为1号，其余装甲板序号由裁判系统要求，逆时针递增
+  float armor_angle_hit = 0.0f, arc_angle_hit_start = 0.0f,
+        arc_angle_hit_end = 0.0f;
+  if (chassis_working_mode_ == Chassis::WorkingMode::Gyro) {
+    if (hurt_module_id_ == last_hurt_module_id_) {
+      armor_angle_hit = last_armor_angle_hit_;
+    }
+    arc_angle_hit_start =
+        armor_angle_hit - kHitArcAngleRangeGyro / 2.0f + kHitArcAngleBiasGyro,
+    arc_angle_hit_end =
+        armor_angle_hit + kHitArcAngleRangeGyro / 2.0f + kHitArcAngleBiasGyro;
+  } else {
+    armor_angle_hit = -(theta_i2r_ * 180.0f / M_PI + 90.0f * hurt_module_id_);
+    arc_angle_hit_start = armor_angle_hit - kHitArcAngleRangeFollow / 2.0f;
+    arc_angle_hit_end = armor_angle_hit + kHitArcAngleRangeFollow / 2.0f;
+  }
+
+  arc_angle_hit_start =
+      hello_world::NormPeriodData(0.0f, 360.0f, arc_angle_hit_start);
+  arc_angle_hit_end =
+      hello_world::NormPeriodData(0.0f, 360.0f, arc_angle_hit_end);
+
+  float radius = 280.0f; // 所处圆的半径
+  g_hit.setColor(hello_world::referee::Graphic::Color::kPurple);
+  g_hit.setAng(arc_angle_hit_start, arc_angle_hit_end);
+  g_hit.setCenterPos(kPixelCenterXVisionBox,
+                      kPixelCenterYVisionBox); // 视觉框中心位置
+  g_hit.setRadius(radius, radius);
+  g_hit.setName(kUiNameHurtModuleid);
+  g_hit.setLayer(kDynamicUiLayer);
+  last_hurt_module_id_ = hurt_module_id_;
+  last_armor_angle_hit_ = armor_angle_hit;
+};
+
 #pragma endregion
 #pragma region 云台相关 UI
 /** 

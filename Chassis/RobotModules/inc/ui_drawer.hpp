@@ -61,6 +61,7 @@ class UiDrawer
     kDuiPkgGroup2,  ///< 云台 pitch yaw 角度期望，拨盘角度期望，摩擦轮转速期望，小云台预设值，小云台当前俯仰角度
     kDuiPkgGroup3,
     kDuiPkgGroup4,
+    kDuiPkgGroup5,
     kDuiPkgNum,
   };
 
@@ -154,8 +155,15 @@ class UiDrawer
 
   void setBulletNum(uint16_t num) { bullet_num_ = num; }
 
+  void setBaseAttack(bool flag) { is_base_attack_ = flag; }
+
   void setCapPwrPercent(float percent) { cap_pwr_percent_ = percent; }
 
+  void setNavigateFlag(bool state) { is_navigating_ = state; }
+
+  void setHurtModuleid(uint8_t id){hurt_module_id_ = id; }
+  void setisArmorHit(bool is_armor_hit){is_armor_hit_ = is_armor_hit; }  
+  
   void setVisTgtX(uint16_t x, bool valid) { vis_tgt_x_ = valid ? x : -1; }
   void setVisTgtY(uint16_t y, bool valid) { vis_tgt_y_ = valid ? y : -1; }
 
@@ -191,10 +199,13 @@ class UiDrawer
   bool encodeDynaUiPkgGroup1(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup2(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
   bool encodeDynaUiPkgGroup3(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
+  bool encodeDynaUiPkgGroup4(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
+  bool encodeDynaUiPkgGroup5(uint8_t* data_ptr, size_t& data_len, GraphicOperation opt);
 
   void genChassisStatus(hello_world::referee::Arc& g_head, hello_world::referee::Arc& g_other);
   void genChassisPassLineLeft(hello_world::referee::StraightLine& g);
   void genChassisPassLineRight(hello_world::referee::StraightLine& g);
+  void genArmorHit(hello_world::referee::Arc &g_hit);
 
   void genPassSafe(hello_world::referee::Circle& g, bool is_safe);
 
@@ -241,9 +252,17 @@ class UiDrawer
   float heat_ = 0;
   float heat_limit_ = 100;
   float bullet_num_ = 0;
-
+  bool is_base_attack_ = false;  ///< 基地受攻击标志位
+  bool last_base_attack_ = false;  ///< 上一次基地受攻击标志位
+  //var for navigation
+  bool is_navigating_ = false; //巡航模式
   // var for super capacitor
   float cap_pwr_percent_ = 0;
+  //受打击装甲板
+  uint8_t hurt_module_id_ = 0;  ///< 受打击的装甲板ID，0表示未受打击
+  uint8_t last_hurt_module_id_ = 0;  ///< 上一次受打击的装甲板ID，用于判断是否变化
+  float last_armor_angle_hit_ = 0.0f;
+  bool is_armor_hit_ = 0;  ///< 是否有装甲板被打击
 
   // var for vision
   int16_t vis_tgt_x_ = 0;  ///< 视觉瞄准目标的 x 坐标，单位为像素，负数为无效值

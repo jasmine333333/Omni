@@ -25,8 +25,8 @@ namespace hw_motor = hello_world::motor;
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
-hw_motor::Motor* CreateMotorYaw();
-hw_motor::Motor* CreateMotorPitch();
+hw_motor::DM_J4310* CreateMotorYaw();
+hw_motor::DM_J4310* CreateMotorPitch();
 hw_motor::Motor* CreateMotorFricLeft();
 hw_motor::Motor* CreateMotorFricRight();
 hw_motor::Motor* CreateMotorFeed();

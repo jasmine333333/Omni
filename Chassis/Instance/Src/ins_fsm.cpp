@@ -16,7 +16,7 @@
 #include "ins_all.hpp"
 /* Private constants ---------------------------------------------------------*/
 const robot::Chassis::Config kChassisConfig = {
-    .normal_trans_vel = 4.0f,   ///< 正常平移速度
+    .normal_trans_vel = 5.0f,   ///< 正常平移速度
     .normal_rot_spd = 13.0f,   ///< 正常旋转速度
     .max_trans_vel = 5.0f,      ///< 最大平移速度
     .max_rot_spd = 15,      ///< 最大旋转速度
@@ -95,18 +95,20 @@ robot::Robot* CreateRobot()
     // 只接收数据的组件指针
     unique_robot.registerRc(CreateRemoteControl());
     // 只发送数据的组件指针
-    unique_robot.registerCap(CreateCap(), CreateCan2TxMgr());
-    unique_robot.registerMotorWheels(CreateMotorWheelLeftFront(), robot::Robot::kWheelMotorIdxLeftFront, CreateCan2TxMgr());
-    unique_robot.registerMotorWheels(CreateMotorWheelLeftRear(), robot::Robot::kWheelMotorIdxLeftRear, CreateCan2TxMgr());
-    unique_robot.registerMotorWheels(CreateMotorWheelRightRear(), robot::Robot::kWheelMotorIdxRightRear, CreateCan2TxMgr());
-    unique_robot.registerMotorWheels(CreateMotorWheelRightFront(), robot::Robot::kWheelMotorIdxRightFront, CreateCan2TxMgr());
+    unique_robot.registerCap(CreateCap());
+    unique_robot.registerMotorWheels(CreateMotorWheelLeftFront(), robot::Chassis::kWheelMotorIdxLeftFront);
+    unique_robot.registerMotorWheels(CreateMotorWheelLeftRear(), robot::Chassis::kWheelMotorIdxLeftRear);
+    unique_robot.registerMotorWheels(CreateMotorWheelRightRear(), robot::Chassis::kWheelMotorIdxRightRear);
+    unique_robot.registerMotorWheels(CreateMotorWheelRightFront(), robot::Chassis::kWheelMotorIdxRightFront);
     // 收发数据的组件指针
-    unique_robot.registerGimbalChassisComm(CreateGimbalChassisComm(), CreateCan1TxMgr());
-    unique_robot.registerReferee(CreateReferee(), CreateRfrTxMgr());
+    unique_robot.registerGimbalChassisComm(CreateGimbalChassisComm());
+    unique_robot.registerReferee(CreateReferee());
 
     unique_robot.registerPerformancePkg(CreateRobotPerformancePackage());
     unique_robot.registerPowerHeatPkg(CreateRobotPowerHeatPackage());
     unique_robot.registerShooterPkg(CreateRobotShooterPackage());
+    unique_robot.registerCompRobotsHpPkg(CreateCompRobotsHpPackage());
+    unique_robot.registerRobotHurtPkg(CreateRobotHurtPackage());
     is_robot_inited = true;
   }
   return &unique_robot;

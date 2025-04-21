@@ -27,6 +27,8 @@
 hello_world::referee::RobotPerformancePackage *CreateRobotPerformancePackage();
 hello_world::referee::RobotPowerHeatPackage *CreateRobotPowerHeatPackage();
 hello_world::referee::RobotShooterPackage *CreateRobotShooterPackage();
+hello_world::referee::CompRobotsHpPackage *CreateCompRobotsHpPackage(); 
+hello_world::referee::RobotHurtPackage *CreateRobotHurtPackage();
 hello_world::referee::Referee *CreateReferee();
 
 #endif /* INS_RFR_HPP_ */

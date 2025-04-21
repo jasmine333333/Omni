@@ -1,7 +1,7 @@
-/** 
+/**
  *******************************************************************************
  * @file      :ins_imu.cpp
- * @brief     : 
+ * @brief     :
  * @history   :
  *  Version     Date            Author          Note
  *  V0.9.0      yyyy-mm-dd      <author>        1. <note>
@@ -14,31 +14,35 @@
  */
 /* Includes ------------------------------------------------------------------*/
 #include "ins_imu.hpp"
+#include "spi.h"
 /* Private constants ---------------------------------------------------------*/
-const float kImuRotMatFlatten[9] = {0, 1, 0, -1, 0, 0, 0, 0, 1};
-const robot::Imu::Config kImuInitConfig = {
-    .offset_max_count = 1000,
-    .acc_threshold = 10.0f,
-    .gyro_threshold = 0.1f,
-    .samp_freq = 1000.0f,
+
+const hello_world::imu::Imu::Config kImuInitConfig = 
+{
+    .sample_num = 1000,
+    .default_gyro_offset = {0, 0, 0}, ///< 默认陀螺仪偏置值
     .kp = 0.2f,
-    .ki = 0.0f,
-    .bmi088_hw_config_ptr = &robot::Imu::kBmi088DefaultHWConfig,
-    .rot_mat_ptr = kImuRotMatFlatten,
-    .bmi088_config_ptr = &robot::Imu::kBmi088DefaultConfig,
+    .rot_mat_flatten = {0, 1, 0, -1, 0, 0, 0, 0, 1},
+    .bmi088_hw_config = {
+        .hspi = &hspi1,
+        .acc_cs_port = GPIOA,
+        .acc_cs_pin = GPIO_PIN_4,
+        .gyro_cs_port = GPIOB,
+        .gyro_cs_pin = GPIO_PIN_0,
+    }
 };
 /* Private macro -------------------------------------------------------------*/
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-// (LKY) 不能如下定义全局变量, 因为IMU的初始化(Imu.bmi088_ptr_)依赖于hspi1,
-// (LKY) 必须等hspi1初始化结束(MX_SPI1_Init()完成), 才能初始化unique_imu
-// robot::Imu unique_imu = robot::Imu(kImuInitConfig);
+
+hello_world::imu::Imu unique_imu = hello_world::imu::Imu(kImuInitConfig);
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Exported function definitions ---------------------------------------------*/
-robot::Imu *CreateImu(void) {
-    static robot::Imu unique_imu = robot::Imu(kImuInitConfig); 
-    return &unique_imu; 
+hello_world::imu::Imu *CreateImu(void)
+{
+    unique_imu = hello_world::imu::Imu(kImuInitConfig);
+    return &unique_imu;
 };
 
 /* Private function definitions ----------------------------------------------*/

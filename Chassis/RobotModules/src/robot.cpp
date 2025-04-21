@@ -43,6 +43,15 @@ const hello_world::referee::RobotPowerHeatData kDefaultRobotPowerHeatData = {
     .shooter_17mm_2_barrel_heat = 0,  ///< 第二个17mm发射机构的枪口热量
     .shooter_42mm_barrel_heat = 0,    ///< 42mm发射机构的枪口热量
 };
+const hello_world::referee::CompRobotsHpData kDefaultRobotCompRobotsHpData = {
+};
+const hello_world::referee::RobotHurtData kDefaultRobotHurtData = {
+  .module_id = 0, ///< 模块ID
+  .hp_deduction_reason = static_cast<uint8_t>(
+    hello_world::referee::HpDeductionReason::
+        kArmorHit), ///< 扣血原因
+};
+
 const hello_world::referee::RobotShooterData kDefaultRobotShooterData = {
     .bullet_type =static_cast<uint8_t>(hello_world::referee::BulletType::k17mm),  ///< 弹丸类型，@see BulletType
 
@@ -77,7 +86,7 @@ void Robot::updateImuData()
 {
   HW_ASSERT(imu_ptr_ != nullptr, "IMU pointer is null", imu_ptr_);
   imu_ptr_->update();
-  if (imu_ptr_->isNormWorking()) {
+  if (imu_ptr_->isOffsetCalcFinished()) {
     is_imu_caled_offset_ = true;
   }
 };
@@ -106,6 +115,8 @@ void Robot::updateRfrData()
   PerformancePkg::Data rpp_data = kDefaultRobotPerformanceData;
   PowerHeatPkg::Data rph_data = kDefaultRobotPowerHeatData;
   ShooterPkg::Data rsp_data = kDefaultRobotShooterData;
+  CompRobotsHpPkg::Data rchp_data = kDefaultRobotCompRobotsHpData;
+  RobotHurtPkg::Data rht_data = kDefaultRobotHurtData;  // 初始化受伤数据为默认值
 
   GimbalChassisComm::RefereeData::ChassisPart &gimbal_rfr_data = gc_comm_ptr_->referee_data().cp;
 
@@ -113,6 +124,8 @@ void Robot::updateRfrData()
     rpp_data = rfr_performance_pkg_ptr_->getData();
     rph_data = rfr_power_heat_pkg_ptr_->getData();
     rsp_data = rfr_shooter_pkg_ptr_->getData();
+    rchp_data = rfr_comp_robots_hp_pkg_ptr_->getData();
+    rht_data = rfr_robot_hurt_pkg_ptr_->getData();
     if (!rfr_shooter_pkg_ptr_->isHandled()) {  // 检测到了一颗新的弹丸发射
       rfr_shooter_pkg_ptr_->setHandled();
       gimbal_rfr_data.is_new_bullet_shot++;
@@ -130,6 +143,26 @@ void Robot::updateRfrData()
     robot_id_ = RobotId::kRedStandard3;
   }
   ui_drawer_.setSenderId(robot_id_);
+
+  if (robot_id_ == RobotId::kRedStandard3 || robot_id_ == RobotId::kRedStandard4 ) {
+    base_hp = rchp_data.red_base_HP;
+  }else if (robot_id_ == RobotId::kBlueStandard3 || robot_id_ == RobotId::kBlueStandard4)  // 蓝方基地血量
+  {
+    base_hp = rchp_data.blue_base_HP;
+  }
+  if (last_base_hp > base_hp) {
+    base_attack_flag = true;
+    last_base_attack_tick = work_tick_;
+  } 
+  else{
+    if (work_tick_ - last_base_attack_tick > 2000) {
+      base_attack_flag = false;
+    }    
+  }
+  last_base_hp = base_hp;
+
+  hurt_module_id = rht_data.module_id;
+  hurt_reason = rht_data.hp_deduction_reason;
 
   chassis_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
   chassis_rfr_data.is_pwr_on = rpp_data.power_management_chassis_output;
@@ -349,7 +382,6 @@ void Robot::genModulesCmdFromRc()
   feed_ptr_->setShootFlag(shoot_flag);
 };
 
-bool navigate_flag = 0; //巡航模式
 void Robot::genModulesCmdFromKb()
 {
   // TODO: 这里应该生成各个模块的指令，包括底盘指令、云台指令、底盘状态等等
@@ -359,28 +391,35 @@ void Robot::genModulesCmdFromKb()
   CtrlMode gimbal_ctrl_mode = CtrlMode::Manual;
   Gimbal::WorkingMode gimbal_working_mode = Gimbal::WorkingMode::Normal;
   bool rev_head_flag = false;
-  bool rev_chassis_flag = false;
   bool auto_shoot_flag = false;
   CtrlMode feed_ctrl_mode = CtrlMode::Manual;
   Shooter::WorkingMode shooter_working_mode = Shooter::WorkingMode::Normal;
   Feed::WorkingMode feed_working_mode = Feed::WorkingMode::Normal;
   bool shoot_flag = false;
   
-  // 检测CTRL是否按下
-  bool is_CTRL_pressed = rc_ptr_->key_CTRL();
-  if (is_CTRL_pressed) {
+  // 检测Z是否按下
+  bool is_Z_pressed = rc_ptr_->key_Z();
+  if (is_Z_pressed) {
     navigate_flag = true; // 启用巡航模式标志
     } 
     else {
-        navigate_flag = false; // 关闭巡航模式标志 
+    navigate_flag = false; // 关闭巡航模式标志 
 }
   if (navigate_flag == true) {
     chassis_working_mode = Chassis::WorkingMode::Gyro; // 设置底盘为小陀螺模式
-  }  else 
-  {
-    chassis_working_mode = Chassis::WorkingMode::Follow; // 默认底盘跟随模式
+    gimbal_ctrl_mode = CtrlMode::Auto;
+    feed_ctrl_mode = CtrlMode::Auto;
   }
-  
+  else if (navigate_flag == false) {
+    if (last_navigate_flag == true)  // 如果巡航模式刚刚关闭
+    {
+      chassis_working_mode = Chassis::WorkingMode::Follow; // 设置底盘为跟随模式
+      gimbal_ctrl_mode = CtrlMode::Manual;
+      feed_ctrl_mode = CtrlMode::Manual;
+    }
+  }  
+  last_navigate_flag = navigate_flag; // 更新上一次巡航模式标志
+
   if (rc_ptr_->key_Q()) {
     chassis_working_mode = Chassis::WorkingMode::Gyro;
   } else if (rc_ptr_->key_E()) {
@@ -392,16 +431,18 @@ void Robot::genModulesCmdFromKb()
     }
   }
   if (rc_ptr_->key_C()) {
-    rev_head_flag = true;
   }
-  if (rc_ptr_->key_B() )
+  if (rc_ptr_->key_B() && (work_tick_ - last_rev_work_tick_>200))
   {
-    rev_chassis_flag = true;
+    rev_head_flag = true;
+    last_rev_work_tick_ = work_tick_;
+  }
+  else
+  {
+    rev_head_flag = false;
   }
   
-  if (rc_ptr_->key_Z()) {
-    shooter_working_mode = Shooter::WorkingMode::FricBackward;
-  }
+  
   if (rc_ptr_->key_F()) {
   }
 
@@ -412,29 +453,21 @@ void Robot::genModulesCmdFromKb()
     gimbal_ctrl_mode = CtrlMode::Auto;
     feed_ctrl_mode = CtrlMode::Manual;
   }
-  if (rc_ptr_->key_X()) {
-    auto_shoot_flag = !auto_shoot_flag;
-    if (auto_shoot_flag)
-    {
+
+bool is_X_pressed = rc_ptr_->key_X();
+  if (is_X_pressed) {
       gimbal_ctrl_mode = CtrlMode::Auto;
       feed_ctrl_mode = CtrlMode::Auto;
-    }
-    else
-    {
-      gimbal_ctrl_mode = CtrlMode::Manual;
-      feed_ctrl_mode = CtrlMode::Manual;
-      }
   }
   
 
   GimbalCmd gimbal_cmd;
-  gimbal_cmd.pitch = hello_world::Bound(-0.01 * rc_ptr_->mouse_y(), -1, 1);
+  gimbal_cmd.pitch = hello_world::Bound(0.01 * rc_ptr_->mouse_y(), -1, 1);//去掉了负号，配合最新裁判端
   gimbal_cmd.yaw = hello_world::Bound(-0.01 * rc_ptr_->mouse_x(), -1, 1);
   gimbal_ptr_->setNormCmdDelta(gimbal_cmd);
   gimbal_ptr_->setCtrlMode(gimbal_ctrl_mode);
   gimbal_ptr_->setWorkingMode(gimbal_working_mode);
   gimbal_ptr_->setRevHeadFlag(rev_head_flag);
-  gimbal_ptr_->setRevChassisFlag(rev_chassis_flag);
   gimbal_ptr_->setnavigateFlag(navigate_flag);
   
   ChassisCmd chassis_cmd = {0};
@@ -445,7 +478,6 @@ void Robot::genModulesCmdFromKb()
   chassis_ptr_->setWorkingMode(chassis_working_mode);
   chassis_ptr_->setUseCapFlag(rc_ptr_->key_SHIFT());
   if (rev_head_flag) chassis_ptr_->revHead();
-  if (rev_chassis_flag) chassis_ptr_->revHead();
 
   feed_ptr_->setCtrlMode(feed_ctrl_mode);
   feed_ptr_->setWorkingMode(feed_working_mode);
@@ -538,6 +570,24 @@ void Robot::setUiDrawerData() {
   ui_drawer_.setFricStuckFlag(gc_comm_ptr_->shooter_data().gp.is_fric_stuck_);
 
   ui_drawer_.setBulletNum(bullet_num_);
+
+  ui_drawer_.setBaseAttack(base_attack_flag);
+
+  //navigate
+  ui_drawer_.setNavigateFlag(navigate_flag);
+
+  if (hurt_reason ==
+    static_cast<uint8_t>(HurtReason::kArmorHit) ||
+    hurt_reason ==
+    static_cast<uint8_t>(HurtReason::kArmorCollision)) {
+      ui_drawer_.setisArmorHit(true); // 受伤标志置为真
+      ui_drawer_.setHurtModuleid(hurt_module_id);}
+    else
+    {
+        ui_drawer_.setisArmorHit(false);
+        ui_drawer_.setHurtModuleid(0);
+    }
+    
   // Cap
   HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
   ui_drawer_.setCapPwrPercent(cap_ptr_->getRemainingPower());
@@ -586,44 +636,20 @@ void Robot::sendCanData()
 };
 void Robot::sendWheelsMotorData()
 {
-  WheelMotorIdx motor_idx[4] = {
-      kWheelMotorIdxLeftFront,   ///< 左前轮电机下标
-      kWheelMotorIdxLeftRear,    ///< 左后轮电机下标
-      kWheelMotorIdxRightRear,   ///< 右后轮电机下标
-      kWheelMotorIdxRightFront,  ///< 右前轮电机下标
-  };
-  TxDevIdx tx_dev_idx[4] = {
-      TxDevIdx::kMotorWheelLeftFront,   ///< 左前轮电机下标
-      TxDevIdx::kMotorWheelLeftRear,    ///< 左后轮电机下标
-      TxDevIdx::kMotorWheelRightRear,   ///< 右后轮电机下标
-      TxDevIdx::kMotorWheelRightFront,  ///< 右前轮电机下标
-  };
-  Motor *dev_ptr = nullptr;
   for (size_t i = 0; i < 4; i++) {
-    WheelMotorIdx midx = motor_idx[i];
-    dev_ptr = motor_wheels_ptr_[midx];
-    HW_ASSERT(dev_ptr != nullptr, "Motor pointer %d is null", midx);
-    if (dev_ptr == nullptr) {
-      continue;
-    }
-    tx_dev_mgr_pairs_[(uint32_t)tx_dev_idx[i]].setTransmitterNeedToTransmit();
+    HW_ASSERT(motor_wheels_ptr_[i] != nullptr, "Motor pointer %d is null", midx);
+    motor_wheels_ptr_[i]->setNeedToTransmit();
   }
 };
 void Robot::sendCapData()
 {
   HW_ASSERT(cap_ptr_ != nullptr, "Cap pointer is null", cap_ptr_);
-  if (cap_ptr_ == nullptr) {
-    return;
-  }
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kCap].setTransmitterNeedToTransmit();
+  cap_ptr_->setNeedToTransmit();
 };
 void Robot::sendGimbalChassisCommData()
 {
   HW_ASSERT(gc_comm_ptr_ != nullptr, "GimbalChassisComm pointer is null", gc_comm_ptr_);
-  if (gc_comm_ptr_ == nullptr) {
-    return;
-  }
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kGimbalChassis].setTransmitterNeedToTransmit();
+  gc_comm_ptr_->setNeedToTransmit();
 };
 void Robot::sendUsartData()
 {
@@ -677,73 +703,31 @@ void Robot::registerImu(Imu *ptr)
   imu_ptr_ = ptr;
 };
 
-void Robot::registerMotorWheels(Motor *dev_ptr, uint8_t idx, CanTxMgr *tx_mgr_ptr)
+void Robot::registerMotorWheels(Motor *dev_ptr, uint8_t idx)
 {
   HW_ASSERT(dev_ptr != nullptr, "Motor pointer is null", dev_ptr);
-  HW_ASSERT(idx >= 0 && idx < kWheelMotorNum, "Motor index is out of range", idx);
-  if (dev_ptr == nullptr || idx >= kWheelMotorNum || motor_wheels_ptr_[idx] == dev_ptr || tx_mgr_ptr == nullptr) {
-    return;
-  }
-  WheelMotorIdx midx[4] = {
-      WheelMotorIdx::kWheelMotorIdxLeftFront,
-      WheelMotorIdx::kWheelMotorIdxLeftRear,
-      WheelMotorIdx::kWheelMotorIdxRightRear,
-      WheelMotorIdx::kWheelMotorIdxRightFront,
-  };
-  TxDevIdx tidx[4] = {
-      TxDevIdx::kMotorWheelLeftFront,
-      TxDevIdx::kMotorWheelLeftRear,
-      TxDevIdx::kMotorWheelRightRear,
-      TxDevIdx::kMotorWheelRightFront,
-  };
-  motor_wheels_ptr_[midx[idx]] = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)tidx[idx]].transmitter_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)tidx[idx]].tx_mgr_ptr_ = tx_mgr_ptr;
+  motor_wheels_ptr_[idx] = dev_ptr;
 };
-void Robot::registerCap(Cap *dev_ptr, CanTxMgr *tx_mgr_ptr)
+void Robot::registerCap(Cap *dev_ptr)
 {
   HW_ASSERT(dev_ptr != nullptr, "Cap pointer is null", dev_ptr);
-  HW_ASSERT(tx_mgr_ptr != nullptr, "CanTxMgr pointer is null", tx_mgr_ptr);
-  if (dev_ptr == nullptr || cap_ptr_ == dev_ptr || tx_mgr_ptr == nullptr) {
-    return;
-  }
-
   cap_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kCap].transmitter_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kCap].tx_mgr_ptr_ = tx_mgr_ptr;
 };
-void Robot::registerGimbalChassisComm(GimbalChassisComm *dev_ptr, CanTxMgr *tx_mgr_ptr)
+void Robot::registerGimbalChassisComm(GimbalChassisComm *dev_ptr)
 {
   HW_ASSERT(dev_ptr != nullptr, "GimbalChassisComm pointer is null", dev_ptr);
-  HW_ASSERT(tx_mgr_ptr != nullptr, "CanTxMgr pointer is null", tx_mgr_ptr);
-  if (dev_ptr == nullptr || gc_comm_ptr_ == dev_ptr || tx_mgr_ptr == nullptr) {
-    return;
-  }
-
   gc_comm_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kGimbalChassis].transmitter_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kGimbalChassis].tx_mgr_ptr_ = tx_mgr_ptr;
 };
 
-void Robot::registerReferee(Referee *dev_ptr, UartTxMgr *tx_mgr_ptr)
+void Robot::registerReferee(Referee *dev_ptr)
 {
-  HW_ASSERT(dev_ptr != nullptr, "Referee pointer is null", dev_ptr);
-  HW_ASSERT(tx_mgr_ptr != nullptr, "UartRxMgr pointer is null", tx_mgr_ptr);
-  if (dev_ptr == nullptr || referee_ptr_ == dev_ptr || tx_mgr_ptr == nullptr) {
-    return;
-  }
-
+  HW_ASSERT(dev_ptr != nullptr, "RFR pointer is null", dev_ptr);
   referee_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kReferee].transmitter_ptr_ = dev_ptr;
-  tx_dev_mgr_pairs_[(uint32_t)TxDevIdx::kReferee].tx_mgr_ptr_ = tx_mgr_ptr;
 };
 
 void Robot::registerRc(DT7 *ptr)
 {
   HW_ASSERT(ptr != nullptr, "DT7 pointer is null", ptr);
-  if (ptr == nullptr || rc_ptr_ == ptr) {
-    return;
-  }
   rc_ptr_ = ptr;
 }
 
@@ -771,6 +755,22 @@ void Robot::registerShooterPkg(ShooterPkg *ptr)
     return;
   }
   rfr_shooter_pkg_ptr_ = ptr;
+};
+void Robot::registerCompRobotsHpPkg(CompRobotsHpPkg *ptr)
+{
+  HW_ASSERT(ptr != nullptr, "CompRobotsHpPkg pointer is null", ptr);
+  if (ptr == nullptr || rfr_comp_robots_hp_pkg_ptr_ == ptr) {
+    return;
+  }
+  rfr_comp_robots_hp_pkg_ptr_ = ptr;
+};
+void Robot::registerRobotHurtPkg(RobotHurtPkg *ptr)
+{
+  HW_ASSERT(ptr != nullptr, "RobotHurtPkg pointer is null", ptr);
+  if (ptr == nullptr || rfr_robot_hurt_pkg_ptr_ == ptr) {
+    return;
+  }
+  rfr_robot_hurt_pkg_ptr_ = ptr;
 };
 #pragma endregion
 /* Private function definitions ----------------------------------------------*/

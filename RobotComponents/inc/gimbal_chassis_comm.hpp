@@ -158,7 +158,6 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
     } else {
       HW_ASSERT(false, "Invalid code part", __FILE__);
     }
-    tx_ids_ = {tx_id_};
     rx_ids_ = {rx_id_};
   };
   virtual ~GimbalChassisComm() = default;
@@ -175,10 +174,11 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
    * @brief       解码
    * @param        data: 数据指针
    * @param        len: 数据长度
+   * @param        rx_id: 接收 ID
    * @retval       解码成功返回true，否则返回false
    * @note        None
    */
-  virtual bool decode(size_t len, const uint8_t* data) override;
+  virtual bool decode(size_t len, const uint8_t* data, uint32_t rx_id) override;
 
   /**
    * @brief       是否有更新数据
@@ -210,7 +210,6 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
    * @note        None
    */
   virtual uint32_t txId(void) const override { return tx_id_; };
-  virtual const TxIds &txIds(void) const override {return tx_ids_;};
   /**
    * @brief       编码
    * @param        len: 缓冲区长度
@@ -259,7 +258,6 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
 
   // 编码相关
   uint32_t tx_id_ = 0x111;             ///< 发送的CAN消息ID
-  TxIds tx_ids_ = {tx_id_};
   uint32_t transmit_success_cnt_ = 0;  ///< 发送成功次数
   uint32_t receive_success_cnt_ = 0;   
 

@@ -19,26 +19,40 @@
 #include "communication_tools.hpp"
 #include "ins_all.hpp"
 #include "tim.h"
+#include "main.h"
 /* Private macro -------------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 
 static robot::Robot* robot_ptr = nullptr;
-static robot::Imu* imu_ptr = nullptr;
+static hello_world::imu::Imu* imu_ptr = nullptr;
 
 static float main_task_time_cost = 0;
 static float comm_task_time_cost = 0;
 static uint32_t tick = 0;
+uint32_t chipid;
 
 /* External variables --------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-
+static void ChipInit(void)
+{
+  chipid=*(uint32_t*)0x1FFF7A10;
+  if (chipid == kxiao_omni)
+  {
+    car_version = version_kxiao_omni;
+  }
+  else if (chipid = kxiaoxiao_omni)
+  {
+    car_version = version_kxiaoxiao_omni;
+  }
+};
 static void PrivatePointerInit(void);
 static void HardWareInit(void);
 
 void MainTaskInit(void)
 { 
+  // ChipInit();
   PrivatePointerInit();
   HardWareInit();
 

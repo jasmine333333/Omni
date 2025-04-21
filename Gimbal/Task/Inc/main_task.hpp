@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : main_task.hpp
+ * @file      :main_task.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -20,7 +20,19 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <stdint.h>
 /* Exported macro ------------------------------------------------------------*/
+static uint8_t car_version = 0;
+
+enum
+{
+    kxiao_omni = 0,
+    kxiaoxiao_omni = 1,
+};
+enum{
+    version_kxiao_omni = 0,
+    version_kxiaoxiao_omni = 1,
+};
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/

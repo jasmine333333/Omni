@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : ins_imu.hpp
+ * @file      :ins_imu.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -17,13 +17,13 @@
 #define INSTANCE_INS_IMU_HPP_
 
 /* Includes ------------------------------------------------------------------*/
-#include "usr_imu.hpp"
+#include "imu.hpp"
 /* Exported macro ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/
 
-robot::Imu *CreateImu(void);
+hello_world::imu::Imu *CreateImu(void);
 
 #endif /* INSTANCE_INS_IMU_HPP_ */

@@ -20,7 +20,18 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include <stdint.h>
+static uint8_t car_version = 0;
 /* Exported macro ------------------------------------------------------------*/
+enum
+{
+    kxiao_omni = 0,
+    kxiaoxiao_omni = 1,
+};
+enum{
+    version_kxiao_omni = 0,
+    version_kxiaoxiao_omni = 1,
+};
 /* Exported constants --------------------------------------------------------*/
 /* Exported types ------------------------------------------------------------*/
 /* Exported variables --------------------------------------------------------*/

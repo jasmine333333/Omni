@@ -1,6 +1,6 @@
 /** 
  *******************************************************************************
- * @file      : communication_tools.hpp
+ * @file      :communication_tools.hpp
  * @brief     : 
  * @history   :
  *  Version     Date            Author          Note
@@ -19,7 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "DT7.hpp"
 #include "can.h"
-#include "cap.hpp"
+#include "super_cap.hpp"
 #include "gimbal_chassis_comm.hpp"
 #include "iwdg.h"
 #include "motor.hpp"

@@ -111,11 +111,11 @@ void Gimbal::updateImuData()
   HW_ASSERT(imu_ptr_ != nullptr, "pointer %d to imu %d is nullptr", imu_ptr_);
   // TODO(ZSC): 之后需要检查此处的数据映射
   // IMU是右手系，但pitch轴直觉上应该得是左手系，即低头角度为负，抬头角度为正，(故在此处加负号)
-  imu_ang_fdb_[kJointYaw] = imu_ptr_->getAngYaw();
-  imu_ang_fdb_[kJointPitch] = -imu_ptr_->getAngPitch();
+  imu_ang_fdb_[kJointYaw] = imu_ptr_->yaw();
+  imu_ang_fdb_[kJointPitch] = -imu_ptr_->pitch();
 
-  imu_spd_fdb_[kJointYaw] = imu_ptr_->getGyroYaw();
-  imu_spd_fdb_[kJointPitch] = -imu_ptr_->getGyroPitch();
+  imu_spd_fdb_[kJointYaw] = imu_ptr_->gyro_yaw();
+  imu_spd_fdb_[kJointPitch] = -imu_ptr_->gyro_pitch();
 };
 
 #pragma endregion
@@ -168,8 +168,7 @@ void Gimbal::runOnWorking()
     {
       JointIdx joint_idx = joint_idxs[i];
       pid_ptr_[joint_idx]->reset();
-      motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kCmd);
-      motor_ptr_[joint_idx]->setInput(hello_world::motor::DaMiao::Cmd::kCmdDisable);
+      motor_ptr_[joint_idx]->disable();
     }
   }
   else{
@@ -285,6 +284,7 @@ void Gimbal::calcJointAngRef()
       fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.30543f) 
       {
         tmp_ang_ref = vis_data_.cmd;
+        is_rotating_ = false;
       } 
   else  {
     // 否则，根据上一控制周期的关节角度参考值计算当前控制周期的关节角度参考值
@@ -301,13 +301,17 @@ void Gimbal::calcJointAngRef()
       calcCruiseMode(tmp_ang_ref);
     }
     else{    
-    if (rev_head_flag_ && ((work_tick_ - last_rev_head_tick_) > 200)) {
+    if (rev_head_flag_ ) {
       tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + PI;
       last_rev_head_tick_ = work_tick_;
       last_joint_ang_ref_[kJointYaw] += PI;
+      rev_head_flag_ = false;  // 翻转头部朝向标志位清除
+      is_rotating_ = true;  // 标记正在转头
     }
 
-    tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;
+    if (!is_rotating_) {
+      tmp_ang_ref.yaw = last_joint_ang_ref_[kJointYaw] + norm_cmd_delta_.yaw * sensitivity_yaw;
+    }
     tmp_ang_ref.pitch = last_joint_ang_ref_[kJointPitch];
     //  Pitch轴限位
     bool is_pitch_ang_too_large = motor_ang_fdb_[kJointPitch] > cfg_.max_pitch_ang - 0.05f;
@@ -339,6 +343,9 @@ void Gimbal::calcJointAngRef()
   joint_ang_ref_[kJointPitch] = tmp_ang_ref.pitch;
   // joint_ang_ref_[kJointPitch] = debug_pitch;
   // joint_ang_ref_[kJointYaw] = debug_yaw;
+  if (is_rotating_ && (work_tick_ - last_rev_head_tick_ > 500)) {
+    is_rotating_ = false;
+  }
 };
 
 void Gimbal::calcJointTorRef()
@@ -471,8 +478,7 @@ void Gimbal::setCommDataMotors(bool working_flag)
 
     } else {
       pid_ptr_[joint_idx]->reset();
-      motor_ptr_[joint_idx]->set_input_type(hello_world::motor::InputType::kCmd);
-      motor_ptr_[joint_idx]->setInput(hello_world::motor::DaMiao::Cmd::kCmdDisable);
+      motor_ptr_[joint_idx]->disable();
     }
   }
 };

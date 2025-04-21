@@ -135,19 +135,15 @@ robot::Robot* CreateRobot()
     // 有通信功能的组件指针
     // unique_robot.registerLaser(CreateLaser());
 
-    hello_world::comm::CanTxMgr* can_tx_mgr_ptr;
-    can_tx_mgr_ptr = CreateCan1TxMgr();
-    unique_robot.registerGimbalChassisComm(CreateGimbalChassisComm(), can_tx_mgr_ptr);
-    unique_robot.registerMotor(CreateMotorYaw(), robot::Robot::kMotorIdxYaw, can_tx_mgr_ptr);
+    unique_robot.registerGimbalChassisComm(CreateGimbalChassisComm());
+    unique_robot.registerGimbalMotor(CreateMotorYaw(), robot::Gimbal::kJointYaw);
 
-    can_tx_mgr_ptr = CreateCan2TxMgr();
-    unique_robot.registerMotor(CreateMotorFricLeft(), robot::Robot::kMotorIdxFricLeft, can_tx_mgr_ptr);
-    unique_robot.registerMotor(CreateMotorFricRight(), robot::Robot::kMotorIdxFricRight, can_tx_mgr_ptr);
-    unique_robot.registerMotor(CreateMotorFeed(), robot::Robot::kMotorIdxFeed, can_tx_mgr_ptr);
-    unique_robot.registerMotor(CreateMotorPitch(), robot::Robot::kMotorIdxPitch, can_tx_mgr_ptr);
+    unique_robot.registerFricMotor(CreateMotorFricLeft(), 0);
+    unique_robot.registerFricMotor(CreateMotorFricRight(), 1);
+    unique_robot.registerFeedMotor(CreateMotorFeed());
+    unique_robot.registerGimbalMotor(CreateMotorPitch(), robot::Gimbal::kJointPitch);
 
-    hello_world::comm::UartTxMgr* uart_tx_mgr_ptr = CreateVisionTxMgr();
-    unique_robot.registerVision(CreateVision(), uart_tx_mgr_ptr);
+    unique_robot.registerVision(CreateVision());
 
     is_robot_created = true;
   }
