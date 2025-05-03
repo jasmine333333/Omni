@@ -59,6 +59,8 @@ class Robot : public Fsm
   typedef robot::GimbalChassisComm GimbalChassisComm;
   typedef hello_world::imu::Imu Imu;
 
+  typedef hello_world::vision::Vision::ShootFlag ShootFlag;
+
  public:
   Robot() {};
   ~Robot() {};
@@ -91,6 +93,7 @@ class Robot : public Fsm
   void updateImuData();
   void updateGimbalChassisCommData();
   void updateVisionData();
+  void updateShootFlagData();
 
   void updatePwrState();
 
@@ -123,6 +126,8 @@ class Robot : public Fsm
   // IMU 数据在 update 函数中更新
   bool is_imu_caled_offset_ = false;  ///< IMU 数据是否计算完零飘
 
+  ShootFlag shoot_flag_ = ShootFlag::kNoShoot;  ///< 射击指令
+  ShootFlag last_shoot_flag_ = ShootFlag::kNoShoot;  ///< 上一时刻射击指令
   uint8_t last_is_new_bullet_shot_ = 0;
 
   // 主要模块状态机组件指针

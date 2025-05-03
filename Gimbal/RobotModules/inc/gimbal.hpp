@@ -187,6 +187,8 @@ class Gimbal : public Fsm
   void calcCtrlAngBased();
   void adjustJointFdb();
   void calcCruiseMode(Cmd &tmp_ang_ref);
+  float normalize_angle(float angle);
+  float get_shortest_angle_diff(float from, float to);
   void adjustLastJointAngRef();
   void calcJointAngRef();
   void calcJointTorRef();

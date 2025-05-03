@@ -346,7 +346,7 @@ namespace robot
       float theta_fdb[1] = {theta_i2r_};
       // 如果云台反转，期望值是PI
       // theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
-      theta_ref[0] = {0.0f};
+      theta_ref[0] = {PI+0.0f};
       follow_omega_pid_ptr_->calc(theta_ref, theta_fdb, nullptr, &cmd.w);
       cmd.w = hello_world::Bound(cmd.w, -1.0f, 1.0f);
       static auto data = follow_omega_pid_ptr_->getDatasAt(0);
@@ -371,7 +371,7 @@ namespace robot
     cmd.w = hello_world::Bound(cmd.w * cfg_.normal_rot_spd, -cfg_.max_rot_spd, cfg_.max_rot_spd);
     if (use_cap_flag_)
     {
-      cmd *= 1.3f; // todo
+      cmd *= 1.0f; // todo
     }
     
     setCmdSmoothly(cmd, smooth_factor);

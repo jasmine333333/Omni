@@ -101,7 +101,16 @@ namespace robot
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
     }
 
-    // feed_ptr_->setVisionShootFlag(vision_ptr_->getShootFlag());
+    shoot_flag_ = vision_ptr_->getShootFlag();
+    if (shoot_flag_ == Vision::ShootFlag::kShootOnce)
+    {
+      feed_ptr_->setTriggerLimit(true, true, 4, 500);//todo
+    }
+    else
+    {
+      feed_ptr_->setTriggerLimit(true, true, 4, 50);//todo
+    }
+    last_shoot_flag_ = shoot_flag_;
   }
 
   void Robot::updatePwrState()
@@ -190,7 +199,7 @@ namespace robot
     HW_ASSERT(feed_ptr_ != nullptr, "Feed FSM pointer is null", feed_ptr_);
     feed_ptr_->update();
     feed_ptr_->run();
-    feed_ptr_->setTriggerLimit(true, true, 4, 50);//todo
+    // feed_ptr_->setTriggerLimit(true, true, 4, 50);//todo
   };
 
   void Robot::standby()

@@ -272,6 +272,18 @@ void Gimbal::calcCruiseMode(Cmd &tmp_ang_ref) {
   last_joint_ang_ref_[kJointYaw] = tmp_ang_ref.yaw;
   last_joint_ang_ref_[kJointPitch] = tmp_ang_ref.pitch;
 }
+//fix:视觉跟随过零处理问题
+float Gimbal::normalize_angle(float angle) {
+  if (angle > M_PI) angle -= 2 * M_PI;
+  if (angle < -M_PI) angle += 2 * M_PI;
+  return angle;
+}
+float Gimbal::get_shortest_angle_diff(float from, float to) 
+{
+  float diff = normalize_angle(to - from);
+  return diff;
+}
+
 bool debug_enemydetected ;
 float debug_pitch = 0.0f;
 float debug_yaw = 0.0f;
@@ -280,8 +292,9 @@ void Gimbal::calcJointAngRef()
   debug_enemydetected = vis_data_.is_target_detected;
   // 如果控制模式是自动，且视觉模块没有离线、视觉模块检测到有效目标，且视觉反馈角度与当前角度相差不大
   Cmd tmp_ang_ref = {0.0f};
-  if (ctrl_mode_ == CtrlMode::Auto && fabsf(joint_ang_fdb_[kJointYaw] - vis_data_.cmd.yaw) < 0.3927f &&
-      fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.30543f) 
+  if (ctrl_mode_ == CtrlMode::Auto && 
+      fabsf(get_shortest_angle_diff(joint_ang_fdb_[kJointYaw] , vis_data_.cmd.yaw)) < 0.3927f &&
+      fabsf(get_shortest_angle_diff(joint_ang_fdb_[kJointPitch] , vis_data_.cmd.pitch)) < 0.30543f) 
       {
         tmp_ang_ref = vis_data_.cmd;
         is_rotating_ = false;
