@@ -442,10 +442,15 @@ void Robot::genModulesCmdFromKb()
     rev_head_flag = false;
   }
   
-  
+  //打符模式
   if (rc_ptr_->key_F()) {
+    buff_mode_ = 1;
   }
-
+  else
+  {
+    buff_mode_ = 0;
+  }
+  
   if (rc_ptr_->mouse_l_btn()) {
     shoot_flag = true;
   }
@@ -532,6 +537,7 @@ void Robot::setGimbalChassisCommData()
   // gimbal
   GimbalChassisComm::GimbalData::ChassisPart &gimbal_data = gc_comm_ptr_->gimbal_data().cp;
   gimbal_data.turn_back_flag = gimbal_ptr_->getRevHeadFlag();
+  gimbal_data.buff_mode_flag = buff_mode_;
   gimbal_data.yaw_delta = gimbal_ptr_->getNormCmdDelta().yaw;
   gimbal_data.pitch_delta = gimbal_ptr_->getNormCmdDelta().pitch;
   gimbal_data.ctrl_mode = gimbal_ptr_->getCtrlMode();

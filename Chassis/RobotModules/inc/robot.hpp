@@ -175,6 +175,10 @@ class Robot : public Fsm
   uint16_t bullet_num_ = 0;  ///< 子弹数量
 
   uint32_t last_rev_work_tick_ = 0;
+
+  bool buff_mode_ = false;  ///< buff 模式
+  bool last_buff_mode_ = false;  ///< 上一个 buff 模式
+  
   bool navigate_flag = 0; //巡航模式
   bool last_navigate_flag = 0; //上一个巡航flag
 

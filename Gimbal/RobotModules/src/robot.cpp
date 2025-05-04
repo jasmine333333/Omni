@@ -93,24 +93,19 @@ namespace robot
     }
     if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto && feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kManual)
     {
+      feed_ptr_->setTriggerLimit(true, true, 4, 50);
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
     }
     else if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto && feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kAuto)
     {
+      feed_ptr_->setTriggerLimit(true, true, 4, 500);//test todelete 为打符设置的低频发弹模式
       feed_ptr_->setVisionShootFlag(vision_ptr_->getShootFlag());
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
     }
-
-    shoot_flag_ = vision_ptr_->getShootFlag();
-    if (shoot_flag_ == Vision::ShootFlag::kShootOnce)
-    {
-      feed_ptr_->setTriggerLimit(true, true, 4, 500);//todo
-    }
     else
     {
-      feed_ptr_->setTriggerLimit(true, true, 4, 50);//todo
+      feed_ptr_->setTriggerLimit(true, true, 4, 50);
     }
-    last_shoot_flag_ = shoot_flag_;
   }
 
   void Robot::updatePwrState()
@@ -242,6 +237,7 @@ namespace robot
       gimbal_ptr_->setCtrlMode(CtrlMode::Manual);
       gimbal_ptr_->setRevHeadFlag(gimbal_data.turn_back_flag);
       gimbal_ptr_->setNavigationFlag(gimbal_data.navigation_flag);
+      gimbal_ptr_->setBuffMode(gimbal_data.buff_mode_flag);
       gimbal_ptr_->setNormCmdDelta(gimbal_data.yaw_delta, gimbal_data.pitch_delta);
     }
     else if (gimbal_ctrl_mode == CtrlMode::Auto)
@@ -272,6 +268,16 @@ namespace robot
     {
       fric_ptr_->setWorkingMode(hello_world::module::Fric::WorkingMode::kStop);
     }
+    
+    if (gimbal_ptr_->getBuffMode() == true)
+    {
+      feed_ptr_->setTriggerLimit(true, true, 4, 500);
+    }
+    else
+    {
+      feed_ptr_->setTriggerLimit(true, true, 4, 50);
+    }
+     
   };
 
   void Robot::transmitFricStatus()

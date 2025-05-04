@@ -93,7 +93,6 @@ class Robot : public Fsm
   void updateImuData();
   void updateGimbalChassisCommData();
   void updateVisionData();
-  void updateShootFlagData();
 
   void updatePwrState();
 
