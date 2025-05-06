@@ -98,7 +98,8 @@ namespace robot
     }
     else if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto && feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kAuto)
     {
-      feed_ptr_->setTriggerLimit(true, true, 4, 500);//test todelete 为打符设置的低频发弹模式
+      // feed_ptr_->setTriggerLimit(true, true, 4, 500);//test todelete 为打符设置的低频发弹模式
+      feed_ptr_->setTriggerLimit(true, true, 4, 50);
       feed_ptr_->setVisionShootFlag(vision_ptr_->getShootFlag());
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
     }

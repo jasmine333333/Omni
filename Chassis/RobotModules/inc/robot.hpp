@@ -144,8 +144,12 @@ class Robot : public Fsm
   uint32_t last_base_attack_tick = 0;  ///< 上一次基地受攻击的时间戳
   uint32_t base_attack_tick = 0;  ///< 基地受攻击的时间戳
 
+  bool robot_attacked_flag = false;  ///< 机器人受攻击标志位
   uint8_t hurt_module_id = 0;  ///< 受伤模块ID
   uint8_t hurt_reason = 6;    ///< 扣血原因
+  uint16_t last_hp = 100;     ///< 上次血量【裁判系统告知，离线时采用默认值】
+  uint32_t robot_attacked_tick = 0;  ///< 机器人受攻击的时间戳
+  uint32_t last_robot_attacked_tick = 0;  ///< 上一次机器人受攻击的时间戳
   
   void setManualCtrlSrc(ManualCtrlSrc src)
   {

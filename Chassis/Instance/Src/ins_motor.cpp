@@ -75,7 +75,7 @@ const hw_motor::OptionalParams kMotorParamsYaw_1 = {
     /** 是否移除电机自带的减速器 */
     .remove_build_in_reducer = false,
     /** 电机输出端实际角度与规定角度的差值 */
-    .angle_offset = -1.0f ,
+    .angle_offset = -2.1490f ,
 };
 const hw_motor::OptionalParams kMotorParamsYaw_2 = {
     .input_type = hw_motor::InputType::kTorq,
@@ -101,10 +101,10 @@ const hw_motor::OptionalParams kMotorParamsFeed = {
 // TODO: 这里的 MotorId 需要按照实际情况修改
 enum MotorID
 {
-    kMotorIdWheelLeftFront = 1u,
-    kMotorIdWheelLeftRear = 2u,
-    kMotorIdWheelRightRear = 3u,
-    kMotorIdWheelRightFront = 4u,
+    kMotorIdWheelLeftFront = 3u,
+    kMotorIdWheelLeftRear = 4u,
+    kMotorIdWheelRightRear = 1u,
+    kMotorIdWheelRightFront = 2u,
     kMotorIdYaw = 2u,
     kMotorIdFeed = 3u,
 };
