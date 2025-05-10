@@ -191,7 +191,7 @@ class Gimbal : public Fsm
   void adjustJointFdb();
   void calcCruiseMode(Cmd &tmp_ang_ref);
   float normalize_angle(float angle);
-  float get_shortest_angle_diff(float from, float to);
+  void get_shortest_angle_diff(float from, float to);
   void adjustLastJointAngRef();
   void calcJointAngRef();
   void calcJointTorRef();
@@ -217,6 +217,8 @@ class Gimbal : public Fsm
 
   Cmd norm_cmd_delta_ = {0.0, 0.0};  ///< 控制指令的增量
   VisionData vis_data_;
+
+  float diff;
 
   CtrlMode ctrl_mode_ = CtrlMode::Manual;  ///< 控制模式
 
