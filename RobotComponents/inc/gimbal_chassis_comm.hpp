@@ -59,7 +59,7 @@ class GimbalChassisComm : public hello_world::comm::Receiver, public hello_world
     // chassis to gimbal
     struct ChassisPart {
       bool turn_back_flag = false;  ///< 云台快速后转 180 标志
-      bool buff_mode_flag = false;  ///< 打符模式标志
+      uint8_t buff_mode_flag = false;  ///< 打符模式标志
       bool navigation_flag = false;  ///< 云台导航标志
 
       float yaw_delta = 0;    ///< 将归一化的角度增量值转换到-127~127

@@ -29,7 +29,7 @@ struct __attribute__((packed)) C2GPkg1 {
   int8_t gimbal_pitch_delta;
   uint8_t gimbal_turn_back_flag : 1;
   uint8_t gimbal_navigate_flag : 1;
-  uint8_t buff_mode_flag : 1;
+  uint8_t buff_mode_flag : 2;
   uint32_t gimbal_ctrl_mode : 1;
   uint32_t gimbal_working_mode : 2;
   // shooter

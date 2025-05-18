@@ -513,14 +513,24 @@ namespace robot
     }
 
     // 打符模式
-    if (rc_ptr_->key_F())
+    if (rc_ptr_->key_CTRL() && rc_ptr_->key_F())
     {
-      buff_mode_ = 1;
-    }
-    else
-    {
-      buff_mode_ = 0;
-    }
+    buff_mode_ = 1;//大符
+    gimbal_ctrl_mode = CtrlMode::Auto;
+    feed_ctrl_mode = CtrlMode::Manual;
+
+  }
+  else if ( rc_ptr_->key_F())
+  {
+    buff_mode_ = 2;//小符
+    gimbal_ctrl_mode = CtrlMode::Auto;
+    feed_ctrl_mode = CtrlMode::Manual;
+  }  
+  else
+  {
+    buff_mode_ = 0;
+  }
+
 
     if (rc_ptr_->mouse_l_btn())
     {

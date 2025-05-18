@@ -93,19 +93,12 @@ namespace robot
     }
     if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto && feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kManual)
     {
-      feed_ptr_->setTriggerLimit(true, true, 4, 50);
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
     }
     else if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto && feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kAuto)
     {
-      // feed_ptr_->setTriggerLimit(true, true, 4, 500);//test todelete 为打符设置的低频发弹模式
-      feed_ptr_->setTriggerLimit(true, true, 4, 50);
       feed_ptr_->setVisionShootFlag(vision_ptr_->getShootFlag());
       gimbal_ptr_->setVisionTargetDetected(vision_ptr_->getIsEnemyDetected());
-    }
-    else
-    {
-      feed_ptr_->setTriggerLimit(true, true, 4, 50);
     }
   }
 
@@ -120,7 +113,7 @@ namespace robot
     }
     else if (pre_state == PwrState::Resurrection)
     {
-      if (is_imu_caled_offset_)
+      if (is_imu_caled_offset_ && work_tick_ > 1000)
       {
         next_state = PwrState::Working;
       }
@@ -195,7 +188,6 @@ namespace robot
     HW_ASSERT(feed_ptr_ != nullptr, "Feed FSM pointer is null", feed_ptr_);
     feed_ptr_->update();
     feed_ptr_->run();
-    // feed_ptr_->setTriggerLimit(true, true, 4, 50);//todo
   };
 
   void Robot::standby()
@@ -270,13 +262,13 @@ namespace robot
       fric_ptr_->setWorkingMode(hello_world::module::Fric::WorkingMode::kStop);
     }
     
-    if (gimbal_ptr_->getBuffMode() == true)
+    if (gimbal_ptr_->getBuffMode() == 1 || gimbal_ptr_->getBuffMode() ==2)
     {
-      feed_ptr_->setTriggerLimit(true, true, 4, 500);
+      feed_ptr_->setTriggerLimit(true, true, 3, 500);
     }
     else
     {
-      feed_ptr_->setTriggerLimit(true, true, 4, 50);
+      feed_ptr_->setTriggerLimit(true, true, 3, 50);
     }
      
   };
@@ -324,6 +316,14 @@ namespace robot
     if (gimbal_ptr_->getCtrlMode() == CtrlMode::Auto || feed_ptr_->getCtrlMode() == hello_world::module::CtrlMode::kAuto)
     {
       vision_work_State = Vision::WorkState::kNormal;
+    }
+    if (gimbal_ptr_->getBuffMode() == 1) // 大符
+    {
+      vision_work_State = Vision::WorkState::kBigBuff;
+    }
+    else if (gimbal_ptr_->getBuffMode() == 2) // 小符
+    {
+      vision_work_State = Vision::WorkState::kSmallBuff;
     }
 
     GimbalChassisComm::RefereeData::ChassisPart &referee_data = gc_comm_ptr_->referee_data().cp;
