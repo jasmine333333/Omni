@@ -50,6 +50,7 @@ namespace robot
           hello_world::referee::HpDeductionReason::
               kArmorHit), ///< 扣血原因
   };
+  const hello_world::referee::RobotBuffData kDefaultRobotBuffData= {};
 
   const hello_world::referee::RobotShooterData kDefaultRobotShooterData = {
       .bullet_type = static_cast<uint8_t>(hello_world::referee::BulletType::k17mm), ///< 弹丸类型，@see BulletType
@@ -122,6 +123,7 @@ namespace robot
     ShooterPkg::Data rsp_data = kDefaultRobotShooterData;
     CompRobotsHpPkg::Data rchp_data = kDefaultRobotCompRobotsHpData;
     RobotHurtPkg::Data rht_data = kDefaultRobotHurtData; // 初始化受伤数据为默认值
+    BuffPkg::Data rb_data = kDefaultRobotBuffData; // 初始化buff数据为默认值
 
     GimbalChassisComm::RefereeData::ChassisPart &gimbal_rfr_data = gc_comm_ptr_->referee_data().cp;
 
@@ -132,6 +134,7 @@ namespace robot
       rsp_data = rfr_shooter_pkg_ptr_->getData();
       rchp_data = rfr_comp_robots_hp_pkg_ptr_->getData();
       rht_data = rfr_robot_hurt_pkg_ptr_->getData();
+      rb_data = rfr_buff_pkg_ptr_->getData();
       if (!rfr_shooter_pkg_ptr_->isHandled())
       { // 检测到了一颗新的弹丸发射
         rfr_shooter_pkg_ptr_->setHandled();
@@ -172,6 +175,15 @@ namespace robot
     hurt_module_id = rht_data.module_id;
     hurt_reason = rht_data.hp_deduction_reason;
 
+    if (rb_data.remaining_energy_over_5_percent == 0)
+    {
+      chassis_ptr_->setDangerEnergy(true);
+    }
+    else
+    {
+      chassis_ptr_->setDangerEnergy(false);
+    }
+    
     chassis_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
     chassis_rfr_data.is_pwr_on = rpp_data.power_management_chassis_output;
     chassis_rfr_data.pwr_limit = rpp_data.chassis_power_limit;
@@ -185,6 +197,7 @@ namespace robot
     {
       robot_attacked_flag = true;
       last_robot_attacked_tick = work_tick_;
+      
     }
     else
     {
@@ -451,6 +464,7 @@ namespace robot
     CtrlMode gimbal_ctrl_mode = CtrlMode::Manual;
     Gimbal::WorkingMode gimbal_working_mode = Gimbal::WorkingMode::Normal;
     bool rev_head_flag = false;
+    bool rev_chassis_flag = false;
     bool auto_shoot_flag = false;
     CtrlMode feed_ctrl_mode = CtrlMode::Manual;
     Shooter::WorkingMode shooter_working_mode = Shooter::WorkingMode::Normal;
@@ -499,9 +513,16 @@ namespace robot
         chassis_working_mode = Chassis::WorkingMode::Follow;
       }
     }
-    if (rc_ptr_->key_C())
-    {
-    }
+    // if (rc_ptr_->key_C() && (work_tick_ - last_rev_chassis_tick_ > 200))
+    // {
+    //   rev_chassis_flag = true;
+    //   last_rev_chassis_tick_ = work_tick_;
+    // }
+    // else
+    // {
+    //   rev_chassis_flag = false;
+    // }
+    
     if (rc_ptr_->key_B() && (work_tick_ - last_rev_work_tick_ > 200))
     {
       rev_head_flag = true;
@@ -549,6 +570,25 @@ namespace robot
       feed_ctrl_mode = CtrlMode::Auto;
     }
 
+    if (rc_ptr_->key_X() || rc_ptr_->mouse_r_btn())
+    {
+      variable_gyro_flag = true;
+    }
+    else
+    {
+      variable_gyro_flag = false;
+    }
+    
+    // if (robot_attacked_flag == true)
+    // {
+    //   variable_gyro_flag = true;     
+    // }
+    // else if (work_tick_ - last_robot_attacked_tick > 600)
+    // {
+    //   variable_gyro_flag = false;
+    // }    
+    
+    
     GimbalCmd gimbal_cmd;
     gimbal_cmd.pitch = hello_world::Bound(0.01 * rc_ptr_->mouse_y(), -1, 1); // 去掉了负号，配合最新裁判端
     gimbal_cmd.yaw = hello_world::Bound(-0.01 * rc_ptr_->mouse_x(), -1, 1);
@@ -565,8 +605,9 @@ namespace robot
     chassis_ptr_->setNormCmd(chassis_cmd);
     chassis_ptr_->setWorkingMode(chassis_working_mode);
     chassis_ptr_->setUseCapFlag(rc_ptr_->key_SHIFT());
-    if (rev_head_flag)
-      chassis_ptr_->revHead();
+    chassis_ptr_->setGyroVariation(variable_gyro_flag);
+    // if (rev_chassis_flag)
+    //   chassis_ptr_->revHead();
 
     feed_ptr_->setCtrlMode(feed_ctrl_mode);
     feed_ptr_->setWorkingMode(feed_working_mode);
@@ -881,6 +922,15 @@ namespace robot
       return;
     }
     rfr_robot_hurt_pkg_ptr_ = ptr;
+  };
+  void Robot::registerBuffPkg(BuffPkg *ptr)
+  {
+    HW_ASSERT(ptr != nullptr, "BuffPkg pointer is null", ptr);
+    if (ptr == nullptr || rfr_buff_pkg_ptr_ == ptr)
+    {
+      return;
+    }
+    rfr_buff_pkg_ptr_ = ptr;
   };
 #pragma endregion
   /* Private function definitions ----------------------------------------------*/

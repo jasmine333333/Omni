@@ -62,6 +62,7 @@ class Robot : public Fsm
   typedef hello_world::referee::CompRobotsHpPackage CompRobotsHpPkg;
   typedef hello_world::referee::RobotHurtPackage RobotHurtPkg;
   typedef hello_world::referee::HpDeductionReason HurtReason;
+  typedef hello_world::referee::RobotBuffPackage BuffPkg;
 
   typedef hello_world::referee::ids::RobotId RobotId;
   typedef robot::Chassis Chassis;
@@ -98,6 +99,7 @@ class Robot : public Fsm
   void registerShooterPkg(ShooterPkg *ptr);
   void registerCompRobotsHpPkg(CompRobotsHpPkg *ptr);
   void registerRobotHurtPkg(RobotHurtPkg *ptr);
+  void registerBuffPkg(BuffPkg *ptr);
   private:
   //  数据更新和工作状态更新，由 update 函数调用
   void updateData();
@@ -150,6 +152,8 @@ class Robot : public Fsm
   uint16_t last_hp = 100;     ///< 上次血量【裁判系统告知，离线时采用默认值】
   uint32_t robot_attacked_tick = 0;  ///< 机器人受攻击的时间戳
   uint32_t last_robot_attacked_tick = 0;  ///< 上一次机器人受攻击的时间戳
+  bool variable_gyro_flag = false;
+
   
   void setManualCtrlSrc(ManualCtrlSrc src)
   {
@@ -179,6 +183,7 @@ class Robot : public Fsm
   uint16_t bullet_num_ = 0;  ///< 子弹数量
 
   uint32_t last_rev_work_tick_ = 0;
+  uint32_t last_rev_chassis_tick_ = 0;
 
   uint8_t buff_mode_ = false;  ///< buff 模式
   uint8_t last_buff_mode_ = false;  ///< 上一个 buff 模式
@@ -212,6 +217,7 @@ class Robot : public Fsm
   ShooterPkg *rfr_shooter_pkg_ptr_ = nullptr;          ///< 裁判系统射击包指针 收发数据
   CompRobotsHpPkg *rfr_comp_robots_hp_pkg_ptr_ = nullptr;  ///< 裁判系统机器人血量包指针 收发数据
   RobotHurtPkg *rfr_robot_hurt_pkg_ptr_ = nullptr;  ///< 裁判系统机器人受伤包指针 收发数据
+  BuffPkg *rfr_buff_pkg_ptr_ = nullptr;  ///< 裁判系统机器人buff包指针 收发数据
 };
 /* Exported variables --------------------------------------------------------*/
 /* Exported function prototypes ----------------------------------------------*/

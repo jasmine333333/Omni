@@ -625,7 +625,7 @@ void UiDrawer::genShooterHeat(hello_world::referee::Arc& g)
 void UiDrawer::genVisTgt(hello_world::referee::Circle& g)
 {
   g.setName(kUiNameVisionTgt);
-  g.setCenterPos(vis_tgt_x_ + 77, 1080 - vis_tgt_y_ - 36);
+  g.setCenterPos(vis_tgt_x_ - 320, 1080 - vis_tgt_y_ + 280);
   g.setRadius(35);
   g.setColor(hello_world::referee::String::Color::kGreen);
   g.setLayer(hello_world::referee::GraphicLayer::k1);

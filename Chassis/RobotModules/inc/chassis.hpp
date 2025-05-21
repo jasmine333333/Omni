@@ -172,7 +172,11 @@ class Chassis : public Fsm
   void setUseCapFlag(bool flag) { use_cap_flag_ = flag; }
   void setnavigateFlag(bool flag) { navigate_flag_ = flag; }
   bool getUseCapFlag() const { return use_cap_flag_; }
-
+  void setGyroVariation(bool flag){variation_flag_ = flag; }
+  void setDangerEnergy(bool flag ){energy_danger_flag = flag;}
+  bool getDangerEnergy() const {return energy_danger_flag;};
+  
+  bool getGyroVariation() const {return variation_flag_; }
   void registerIkSolver(ChassisIkSolver *ptr);
   void registerWheelMotor(Motor *ptr, int idx);
   void registerYawMotor(Motor *ptr);
@@ -243,6 +247,8 @@ class Chassis : public Fsm
   bool use_cap_flag_ = false;              ///< 是否使用超级电容
   bool is_gyro2follow_handled_ = false;    ///< 小陀螺切跟随是否已经处理
   bool navigate_flag_ = false;             ///< 是否导航模式
+  bool variation_flag_ = false;            ///< 是否变速模式
+  bool energy_danger_flag = false;
   GyroDir gyro_dir_ = GyroDir::Unspecified;  ///< 小陀螺方向，正为绕 Z 轴逆时针，负为顺时针，
   GyroDir last_gyro_dir_ = GyroDir::Unspecified;  ///< 上一次小陀螺方向
   Cmd norm_cmd_ = {0};                     ///< 原始控制指令，基于图传坐标系
@@ -263,6 +269,11 @@ class Chassis : public Fsm
   bool rev_head_flag_ = false;              ///< 转向后退标志
   float last_rev_head_angle_ = 0.0f;         ///< 上一次转向后退的标志
   uint32_t last_rev_head_tick_ = 0;         ///< 上一次转向后退的时间戳
+
+  uint32_t last_variation_time_ = 0;
+  uint32_t variation_time_ = 0;
+  float current_variation = 0.0f;
+  bool change_flag_ = 0;
 
   // gimbal board fdb data  在 update 函数中更新
   bool is_gimbal_imu_ready_ = false;  ///< 云台主控板的IMU是否准备完毕
