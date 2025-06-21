@@ -123,7 +123,7 @@ class Gimbal : public Fsm
   void setRevHeadFlag(bool flag)
   {
     rev_command_flag_ = flag;
-    if (rev_command_flag_ != last_rev_command_flag_) {
+    if ((rev_command_flag_ == true) && (last_rev_command_flag_ == false)) {
       rev_head_flag_ = (work_tick_ - last_rev_head_tick_ > 200);
       last_rev_head_tick_ = work_tick_;
     }

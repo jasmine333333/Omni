@@ -26,11 +26,13 @@ const hw_pid::OutLimit kOutLimitFollowOmega = hw_pid::OutLimit(true, -kMaxPidOut
 const hw_pid::MultiNodesPid::ParamsList kPidParamsWheel_1 = {
     {
         .auto_reset = true,
-        .kp = 2.15f, // 2.15f
+        .kp = 2.1f, // 2.15f
         .ki = 0,
         .kd = 0,
         .setpoint_ramping = hw_pid::SetpointRamping(false, -0.1, 0.1, 0.1),
+        // .dead_band = hw_pid::DeadBand(true, -0.002f, 0.002f),
         .inte_anti_windup = hw_pid::InteAntiWindup(true, -1.0f, 1.0f),
+        
         .out_limit = kOutLimitWheel,
     },
 };

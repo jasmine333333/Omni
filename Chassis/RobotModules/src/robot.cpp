@@ -175,14 +175,14 @@ namespace robot
     hurt_module_id = rht_data.module_id;
     hurt_reason = rht_data.hp_deduction_reason;
 
-    if (rb_data.remaining_energy_over_5_percent == 0)
-    {
-      chassis_ptr_->setDangerEnergy(true);
-    }
-    else
-    {
-      chassis_ptr_->setDangerEnergy(false);
-    }
+    // if (((rb_data.remaining_energy >> 2)& 0x01)== 0)
+    // {
+    //   chassis_ptr_->setDangerEnergy(true);
+    // }
+    // else
+    // {
+    //   chassis_ptr_->setDangerEnergy(false);
+    // }
     
     chassis_rfr_data.is_rfr_on = (!referee_ptr_->isOffline());
     chassis_rfr_data.is_pwr_on = rpp_data.power_management_chassis_output;
@@ -607,7 +607,7 @@ namespace robot
     chassis_ptr_->setUseCapFlag(rc_ptr_->key_SHIFT());
     chassis_ptr_->setGyroVariation(variable_gyro_flag);
     // if (rev_chassis_flag)
-    //   chassis_ptr_->revHead();
+      // chassis_ptr_->revHead();
 
     feed_ptr_->setCtrlMode(feed_ctrl_mode);
     feed_ptr_->setWorkingMode(feed_working_mode);

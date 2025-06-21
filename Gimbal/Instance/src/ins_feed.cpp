@@ -27,7 +27,7 @@
 /* Exported function definitions ---------------------------------------------*/
 
 hello_world::module::Feed::Config kFeedConfig = {
-  .ang_ref_offset           = 0.25f,  
+  .ang_ref_offset           = 0.2f,  
   .ang_per_blt              = PI / 5.0f,   
   .heat_per_blt             = 10, 
   .resurrection_pos_err     = 5.0f / 180 * PI,  

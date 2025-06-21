@@ -283,9 +283,9 @@ namespace robot
     {
       last_variation_time_ = variation_time_;
       current_variation = change_flag_ * max_amplitude;
-      change_flag_ =  !change_flag_;
+      change_flag_ = !change_flag_;
     }
-    return current_variation;    
+    return current_variation;
   }
 
   uint32_t cnt[4] = {0};
@@ -345,8 +345,8 @@ namespace robot
       {
         move_flag = 1;
       }
-       // 是否需要根据底盘速度调整小陀螺速度
-      cmd.w += move_flag*getGyroVariation()* variable_gyro();
+      // 是否需要根据底盘速度调整小陀螺速度
+      cmd.w += move_flag * getGyroVariation() * variable_gyro();
       break;
     }
     case WorkingMode::Depart:
@@ -367,8 +367,8 @@ namespace robot
       float theta_ref[1] = {0.0f};
       float theta_fdb[1] = {theta_i2r_};
       // 如果云台反转，期望值是PI
-      theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
-      // theta_ref[0] = {0.0f};
+      // theta_ref[0] = PI * static_cast<float>(rev_head_flag_);
+      theta_ref[0] = {0.0f};
       follow_omega_pid_ptr_->calc(theta_ref, theta_fdb, nullptr, &cmd.w);
       cmd.w = hello_world::Bound(cmd.w, -1.0f, 1.0f);
       static auto data = follow_omega_pid_ptr_->getDatasAt(0);
@@ -395,7 +395,7 @@ namespace robot
     {
       cmd *= 1.0f; // todo
     }
-    
+
     setCmdSmoothly(cmd, smooth_factor);
   };
   void Chassis::calcWheelSpeedRef()
@@ -428,7 +428,7 @@ namespace robot
       ik_solver_ptr_->getRotSpdAll(feedbackspeed);
       for (size_t i = 0; i < 4; i++)
       {
-        feedbackspeed[i] = feedbackspeed[i] * 2.3;// todo
+        feedbackspeed[i] = feedbackspeed[i] * 2.3; // todo
       }
     }
     else
@@ -443,34 +443,39 @@ namespace robot
   {
     float p_max_change;
     float p_slope_;
-    float up_ref = 120.0f;
-    
+    float up_ref = 100.0f;
+
     if (use_cap_flag_ == true)
     {
       p_max_change = 480.0f;
       p_slope_ = 8.0f;
-      }
+    }
     else
     {
-      if (working_mode_ == WorkingMode::Gyro)
+      if (getDangerEnergy() == true)
       {
-        up_ref = 80.0f; // todo
+        up_ref = 55.0f;
         p_max_change = up_ref + static_cast<float>(rfr_data_.pwr_limit);
-        p_slope_ = 2.0f;
-      }
-      else if (getDangerEnergy() == true)
-      {
-        up_ref = 40.0f;
+        p_slope_ = 1.2f;
       }
       else
       {
-        up_ref = 120.0f;
-        p_max_change = up_ref + static_cast<float>(rfr_data_.pwr_limit);
-        p_slope_ = 2.0f;
+        if (working_mode_ == WorkingMode::Gyro)
+        {
+          up_ref = 70.0f; // todo
+          p_max_change = up_ref + static_cast<float>(rfr_data_.pwr_limit);
+          p_slope_ = 2.0f;
+        }
+        else
+        {
+          up_ref = 100.0f;
+          p_max_change = up_ref + static_cast<float>(rfr_data_.pwr_limit);
+          p_slope_ = 2.0f;
+        }
       }
     }
     hello_world::power_limiter::PowerLimiterRuntimeParams runtime_params = {
-        .p_ref_max = p_max_change,//p_max_change // 60.0f,//1.2f * rfr_data_.pwr_limit
+        .p_ref_max = p_max_change, // p_max_change // 60.0f,//1.2f * rfr_data_.pwr_limit
         .p_referee_max = static_cast<float>(rfr_data_.pwr_limit),
         .p_ref_min = 0.8f * rfr_data_.pwr_limit,
         .remaining_energy = static_cast<float>(rfr_data_.pwr_buffer),

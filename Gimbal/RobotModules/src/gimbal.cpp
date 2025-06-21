@@ -336,7 +336,6 @@ namespace robot
         fabsf(hello_world::AngleNormRad(joint_ang_fdb_[kJointYaw] - vis_data_.cmd.yaw)) < 0.3927f &&
         fabsf(joint_ang_fdb_[kJointPitch] - vis_data_.cmd.pitch) < 0.30543f)
     {
-      rad_debug = true;
       tmp_ang_ref = vis_data_.cmd;
     }
     else

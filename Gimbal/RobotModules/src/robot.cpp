@@ -424,7 +424,7 @@ namespace robot
   };
   void Robot::sendUsartData()
   {
-    if (work_tick_ % 100)
+    if (work_tick_ % 5 == 0)
     {
       sendVisionData();
     }
